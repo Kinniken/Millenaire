@@ -7,6 +7,10 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import org.millenaire.client.MillClientUtilities;
 import org.millenaire.client.gui.DisplayActions;
@@ -24,11 +28,6 @@ import org.millenaire.common.forge.CommonGuiHandler;
 import org.millenaire.common.forge.Mill;
 import org.millenaire.common.network.ServerReceiver;
 import org.millenaire.common.network.StreamReadWrite;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ClientCustomPacketEvent;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class ClientReceiver {
 	/**

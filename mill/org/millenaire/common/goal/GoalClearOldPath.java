@@ -20,7 +20,7 @@ public class GoalClearOldPath extends Goal {
 
 	@Override
 	public int actionDuration(final MillVillager villager) {
-		final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.dirt, 0);
+		final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.dirt.getDefaultState());
 
 		return 100 - toolEfficiency * 5;
 	}

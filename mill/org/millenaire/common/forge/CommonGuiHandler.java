@@ -3,6 +3,7 @@ package org.millenaire.common.forge;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import org.millenaire.common.ContainerPuja;
 import org.millenaire.common.ContainerTrade;
@@ -13,8 +14,6 @@ import org.millenaire.common.TileEntityMillChest;
 import org.millenaire.common.block.BlockMillChest;
 import org.millenaire.common.building.Building;
 import org.millenaire.common.core.MillCommonUtilities;
-
-import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CommonGuiHandler implements IGuiHandler {
 

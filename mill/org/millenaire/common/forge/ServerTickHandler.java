@@ -1,9 +1,9 @@
 package org.millenaire.common.forge;
 
-import org.millenaire.common.MillWorld;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import org.millenaire.common.MillWorld;
 
 public class ServerTickHandler {
 

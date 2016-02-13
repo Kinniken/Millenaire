@@ -25,7 +25,7 @@ public class GoalConstructionStepByStep extends Goal {
 			return 0;
 		}
 
-		final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.dirt, 0);
+		final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.dirt.getDefaultState());
 
 		if (bblock.block == Blocks.air || bblock.block == Blocks.dirt) {
 			return 100 - toolEfficiency * 5;

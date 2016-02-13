@@ -106,7 +106,7 @@ public class TileEntityPanel extends TileEntitySign {
 		final List<String> page = new ArrayList<String>();
 
 		page.add(vr.getName());
-		page.add(vr.getGameOccupation(player.getDisplayName()));
+		page.add(vr.getGameOccupation(player.getName()));
 		page.add("");
 
 		if (vr.mothersName != null && vr.mothersName.length() > 0) {
@@ -275,9 +275,9 @@ public class TileEntityPanel extends TileEntitySign {
 			}
 
 			if (belongsToVillage) {
-				page.add(vr.getName() + ", " + vr.getGameOccupation(player.getDisplayName()).toLowerCase() + error);
+				page.add(vr.getName() + ", " + vr.getGameOccupation(player.getName()).toLowerCase() + error);
 			} else {
-				visitorsPage.add(vr.getName() + ", " + vr.getGameOccupation(player.getDisplayName()).toLowerCase() + error);
+				visitorsPage.add(vr.getName() + ", " + vr.getGameOccupation(player.getName()).toLowerCase() + error);
 			}
 
 		}
@@ -319,7 +319,7 @@ public class TileEntityPanel extends TileEntitySign {
 			page.add(MLN.string("panels.houseunoccupied"));
 		} else if (wife == null) {
 
-			page.add(MLN.string("panels.man") + ": " + husband.getName() + ", " + husband.getGameOccupation(player.getDisplayName()));
+			page.add(MLN.string("panels.man") + ": " + husband.getName() + ", " + husband.getGameOccupation(player.getName()));
 			page.add("");
 			if (house.location.femaleResident.size() == 0) {
 				page.add(MLN.string("panels.nofemaleresident"));
@@ -328,7 +328,7 @@ public class TileEntityPanel extends TileEntitySign {
 			}
 		} else if (husband == null) {
 
-			page.add(MLN.string("panels.woman") + ": " + wife.getName() + ", " + wife.getGameOccupation(player.getDisplayName()));
+			page.add(MLN.string("panels.woman") + ": " + wife.getName() + ", " + wife.getGameOccupation(player.getName()));
 			page.add("");
 			if (house.location.maleResident == null || house.location.maleResident.size() == 0) {
 				page.add(MLN.string("panels.nomaleresident"));
@@ -337,9 +337,9 @@ public class TileEntityPanel extends TileEntitySign {
 			}
 		} else {
 
-			page.add(MLN.string("panels.woman") + ": " + wife.getName() + ", " + wife.getGameOccupation(player.getDisplayName()).toLowerCase());
+			page.add(MLN.string("panels.woman") + ": " + wife.getName() + ", " + wife.getGameOccupation(player.getName()).toLowerCase());
 
-			page.add(MLN.string("panels.man") + ": " + husband.getName() + ", " + husband.getGameOccupation(player.getDisplayName()).toLowerCase());
+			page.add(MLN.string("panels.man") + ": " + husband.getName() + ", " + husband.getGameOccupation(player.getName()).toLowerCase());
 
 			if (house.vrecords.size() > 2) {
 				page.add("");
@@ -348,7 +348,7 @@ public class TileEntityPanel extends TileEntitySign {
 				for (final VillagerRecord vr : house.vrecords) {
 					if (vr.getType().isChild) {
 
-						page.add(vr.getName() + ", " + vr.getGameOccupation(player.getDisplayName()).toLowerCase());
+						page.add(vr.getName() + ", " + vr.getGameOccupation(player.getName()).toLowerCase());
 					}
 				}
 			}
@@ -592,7 +592,7 @@ public class TileEntityPanel extends TileEntitySign {
 					weapon += Mill.proxy.getItemName(Items.bow, 0);
 				}
 
-				page.add(vr.getName() + ", " + vr.getGameOccupation(player.getDisplayName()));
+				page.add(vr.getName() + ", " + vr.getGameOccupation(player.getName()));
 				page.add(status);
 				page.add(MLN.string("panels.health") + ": " + vr.getMaxHealth() + ", " + MLN.string("panels.armour") + ": " + vr.getTotalArmorValue() + ", " + MLN.string("panels.weapons") + ": "
 						+ weapon + ", " + MLN.string("panels.militarystrength") + ": " + vr.getMilitaryStrength());
@@ -630,7 +630,7 @@ public class TileEntityPanel extends TileEntitySign {
 						weapon += Mill.proxy.getItemName(Items.bow, 0);
 					}
 
-					page.add(vr.getName() + ", " + vr.getGameOccupation(player.getDisplayName()));
+					page.add(vr.getName() + ", " + vr.getGameOccupation(player.getName()));
 					page.add(status);
 					page.add(MLN.string("panels.health") + ": " + vr.getMaxHealth() + ", " + MLN.string("panels.armour") + ": " + vr.getTotalArmorValue() + ", " + MLN.string("panels.weapons") + ": "
 							+ weapon + ", " + MLN.string("panels.militarystrength") + ": " + vr.getMilitaryStrength());

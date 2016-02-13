@@ -1,12 +1,11 @@
 package org.millenaire.client.forge;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import org.millenaire.client.gui.DisplayActions;
 import org.millenaire.common.forge.Mill;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 
 public class ClientTickHandler {
 

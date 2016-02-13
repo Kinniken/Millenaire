@@ -1,5 +1,6 @@
 package org.millenaire.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class GuiPanelParchment extends GuiText {
 	}
 
 	@Override
-	protected void actionPerformed(final GuiButton guibutton) {
+	protected void actionPerformed(final GuiButton guibutton) throws IOException {
 
 		if (guibutton instanceof MillGuiButton) {
 
@@ -139,7 +140,7 @@ public class GuiPanelParchment extends GuiText {
 					colour = 0x40111111;
 				} else {
 					final Chunk chunk = world.getChunkProvider().provideChunk(x / 16, z / 16);
-					if (chunk.isChunkLoaded) {
+					if (chunk.isLoaded()) {
 						colour = 0xc000ff00;
 					} else {
 						colour = 0xc0ff0000;
@@ -327,15 +328,15 @@ public class GuiPanelParchment extends GuiText {
 			int stringlength = fontRendererObj.getStringWidth(villagerHover.getName());
 			stringlength = Math.max(stringlength, fontRendererObj.getStringWidth(villagerHover.getNativeOccupationName()));
 
-			final boolean gameString = villagerHover.getGameOccupationName(player.getDisplayName()) != null && villagerHover.getGameOccupationName(player.getDisplayName()).length() > 0;
+			final boolean gameString = villagerHover.getGameOccupationName(player.getName()) != null && villagerHover.getGameOccupationName(player.getName()).length() > 0;
 
 			if (gameString) {
-				stringlength = Math.max(stringlength, fontRendererObj.getStringWidth(villagerHover.getGameOccupationName(player.getDisplayName())));
+				stringlength = Math.max(stringlength, fontRendererObj.getStringWidth(villagerHover.getGameOccupationName(player.getName())));
 
 				drawGradientRect(i + 10 - 3 - xStart, j + 10 - 3 - yStart, i + 10 + stringlength + 3 - xStart, j + 10 + 33 - yStart, 0xc0000000, 0xc0000000);
 				fontRendererObj.drawString(villagerHover.getName(), i + 10 - xStart, j + 10 - yStart, 0x909090);
 				fontRendererObj.drawString(villagerHover.getNativeOccupationName(), i + 10 - xStart, j + 10 - yStart + 11, 0x909090);
-				fontRendererObj.drawString(villagerHover.getGameOccupationName(player.getDisplayName()), i + 10 - xStart, j + 10 - yStart + 22, 0x909090);
+				fontRendererObj.drawString(villagerHover.getGameOccupationName(player.getName()), i + 10 - xStart, j + 10 - yStart + 22, 0x909090);
 			} else {
 				drawGradientRect(i + 10 - 3 - xStart, j + 10 - 3 - yStart, i + 10 + stringlength + 3 - xStart, j + 10 + 22 - yStart, 0xc0000000, 0xc0000000);
 				fontRendererObj.drawString(villagerHover.getName(), i + 10 - xStart, j + 10 - yStart, 0x909090);

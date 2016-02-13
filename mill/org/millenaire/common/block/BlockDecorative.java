@@ -6,22 +6,28 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
+import org.millenaire.common.Point;
 import org.millenaire.common.core.MillCommonUtilities;
 import org.millenaire.common.forge.Mill;
 
 public class BlockDecorative extends Block {
+	
+	public static final PropertyInteger TYPE = PropertyInteger.create("type", 0, 15);
 
 	public static class ItemDecorative extends ItemBlock {
 
@@ -96,7 +102,7 @@ public class BlockDecorative extends Block {
 				for (int x = -EXPLOSION_RADIUS; x <= EXPLOSION_RADIUS; x++) {
 					for (int z = -EXPLOSION_RADIUS; z <= EXPLOSION_RADIUS; z++) {
 						if (x * x + y * y + z * z <= EXPLOSION_RADIUS * EXPLOSION_RADIUS) {
-							final Block block = world.getBlock(i + x, j + y, k + z);
+							final Block block = world.getBlockState(new BlockPos(i + x, j + y, k + z)).getBlock();
 							if (block != Blocks.air) {
 								MillCommonUtilities.setBlockAndMetadata(world, i + x, j + y, k + z, Blocks.air, 0, true, false);
 							}
@@ -219,24 +225,43 @@ public class BlockDecorative extends Block {
 	}
 
 	@Override
-	public void updateTick(final World world, final int i, final int j, final int k, final Random random) {
+	public void updateTick(World worldIn, BlockPos pos, IBlockState state,
+			Random rand) {
+		
+		Point p=new Point(pos);
 
-		final int meta = world.getBlockMetadata(i, j, k);
-
-		if (this == Mill.earth_decoration && meta == 0) {
-			if (world.getBlockLightValue(i, j + 1, k) >= 15) {
+		//Wet brick to dry brick
+		if (this == Mill.earth_decoration && (Integer)state.getValue(TYPE) == 0) {
+			if (worldIn.getLight(pos.up()) >= 15) {
 				if (MillCommonUtilities.chanceOn(5)) {
-					MillCommonUtilities.setBlockAndMetadata(world, i, j, k, Mill.stone_decoration, 1, true, false);
+					IBlockState newState=Mill.stone_decoration.getDefaultState().withProperty(TYPE, 1);
+					p.setBlockState(worldIn, newState);
 				}
 			}
-		} else if (this == Mill.wood_decoration && meta == 3) {
-			if (world.getBlockLightValue(i, j + 1, k) < 7) {
+		//Empty silk to full silk
+		} else if (this == Mill.wood_decoration && (Integer)state.getValue(TYPE) == 3) {
+			if (worldIn.getLight(pos.up()) < 7) {
 				if (MillCommonUtilities.chanceOn(5)) {
-					MillCommonUtilities.setBlockAndMetadata(world, i, j, k, Mill.wood_decoration, 4, true, false);
+					IBlockState newState=Mill.wood_decoration.getDefaultState().withProperty(TYPE, 4);
 				}
 			}
 		}
 
 		return;
 	}
+	
+	protected BlockState createBlockState()
+    {
+        return new BlockState(this, new IProperty[] {TYPE});
+    }
+	
+	public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(TYPE, meta);
+    }
+
+    public int getMetaFromState(IBlockState state)
+    {
+        return (Integer)state.getValue(TYPE);
+    }
 }

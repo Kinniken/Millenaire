@@ -84,7 +84,7 @@ public class DisplayActions {
 	}
 
 	public static void displayQuestGUI(final EntityPlayer player, final MillVillager villager) {
-		final UserProfile profile = Mill.clientWorld.getProfile(player.getDisplayName());
+		final UserProfile profile = Mill.clientWorld.getProfile(player.getName());
 		if (profile.villagersInQuests.containsKey(villager.villager_id)) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiQuest(player, villager));
 		}

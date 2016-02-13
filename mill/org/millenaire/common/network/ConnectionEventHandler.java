@@ -1,15 +1,15 @@
 package org.millenaire.common.network;
 
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerDisconnectionFromClientEvent;
+
 import org.millenaire.common.MLN;
 import org.millenaire.common.MillWorld;
 import org.millenaire.common.UserProfile;
 import org.millenaire.common.core.MillCommonUtilities;
 import org.millenaire.common.forge.Mill;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ServerDisconnectionFromClientEvent;
 
 public class ConnectionEventHandler {
 
@@ -31,11 +31,11 @@ public class ConnectionEventHandler {
 	public void playerLoggedIn(final PlayerLoggedInEvent event) {
 
 		try {
-			final UserProfile profile = MillCommonUtilities.getServerProfile(event.player.worldObj, event.player.getDisplayName());
+			final UserProfile profile = MillCommonUtilities.getServerProfile(event.player.worldObj, event.player.getName());
 			if (profile != null) {
 				profile.connectUser();
 			} else {
-				MLN.error(this, "Could not get profile on login for user: " + event.player.getDisplayName());
+				MLN.error(this, "Could not get profile on login for user: " + event.player.getName());
 			}
 		} catch (final Exception e) {
 			MLN.printException("Error in ConnectionHandler.playerLoggedIn:", e);

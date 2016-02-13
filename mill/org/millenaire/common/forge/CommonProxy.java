@@ -3,10 +3,11 @@ package org.millenaire.common.forge;
 import java.io.File;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.millenaire.common.InvItem;
 import org.millenaire.common.MLN;
@@ -15,9 +16,6 @@ import org.millenaire.common.TileEntityPanel;
 import org.millenaire.common.UserProfile;
 import org.millenaire.common.item.Goods.ItemMillenaireBow;
 import org.millenaire.common.network.ServerReceiver;
-
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
 

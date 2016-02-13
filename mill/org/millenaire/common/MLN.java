@@ -25,6 +25,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.registry.LanguageRegistry;
 
 import org.millenaire.common.Quest.QuestStep;
 import org.millenaire.common.building.BuildingPlan;
@@ -34,9 +36,6 @@ import org.millenaire.common.core.MillCommonUtilities.BonusThread;
 import org.millenaire.common.core.MillCommonUtilities.PrefixExtFileFilter;
 import org.millenaire.common.forge.Mill;
 import org.millenaire.common.goal.Goal;
-
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class MLN {
 	public static class FileFiler implements FilenameFilter {
@@ -723,7 +722,7 @@ public class MLN {
 		final EntityPlayer player = Mill.proxy.getTheSinglePlayer();
 
 		if (player != null) {
-			return s.replaceAll("\\$name", player.getDisplayName());
+			return s.replaceAll("\\$name", player.getName());
 		} else {
 			return s;
 		}

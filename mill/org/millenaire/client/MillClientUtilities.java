@@ -12,6 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -35,8 +36,6 @@ import org.millenaire.common.forge.Mill;
 import org.millenaire.common.item.Goods;
 import org.millenaire.common.item.Goods.ItemMillenaireBow;
 import org.millenaire.common.network.ServerReceiver;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class MillClientUtilities {
 
@@ -424,12 +423,12 @@ public class MillClientUtilities {
 
 					@SuppressWarnings("rawtypes")
 					final List list = world.getEntitiesWithinAABB(MillVillager.class,
-							AxisAlignedBB.getBoundingBox(player.posX, player.posY, player.posZ, player.posX + 1.0D, player.posY + 1.0D, player.posZ + 1.0D).expand(16D, 8D, 16D));
+							AxisAlignedBB.fromBounds(player.posX, player.posY, player.posZ, player.posX + 1.0D, player.posY + 1.0D, player.posZ + 1.0D).expand(16D, 8D, 16D));
 
 					for (final Object o : list) {
 						final MillVillager villager = (MillVillager) o;
 
-						if (player.getDisplayName().equals(villager.hiredBy)) {
+						if (player.getName().equals(villager.hiredBy)) {
 							villager.aggressiveStance = stance;
 						}
 					}
@@ -524,8 +523,8 @@ public class MillClientUtilities {
 			return;
 		}
 
-		final String gameSpeech = MillCommonUtilities.getVillagerSentence(v, player.getDisplayName(), false);
-		final String nativeSpeech = MillCommonUtilities.getVillagerSentence(v, player.getDisplayName(), true);
+		final String gameSpeech = MillCommonUtilities.getVillagerSentence(v, player.getName(), false);
+		final String nativeSpeech = MillCommonUtilities.getVillagerSentence(v, player.getName(), true);
 
 		if (nativeSpeech != null || gameSpeech != null) {
 

@@ -9,6 +9,7 @@ import java.util.Random;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.common.IWorldGenerator;
 
 import org.millenaire.common.MLN.MillenaireException;
 import org.millenaire.common.building.Building;
@@ -23,8 +24,6 @@ import org.millenaire.common.core.MillCommonUtilities;
 import org.millenaire.common.forge.Mill;
 import org.millenaire.common.network.ServerSender;
 import org.millenaire.common.pathing.AStarPathing;
-
-import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenVillage implements IWorldGenerator {
 
@@ -111,7 +110,7 @@ public class WorldGenVillage implements IWorldGenerator {
 		String playerName = null;
 
 		if (player != null) {
-			playerName = player.getDisplayName();
+			playerName = player.getName();
 		}
 
 		Mill.getMillWorld(world).registerLoneBuildingsLocation(world, townHallEntity.getPos(), townHallEntity.getVillageQualifiedName(), townHallEntity.villageType, townHallEntity.culture, true,
@@ -172,7 +171,7 @@ public class WorldGenVillage implements IWorldGenerator {
 
 		townHall.initialiseVillage();
 
-		mw.registerVillageLocation(world, townHall.getPos(), townHall.getVillageQualifiedName(), townHall.villageType, townHall.culture, true, player.getDisplayName());
+		mw.registerVillageLocation(world, townHall.getPos(), townHall.getVillageQualifiedName(), townHall.villageType, townHall.culture, true, player.getName());
 		townHall.initialiseRelations(null);
 		townHall.updateWorldInfo();
 
@@ -237,7 +236,7 @@ public class WorldGenVillage implements IWorldGenerator {
 
 		for (int x = p.getChunkX() - village.radius / 16 - 1; x <= p.getChunkX() + village.radius / 16; x++) {
 			for (int z = p.getChunkZ() - village.radius / 16 - 1; z <= p.getChunkZ() + village.radius / 16; z++) {
-				if (!world.getChunkFromChunkCoords(x, z).isChunkLoaded) {
+				if (!world.getChunkFromChunkCoords(x, z).isLoaded()) {
 					world.getChunkProvider().loadChunk(x, z);
 				}
 			}
@@ -392,7 +391,7 @@ public class WorldGenVillage implements IWorldGenerator {
 		String playerName = null;
 
 		if (closestPlayer != null) {
-			playerName = closestPlayer.getDisplayName();
+			playerName = closestPlayer.getName();
 		}
 
 		if (loneBuildings) {
@@ -606,7 +605,7 @@ public class WorldGenVillage implements IWorldGenerator {
 
 			if (success && closestPlayer != null && loneBuilding.isKeyLoneBuildingForGeneration(closestPlayer) && loneBuilding.keyLoneBuildingGenerateTag != null) {
 
-				final UserProfile profile = mw.getProfile(closestPlayer.getDisplayName());
+				final UserProfile profile = mw.getProfile(closestPlayer.getName());
 				profile.clearTag(loneBuilding.keyLoneBuildingGenerateTag);
 			}
 

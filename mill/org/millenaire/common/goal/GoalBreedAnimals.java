@@ -21,7 +21,7 @@ import org.millenaire.common.forge.Mill;
 import org.millenaire.common.network.ServerSender;
 import org.millenaire.common.pathing.atomicstryker.AStarConfig;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class GoalBreedAnimals extends Goal {
 
@@ -206,7 +206,7 @@ public class GoalBreedAnimals extends Goal {
 
 						if (!animal.isChild() && !animal.isInLove() && animal.getGrowingAge() == 0) {
 							ReflectionHelper.setPrivateValue(EntityAnimal.class, animal, 600, 0);
-							animal.setTarget(null);
+							animal.setAttackTarget(null);
 
 							if (foundBreedingItem != null) {
 								villager.getHouse().takeGoods(foundBreedingItem, 1);

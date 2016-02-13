@@ -7,8 +7,11 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import org.millenaire.common.core.MillCommonUtilities;
 
 /**
  * Static parts of AStarPath calculation and translation
@@ -116,7 +119,7 @@ public class AStarStatic {
 
 	public static boolean isLadder(final World world, final Block b, final int x, final int y, final int z) {
 		if (b != null) {
-			return b.isLadder(world, x, y, z, null);
+			return b.isLadder(world, new BlockPos(x,y,z), null);
 		}
 		return false;
 	}
@@ -140,19 +143,19 @@ public class AStarStatic {
 		// Note that test isn't perfect (entities can walk on the top of fences,
 		// this is forbidden here)
 		if (iy > 0) {
-			final Block block = worldObj.getBlock(ix, iy - 1, iz);
+			final Block block = worldObj.getBlockState(new BlockPos(ix, iy - 1, iz)).getBlock();
 
-			if (block == Blocks.fence || block == Blocks.iron_bars || block == Blocks.nether_brick_fence) {
+			if (MillCommonUtilities.isFence(block) || block == Blocks.iron_bars || block == Blocks.nether_brick_fence) {
 				return false;
 			}
 		}
 
-		final Block block = worldObj.getBlock(ix, iy, iz);
+		final Block block = worldObj.getBlockState(new BlockPos(ix, iy, iz)).getBlock();
 		if (block != null) {
 			// Kinniken
 			// Allows passage through wooden doors and fence gates
 			if (config.canUseDoors) {
-				if (block == Blocks.wooden_door || block == Blocks.fence_gate) {
+				if (MillCommonUtilities.isWoodenDoor(block) || MillCommonUtilities.isFenceGate(block)) {
 					return true;
 				}
 			}
@@ -190,7 +193,7 @@ public class AStarStatic {
 	 *         entity, false otherwise
 	 */
 	public static boolean isViable(final World worldObj, final int x, final int y, final int z, int yoffset, final AStarConfig config) {
-		final Block block = worldObj.getBlock(x, y, z);
+		final Block block = worldObj.getBlockState(new BlockPos(x, y, z)).getBlock();
 
 		if (block == Blocks.ladder && isPassableBlock(worldObj, x, y + 1, z, config)) {
 			return true;
@@ -260,7 +263,7 @@ public class AStarStatic {
 		while (size > 0) {
 			reading = input.get(size - 1);
 			points[i] = new AS_PathPoint(reading.x, reading.y, reading.z);
-			points[i].isFirst = i == 0;
+			//points[i].isFirst = i == 0;
 			points[i].setIndex(i);
 			points[i].setTotalPathDistance(i);
 			points[i].setDistanceToNext(1F);

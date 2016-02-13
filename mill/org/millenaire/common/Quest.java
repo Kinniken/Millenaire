@@ -215,7 +215,7 @@ public class Quest {
 			}
 
 			if (getCurrentStep().rewardReputation > 0) {
-				mw.getProfile(player.getDisplayName()).adjustReputation(villager.getTownHall(), getCurrentStep().rewardReputation);
+				mw.getProfile(player.getName()).adjustReputation(villager.getTownHall(), getCurrentStep().rewardReputation);
 
 				reward += " " + getCurrentStep().rewardReputation + " reputation";
 
@@ -231,7 +231,7 @@ public class Quest {
 				}
 			}
 
-			mw.getProfile(player.getDisplayName()).adjustLanguage(villager.getCulture().key, QUEST_LANGUAGE_BONUS);
+			mw.getProfile(player.getName()).adjustLanguage(villager.getCulture().key, QUEST_LANGUAGE_BONUS);
 
 			if (!world.isRemote) {
 
@@ -254,7 +254,7 @@ public class Quest {
 				}
 			}
 
-			String res = getDescriptionSuccess(mw.getProfile(player.getDisplayName()));
+			String res = getDescriptionSuccess(mw.getProfile(player.getName()));
 
 			if (reward.length() > 0) {
 				res += "<ret><ret>" + MLN.string("quest.obtained") + ":" + reward;
@@ -264,7 +264,7 @@ public class Quest {
 			if (currentStep >= quest.steps.size()) {
 				player.addStat(MillAchievements.thequest, 1);
 
-				if (mw.getProfile(player.getDisplayName()).isWorldQuestFinished()) {
+				if (mw.getProfile(player.getName()).isWorldQuestFinished()) {
 					player.addStat(MillAchievements.forbiddenknwoledge, 1);
 				}
 
@@ -393,7 +393,7 @@ public class Quest {
 
 			final MillVillager cv = getCurrentVillager().getVillager(world);
 			if (cv != null && getCurrentStep().penaltyReputation > 0) {
-				mw.getProfile(player.getDisplayName()).adjustReputation(cv.getTownHall(), -getCurrentStep().penaltyReputation);
+				mw.getProfile(player.getName()).adjustReputation(cv.getTownHall(), -getCurrentStep().penaltyReputation);
 				replost = " (Reputation lost: " + getCurrentStep().penaltyReputation + ")";
 			}
 
@@ -401,7 +401,7 @@ public class Quest {
 			applyPlayerTags(getCurrentStep().setPlayerTagsFailure, getCurrentStep().clearPlayerTagsFailure);
 			applyGlobalTags(getCurrentStep().setGlobalTagsFailure, getCurrentStep().clearGlobalTagsFailure);
 
-			final String s = getDescriptionRefuse(mw.getProfile(player.getDisplayName())) + replost;
+			final String s = getDescriptionRefuse(mw.getProfile(player.getName())) + replost;
 
 			destroySelf();
 
@@ -560,7 +560,7 @@ public class Quest {
 
 			final MillWorld mw = Mill.getMillWorld(player.worldObj);
 
-			final UserProfile profile = mw.getProfile(player.getDisplayName());
+			final UserProfile profile = mw.getProfile(player.getName());
 
 			String lackingGoods = null;
 			for (final InvItem item : requiredGood.keySet()) {

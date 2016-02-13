@@ -526,7 +526,7 @@ public class ServerSender {
 
 		for (final EntityPlayer player : MillCommonUtilities.getServerPlayers(mw.world)) {
 			if (p.distanceToSquared(player) < 16 * 16) {
-				final UserProfile profile = MillCommonUtilities.getServerProfile(mw.world, player.getDisplayName());
+				final UserProfile profile = MillCommonUtilities.getServerProfile(mw.world, player.getName());
 
 				if (!profile.panelsSent.containsKey(p) || !profile.panelsSent.get(p).equals(keyHash)) {
 					receivers.add(player);

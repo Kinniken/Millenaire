@@ -7,21 +7,20 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.millenaire.common.core.MillCommonUtilities;
 import org.millenaire.common.forge.Mill;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockDecorativeSlab extends BlockSlab {
 
@@ -85,14 +84,14 @@ public class BlockDecorativeSlab extends BlockSlab {
 				++par4;
 			}
 
-			final Block block = par3World.getBlock(par4, par5, par6);
+			final Block block = par3World.getBlockState(new BlockPos(par4, par5, par6)).getBlock();
 			final int j1 = par3World.getBlockMetadata(par4, par5, par6);
 			final int k1 = j1 & 7;
 
 			if (block == this.theHalfSlabDec && k1 == par1ItemStack.getItemDamage()) {
 				if (par3World.checkBlockCollision(this.doubleSlabDec.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6)) && par3World.setBlock(par4, par5, par6, this.doubleSlabDec, k1, 3)) {
 					par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.doubleSlabDec.stepSound.soundName, (this.doubleSlabDec.stepSound.getVolume() + 1.0F) / 2.0F,
-							this.doubleSlabDec.stepSound.getPitch() * 0.8F);
+							this.doubleSlabDec.stepSound.getFrequency() * 0.8F);
 					--par1ItemStack.stackSize;
 				}
 
@@ -118,23 +117,23 @@ public class BlockDecorativeSlab extends BlockSlab {
 		}
 
 		@Override
-		public boolean onItemUse(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final World par3World, final int par4, final int par5, final int par6, final int par7,
+		public boolean onItemUse(final ItemStack par1ItemStack, final EntityPlayer par2EntityPlayer, final World par3World, BlockPos pos, EnumFacing side,
 				final float par8, final float par9, final float par10) {
 			if (this.isFullBlockDec) {
-				return super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10);
+				return super.onItemUse(par1ItemStack, par2EntityPlayer, par3World, pos, side, par8, par9, par10);
 			} else if (par1ItemStack.stackSize == 0) {
 				return false;
-			} else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack)) {
+			} else if (!par2EntityPlayer.canPlayerEdit(pos, side, par1ItemStack)) {
 				return false;
 			} else {
-				final Block block = par3World.getBlock(par4, par5, par6);
+				final Block block = par3World.getBlockState(pos).getBlock();
 				final int j1 = par3World.getBlockMetadata(par4, par5, par6);
 
 				if (par7 == 1 && block == this.theHalfSlabDec && j1 == par1ItemStack.getItemDamage()) {
 					if (par3World.checkBlockCollision(this.doubleSlabDec.getCollisionBoundingBoxFromPool(par3World, par4, par5, par6))
-							&& par3World.setBlock(par4, par5, par6, this.doubleSlabDec, j1, 3)) {
+							&& par3World.setBlock(pos, this.doubleSlabDec, j1, 3)) {
 						par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, this.doubleSlabDec.stepSound.soundName, (this.doubleSlabDec.stepSound.getVolume() + 1.0F) / 2.0F,
-								this.doubleSlabDec.stepSound.getPitch() * 0.8F);
+								this.doubleSlabDec.stepSound.getFrequency() * 0.8F);
 						--par1ItemStack.stackSize;
 					}
 

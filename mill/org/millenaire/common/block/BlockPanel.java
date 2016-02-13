@@ -50,12 +50,12 @@ public class BlockPanel extends BlockSign {
 			return false;
 		}
 
-		if (panel.panelType == TileEntityPanel.controlledProjects && building.controlledBy(entityplayer.getDisplayName())) {
+		if (panel.panelType == TileEntityPanel.controlledProjects && building.controlledBy(entityplayer.getName())) {
 			ServerSender.displayControlledProjectGUI(entityplayer, building);
 			return true;
 		}
 
-		if (panel.panelType == TileEntityPanel.controlledMilitary && building.controlledBy(entityplayer.getDisplayName())) {
+		if (panel.panelType == TileEntityPanel.controlledMilitary && building.controlledBy(entityplayer.getName())) {
 			ServerSender.displayControlledMilitaryGUI(entityplayer, building);
 			return true;
 		}

@@ -22,12 +22,12 @@ public class GoalMinerMineResource extends Goal {
 		final Block block = villager.getBlock(villager.getGoalDestPoint());
 
 		if (block == Blocks.stone || block == Blocks.sandstone) {
-			final int toolEfficiency = (int) villager.getBestPickaxe().getDigSpeed(new ItemStack(villager.getBestPickaxe(), 1), Blocks.sandstone, 0);
+			final int toolEfficiency = (int) villager.getBestPickaxe().getDigSpeed(new ItemStack(villager.getBestPickaxe(), 1), Blocks.sandstone.getDefaultState());
 
 			return 7000 - 200 * toolEfficiency;
 
 		} else if (block == Blocks.sand || block == Blocks.clay || block == Blocks.gravel) {
-			final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.sand, 0);
+			final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.sand.getDefaultState());
 
 			return 7000 - 200 * toolEfficiency;
 		}

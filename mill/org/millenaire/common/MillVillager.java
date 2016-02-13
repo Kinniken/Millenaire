@@ -15,8 +15,11 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -42,7 +45,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
@@ -50,6 +55,7 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import org.millenaire.common.Culture.CultureLanguage.Dialogue;
 import org.millenaire.common.MLN.MillenaireException;
@@ -82,8 +88,6 @@ import org.millenaire.common.pathing.atomicstryker.AStarNode;
 import org.millenaire.common.pathing.atomicstryker.AStarPathPlanner;
 import org.millenaire.common.pathing.atomicstryker.AStarStatic;
 import org.millenaire.common.pathing.atomicstryker.IAStarPathedEntity;
-
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public abstract class MillVillager extends EntityCreature implements IEntityAdditionalSpawnData, IAStarPathedEntity {
 
@@ -121,7 +125,6 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 		@Override
 		public void readSpawnData(final ByteBuf additionalData) {
-			// TODO Auto-generated method stub
 
 		}
 	}
@@ -499,7 +502,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			attackEntityBow(entity, f);
 			isUsingBow = true;
 		} else {
-			if (attackTime <= 0 && f < 2.0F && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY) {
+			if (attackTime <= 0 && f < 2.0F && entity.getEntityBoundingBox().maxY > getEntityBoundingBox().minY && entity.getEntityBoundingBox().minY < getEntityBoundingBox().maxY) {
 				attackTime = 20;
 				entity.attackEntityFrom(DamageSource.causeMobDamage(this), getAttackStrength());
 				swingItem();
@@ -582,13 +585,14 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 					if (!isRaider) {
 						if (!vtype.hostile) {
-							MillCommonUtilities.getServerProfile(player.worldObj, player.getDisplayName()).adjustReputation(getTownHall(), (int) (-i * 10));
+							MillCommonUtilities.getServerProfile(player.worldObj, player.getName()).adjustReputation(getTownHall(), (int) (-i * 10));
 						}
-						if (worldObj.difficultySetting != EnumDifficulty.PEACEFUL && this.getHealth() < getMaxHealth() - 10) {
-							entityToAttack = entity;
+						
+						if (worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && this.getHealth() < getMaxHealth() - 10) {
+							setAttackTarget((EntityLivingBase)entity);
 							clearGoal();
 							if (getTownHall() != null) {
-								getTownHall().callForHelp(entity);
+								getTownHall().callForHelp((EntityLivingBase) entity);
 							}
 						}
 
@@ -606,11 +610,11 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 					}
 
 				} else {
-					entityToAttack = entity;
+					setAttackTarget((EntityLivingBase) entity);
 					clearGoal();
 
 					if (getTownHall() != null) {
-						getTownHall().callForHelp(entity);
+						getTownHall().callForHelp((EntityLivingBase) entity);
 					}
 
 				}
@@ -620,6 +624,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		return b;
 	}
 
+	/**
+	 * Returns true if attempt carried out (successful or not)
+	 */
 	public boolean attemptChildConception() {
 		int nbChildren = 0;
 
@@ -920,15 +927,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		shouldLieDown = false;
 	}
 
-	private boolean closeFenceGate(final int i, final int j, final int k) {
-		final int l = worldObj.getBlockMetadata(i, j, k);
-		if (BlockFenceGate.isFenceGateOpen(l)) {
-			MillCommonUtilities.setBlockMetadata(worldObj, i, j, k, l & -5, true);
 
-			return true;
-		}
-		return false;
-	}
 
 	public float computeMaxHealth() {
 
@@ -1151,7 +1150,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			final EntityLivingBase entityliving = (EntityLivingBase) par1Entity;
 			d2 = entityliving.posY + entityliving.getEyeHeight() - (this.posY + this.getEyeHeight());
 		} else {
-			d2 = (par1Entity.boundingBox.minY + par1Entity.boundingBox.maxY) / 2.0D - (this.posY + this.getEyeHeight());
+			d2 = (par1Entity.getEntityBoundingBox().minY + par1Entity.getEntityBoundingBox().maxY) / 2.0D - (this.posY + this.getEyeHeight());
 		}
 
 		final double d3 = MathHelper.sqrt_double(d0 * d0 + d1 * d1);
@@ -1209,7 +1208,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 	}
 
 	@Override
-	public ItemStack func_130225_q(final int type) {
+	public ItemStack getCurrentArmor(final int type) {
 
 		if (type == 0) {
 			for (final Item weapon : helmets) {
@@ -1292,15 +1291,15 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			ref = getGoalDestPoint();
 		}
 
-		final int x = (int) ref.x;
-		final int y = (int) ref.y;
-		final int z = (int) ref.z;
-		final Block block = worldObj.getBlock(x, y, z);
+		final Block block = MillCommonUtilities.getBlock(worldObj, ref);
 
 		if (block == Blocks.bed) {
-			final int var2 = block == null ? 0 : block.getBedDirection(worldObj, x, y, z);
+			
+			IBlockState state=ref.getBlockActualState(worldObj);
+			
+			EnumFacing side= (EnumFacing)state.getValue(BlockBed.FACING);
 
-			switch (var2) {
+			switch (side.getHorizontalIndex()) {
 			case 0:
 				return 270.0F;
 			case 1:
@@ -1312,13 +1311,13 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			}
 		} else {
 
-			if (worldObj.getBlock(x + 1, y, z) == Blocks.air) {
+			if (MillCommonUtilities.getBlock(worldObj, ref.getSouth()) == Blocks.air) {
 				return 0.0F;
-			} else if (worldObj.getBlock(x, y, z + 1) == Blocks.air) {
+			} else if (MillCommonUtilities.getBlock(worldObj, ref.getWest()) == Blocks.air) {
 				return 90.0F;
-			} else if (worldObj.getBlock(x - 1, y, z) == Blocks.air) {
+			} else if (MillCommonUtilities.getBlock(worldObj, ref.getNorth()) == Blocks.air) {
 				return 180.0F;
-			} else if (worldObj.getBlock(x, y, z - 1) == Blocks.air) {
+			} else if (MillCommonUtilities.getBlock(worldObj, ref.getEast()) == Blocks.air) {
 				return 270.0F;
 			}
 
@@ -1335,9 +1334,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			if (inventory.get(item) > 0) {
 				if (item.staticStack != null && (item.item instanceof ItemAxe || item.item instanceof ItemMillenaireAxe)) {
 					final ItemTool tool = (ItemTool) item.item;
-					if (tool.func_150893_a(item.staticStack, Blocks.log) > bestRating) {
+					if (tool.getStrVsBlock(item.staticStack, Blocks.log) > bestRating) {
 						bestTool = tool;
-						bestRating = tool.func_150893_a(item.staticStack, Blocks.stone);
+						bestRating = tool.getStrVsBlock(item.staticStack, Blocks.stone);
 					}
 				}
 			}
@@ -1355,9 +1354,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			if (inventory.get(item) > 0) {
 				if (item.staticStack != null && (item.item instanceof ItemAxe || item.item instanceof ItemMillenaireAxe)) {
 					final ItemTool tool = (ItemTool) item.item;
-					if (tool.func_150893_a(item.staticStack, Blocks.log) > bestRating) {
+					if (tool.getStrVsBlock(item.staticStack, Blocks.log) > bestRating) {
 						bestTool = item.staticStackArray;
-						bestRating = tool.func_150893_a(item.staticStack, Blocks.stone);
+						bestRating = tool.getStrVsBlock(item.staticStack, Blocks.stone);
 					}
 				}
 			}
@@ -1412,9 +1411,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			if (inventory.get(item) > 0) {
 				if (item.staticStack != null && (item.item instanceof ItemPickaxe || item.item instanceof ItemMillenairePickaxe)) {
 					final ItemTool tool = (ItemTool) item.item;
-					if (tool.func_150893_a(item.staticStack, Blocks.stone) > bestRating) {
+					if (tool.getStrVsBlock(item.staticStack, Blocks.stone) > bestRating) {
 						bestTool = tool;
-						bestRating = tool.func_150893_a(item.staticStack, Blocks.stone);
+						bestRating = tool.getStrVsBlock(item.staticStack, Blocks.stone);
 					}
 				}
 			}
@@ -1432,9 +1431,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			if (inventory.get(item) > 0) {
 				if (item.staticStack != null && (item.item instanceof ItemPickaxe || item.item instanceof ItemMillenairePickaxe)) {
 					final ItemTool tool = (ItemTool) item.item;
-					if (tool.func_150893_a(item.staticStack, Blocks.stone) > bestRating) {
+					if (tool.getStrVsBlock(item.staticStack, Blocks.stone) > bestRating) {
 						bestTool = item.staticStackArray;
-						bestRating = tool.func_150893_a(item.staticStack, Blocks.stone);
+						bestRating = tool.getStrVsBlock(item.staticStack, Blocks.stone);
 					}
 				}
 			}
@@ -1451,9 +1450,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			if (inventory.get(item) > 0) {
 				if (item.staticStack != null && (item.item instanceof ItemSpade || item.item instanceof ItemMillenaireShovel)) {
 					final ItemTool tool = (ItemTool) item.item;
-					if (tool.func_150893_a(item.staticStack, Blocks.dirt) > bestRating) {
+					if (tool.getStrVsBlock(item.staticStack, Blocks.dirt) > bestRating) {
 						bestTool = tool;
-						bestRating = tool.func_150893_a(item.staticStack, Blocks.stone);
+						bestRating = tool.getStrVsBlock(item.staticStack, Blocks.stone);
 					}
 				}
 			}
@@ -1470,9 +1469,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			if (inventory.get(item) > 0) {
 				if (item.staticStack != null && (item.item instanceof ItemSpade || item.item instanceof ItemMillenaireShovel)) {
 					final ItemTool tool = (ItemTool) item.item;
-					if (tool.func_150893_a(item.staticStack, Blocks.dirt) > bestRating) {
+					if (tool.getStrVsBlock(item.staticStack, Blocks.dirt) > bestRating) {
 						bestTool = item.staticStackArray;
-						bestRating = tool.func_150893_a(item.staticStack, Blocks.stone);
+						bestRating = tool.getStrVsBlock(item.staticStack, Blocks.stone);
 					}
 				}
 			}
@@ -1489,8 +1488,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		return MillCommonUtilities.getBlockMeta(worldObj, p);
 	}
 
+	//getBlockPathWeight
 	@Override
-	public float getBlockPathWeight(final int i, final int j, final int k) {
+	public float func_180484_a(BlockPos pos) {
 
 		if (!allowRandomMoves) {
 			if (MLN.LogPathing >= MLN.DEBUG && extraLog) {
@@ -1499,9 +1499,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			return Float.NEGATIVE_INFINITY;
 		}
 
-		final Point rp = new Point(i, j, k);
+		final Point rp = new Point(pos);
 		final double dist = rp.distanceTo(housePoint);
-		if (worldObj.getBlock(i, j - 1, k) == Blocks.farmland) {
+		if (MillCommonUtilities.getBlock(worldObj, rp.getBelow()) == Blocks.farmland) {
 			return -50;
 		} else if (dist > 10) {
 			return -(float) dist;
@@ -1598,14 +1598,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 	}
 
 	@Override
-	public Entity getEntityToAttack() {
-		return entityToAttack;
-	}
-
-	@Override
 	public ItemStack getEquipmentInSlot(final int par1) {
 		if (par1 > 0) {
-			return func_130225_q(par1 - 1);
+			return this.getCurrentArmor(par1 - 1);
 		}
 
 		return this.heldItem;
@@ -1728,7 +1723,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 		int cost = vtype.hireCost;
 
-		if (getTownHall().controlledBy(player.getDisplayName())) {
+		if (getTownHall().controlledBy(player.getName())) {
 			cost = cost / 2;
 		}
 
@@ -1840,7 +1835,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 	}
 
 	public PathPoint getPathPointPos() {
-		return new PathPoint(MathHelper.floor_double(this.boundingBox.minX), MathHelper.floor_double(this.boundingBox.minY), MathHelper.floor_double(this.boundingBox.minZ));
+		return new PathPoint(MathHelper.floor_double(this.getEntityBoundingBox().minX), MathHelper.floor_double(this.getEntityBoundingBox().minY), MathHelper.floor_double(this.getEntityBoundingBox().minZ));
 	}
 
 	public Point getPos() {
@@ -1903,7 +1898,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 	public int getTotalArmorValue() {
 		int total = 0;
 		for (int i = 0; i < 4; i++) {
-			final ItemStack armour = func_130225_q(i);
+			final ItemStack armour = getCurrentArmor(i);
 
 			if (armour != null && armour.getItem() instanceof ItemArmor) {
 				total += ((ItemArmor) armour.getItem()).damageReduceAmount;
@@ -2008,14 +2003,14 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 																			// be
 					// closed
 					|| pathEntity.getPastTargetPathPoint(2) != null && doorToClose.sameBlock(pathEntity.getPastTargetPathPoint(2))) {
-				if (getBlock(doorToClose) == Blocks.wooden_door) {
+				if (MillCommonUtilities.isWoodenDoor(getBlock(doorToClose))) {
 					final int meta = getBlockMeta(doorToClose);
 
 					if ((meta & 4) == 4) {
 						toggleDoor(doorToClose.getiX(), doorToClose.getiY(), doorToClose.getiZ());
 					}
 					doorToClose = null;
-				} else if (getBlock(doorToClose) == Blocks.fence_gate) {
+				} else if (MillCommonUtilities.isFenceGate(getBlock(doorToClose))) {
 					if (closeFenceGate(doorToClose.getiX(), doorToClose.getiY(), doorToClose.getiZ())) {
 						doorToClose = null;
 					}
@@ -2028,31 +2023,33 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 				PathPoint p = null;
 				// check for wood door:
 				if (pathEntity.getCurrentTargetPathPoint() != null
-						&& worldObj.getBlock(pathEntity.getCurrentTargetPathPoint().xCoord, pathEntity.getCurrentTargetPathPoint().yCoord, pathEntity.getCurrentTargetPathPoint().zCoord) == Blocks.wooden_door) {
+						&& MillCommonUtilities.getBlock(worldObj,pathEntity.getCurrentTargetPathPoint().xCoord, pathEntity.getCurrentTargetPathPoint().yCoord, pathEntity.getCurrentTargetPathPoint().zCoord) == Blocks.oak_door) {
 					p = pathEntity.getCurrentTargetPathPoint();
 				} else if (pathEntity.getNextTargetPathPoint() != null
-						&& worldObj.getBlock(pathEntity.getNextTargetPathPoint().xCoord, pathEntity.getNextTargetPathPoint().yCoord, pathEntity.getNextTargetPathPoint().zCoord) == Blocks.wooden_door) {
+						&& MillCommonUtilities.getBlock(worldObj,pathEntity.getNextTargetPathPoint().xCoord, pathEntity.getNextTargetPathPoint().yCoord, pathEntity.getNextTargetPathPoint().zCoord) == Blocks.oak_door) {
 					p = pathEntity.getNextTargetPathPoint();
 				}
 
+				Point point=new Point(p);
+				
 				if (p != null) {
-					final int meta = worldObj.getBlockMetadata(p.xCoord, p.yCoord, p.zCoord);
+					final int meta = point.getMeta(worldObj);
 					if ((meta & 4) == 0) {
 						toggleDoor(p.xCoord, p.yCoord, p.zCoord);
 						doorToClose = new Point(p);
 					}
 				} else {// check for fence gate:
 					if (pathEntity.getNextTargetPathPoint() != null
-							&& worldObj.getBlock(pathEntity.getNextTargetPathPoint().xCoord, pathEntity.getNextTargetPathPoint().yCoord, pathEntity.getNextTargetPathPoint().zCoord) == Blocks.fence_gate) {
+							&& MillCommonUtilities.isFenceGate(MillCommonUtilities.getBlock(worldObj,pathEntity.getNextTargetPathPoint().xCoord, pathEntity.getNextTargetPathPoint().yCoord, pathEntity.getNextTargetPathPoint().zCoord))) {
 						p = pathEntity.getNextTargetPathPoint();
 					} else if (pathEntity.getCurrentTargetPathPoint() != null
-							&& worldObj.getBlock(pathEntity.getCurrentTargetPathPoint().xCoord, pathEntity.getCurrentTargetPathPoint().yCoord, pathEntity.getCurrentTargetPathPoint().zCoord) == Blocks.fence_gate) {
+							&& MillCommonUtilities.isFenceGate(MillCommonUtilities.getBlock(worldObj,pathEntity.getCurrentTargetPathPoint().xCoord, pathEntity.getCurrentTargetPathPoint().yCoord, pathEntity.getCurrentTargetPathPoint().zCoord))) {
 						p = pathEntity.getCurrentTargetPathPoint();
 					}
 
 					if (p != null) {
 						openFenceGate(p.xCoord, p.yCoord, p.zCoord);
-						doorToClose = new Point(p);
+						doorToClose = point;
 					}
 				}
 			}
@@ -2119,7 +2116,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			return true;
 		}
 
-		final UserProfile profile = mw.getProfile(entityplayer.getDisplayName());
+		final UserProfile profile = mw.getProfile(entityplayer.getName());
 
 		entityplayer.addStat(MillAchievements.firstContact, 1);
 
@@ -2160,7 +2157,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			return true;
 		}
 
-		final UserProfile profile = mw.getProfile(entityplayer.getDisplayName());
+		final UserProfile profile = mw.getProfile(entityplayer.getName());
 
 		if (canMeditate() && mw.isGlobalTagSet(MillWorld.PUJAS) || canPerformSacrifices() && mw.isGlobalTagSet(MillWorld.MAYANSACRIFICES)) {
 
@@ -2168,7 +2165,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 				MLN.debug(this, "canMeditate");
 			}
 
-			if (getTownHall().getReputation(entityplayer.getDisplayName()) >= Building.MIN_REPUTATION_FOR_TRADE) {
+			if (getTownHall().getReputation(entityplayer.getName()) >= Building.MIN_REPUTATION_FOR_TRADE) {
 				for (final BuildingLocation l : getTownHall().getLocations()) {
 					if (l.level >= 0 && l.getSellingPos() != null && l.getSellingPos().distanceTo(this) < 8) {
 						final Building b = l.getBuilding(worldObj);
@@ -2192,8 +2189,8 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			}
 		}
 
-		if (isSeller() && !getTownHall().controlledBy(entityplayer.getDisplayName())) {
-			if (getTownHall().getReputation(entityplayer.getDisplayName()) >= Building.MIN_REPUTATION_FOR_TRADE && getTownHall().chestLocked) {
+		if (isSeller() && !getTownHall().controlledBy(entityplayer.getName())) {
+			if (getTownHall().getReputation(entityplayer.getName()) >= Building.MIN_REPUTATION_FOR_TRADE && getTownHall().chestLocked) {
 				for (final BuildingLocation l : getTownHall().getLocations()) {
 					if (l.level >= 0 && l.shop != null && l.shop.length() > 0) {
 						if (l.getSellingPos() != null && l.getSellingPos().distanceTo(this) < 5 || l.sleepingPos.distanceTo(this) < 5) {
@@ -2217,7 +2214,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		}
 
 		if (vtype.hireCost > 0) {
-			if (hiredBy == null || hiredBy.equals(entityplayer.getDisplayName())) {
+			if (hiredBy == null || hiredBy.equals(entityplayer.getName())) {
 				ServerSender.displayHireGUI(entityplayer, this);
 				return true;
 			} else {
@@ -2544,34 +2541,34 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 					checkGoals();
 				}
 
-				if (entityToAttack != null) {
+				if (getAttackTarget() != null) {
 
 					if (vtype.isDefensive && getPos().distanceTo(getHouse().getResManager().getDefendingPos()) > ATTACK_RANGE_DEFENSIVE) {
-						entityToAttack = null;
-					} else if (!entityToAttack.isEntityAlive() || getPos().distanceTo(entityToAttack) > ATTACK_RANGE || worldObj.difficultySetting == EnumDifficulty.PEACEFUL
-							&& entityToAttack instanceof EntityPlayer) {
-						entityToAttack = null;
+						setAttackTarget(null);
+					} else if (!getAttackTarget().isEntityAlive() || getPos().distanceTo(getAttackTarget()) > ATTACK_RANGE || worldObj.getDifficulty() == EnumDifficulty.PEACEFUL
+							&& getAttackTarget() instanceof EntityPlayer) {
+						setAttackTarget(null);
 					}
 
-					if (entityToAttack != null) {
+					if (getAttackTarget() != null) {
 						shouldLieDown = false;
 					}
 
 				} else {
-					if (isHostile() && worldObj.difficultySetting != EnumDifficulty.PEACEFUL && getTownHall().closestPlayer != null && getPos().distanceTo(getTownHall().closestPlayer) <= ATTACK_RANGE) {
+					if (isHostile() && worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && getTownHall().closestPlayer != null && getPos().distanceTo(getTownHall().closestPlayer) <= ATTACK_RANGE) {
 						int range = ATTACK_RANGE;
 
 						if (vtype.isDefensive) {
 							range = ATTACK_RANGE_DEFENSIVE;
 						}
 
-						entityToAttack = worldObj.getClosestPlayer(posX, posY, posZ, range);
+						setAttackTarget(worldObj.getClosestPlayer(posX, posY, posZ, range));
 						clearGoal();
 					}
 				}
 
-				if (entityToAttack != null) {
-					setGoalDestPoint(new Point(entityToAttack));
+				if (getAttackTarget() != null) {
+					setGoalDestPoint(new Point(getAttackTarget()));
 					heldItem = getWeapon();
 
 					if (goalKey != null) {
@@ -2800,17 +2797,26 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			MLN.printException("Exception in onUpdate() of villager: " + this, e);
 		}
 	}
+	
+	private boolean closeFenceGate(final int i, final int j, final int k) {
+		
+		Point p=new Point(i,j,k);
+		
+		IBlockState state = (p).getBlockActualState(worldObj);
+		if (MillCommonUtilities.isFence(state.getBlock()) &&				
+				((Boolean)state.getValue(BlockFenceGate.OPEN))) {			
+			p.setBlockState(worldObj, state.withProperty(BlockFenceGate.OPEN, false));
+			return true;
+		}
+		return false;
+	}
 
 	private boolean openFenceGate(final int i, final int j, final int k) {
-		int l = worldObj.getBlockMetadata(i, j, k);
-		if (!BlockFenceGate.isFenceGateOpen(l)) {
-			final int i1 = (MathHelper.floor_double(rotationYaw * 4F / 360F + 0.5D) & 3) % 4;
-			final int j1 = BlockDirectional.getDirection(l);
-			if (j1 == (i1 + 2) % 4) {
-				l = i1;
-			}
-			MillCommonUtilities.setBlockMetadata(worldObj, i, j, k, l | 4, true);
-
+		Point p=new Point(i,j,k);
+		IBlockState state = (p).getBlockActualState(worldObj);
+		if (MillCommonUtilities.isFence(state.getBlock()) &&				
+				!((Boolean)state.getValue(BlockFenceGate.OPEN))) {	
+			p.setBlockState(worldObj, state.withProperty(BlockFenceGate.OPEN, true));
 		}
 
 		return true;
@@ -2836,7 +2842,14 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		pathFailedSincelastTick = false;
 	}
 
+	/**
+	 * Return true if action could be performed and won't be done again this night
+	 */
 	public boolean performNightAction() {
+		
+		if (getRecord()==null || getHouse()==null || getTownHall()==null) {
+			return false;
+		}
 
 		if (isChild()) {
 			if (size < MAX_CHILD_SIZE) {
@@ -3220,14 +3233,10 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		}
 	}
 
-	public void setEntityToAttack(final Entity ent) {
-		entityToAttack = ent;
-	}
-
 	private void setFacingDirection() {
 
-		if (entityToAttack != null) {
-			faceEntityMill(entityToAttack, 30, 30);
+		if (getAttackTarget() != null) {
+			faceEntityMill(getAttackTarget(), 30, 30);
 			return;
 		}
 
@@ -3531,7 +3540,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 	private void targetDefender() {
 
 		int bestDist = Integer.MAX_VALUE;
-		Entity target = null;
+		MillVillager target = null;
 
 		for (final MillVillager v : getTownHall().villagers) {
 
@@ -3545,14 +3554,14 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		}
 
 		if (target != null && getPos().distanceToSquared(target) <= 25) {
-			entityToAttack = target;
+			setAttackTarget(target);
 		}
 	}
 
 	private void targetRaider() {
 
 		int bestDist = Integer.MAX_VALUE;
-		Entity target = null;
+		MillVillager target = null;
 
 		for (final MillVillager v : getTownHall().villagers) {
 
@@ -3566,7 +3575,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		}
 
 		if (target != null && getPos().distanceToSquared(target) <= 25) {
-			entityToAttack = target;
+			setAttackTarget(target);
 		}
 	}
 
@@ -3631,7 +3640,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		if (worldObj.blockExists(i, j, k)) {
 			boolean flag1;
 			for (flag1 = false; !flag1 && j > 0;) {
-				final Block block = worldObj.getBlock(i, j - 1, k);
+				final Block block = MillCommonUtilities.getBlock(worldObj, i, j - 1, k);
 				if (block == Blocks.air || !block.getMaterial().blocksMovement()) {
 					posY--;
 					j--;
@@ -3642,7 +3651,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 			if (flag1) {
 				setPosition(posX, posY, posZ);
-				if (worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox)) {
+				if (worldObj.getCollidingBoundingBoxes(this, getEntityBoundingBox()).size() == 0 && !worldObj.isAnyLiquid(getEntityBoundingBox())) {
 					flag = true;
 				}
 			}
@@ -3656,7 +3665,7 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 	}
 
 	public boolean teleportToEntity(final Entity entity) {
-		Vec3 vec3d = Vec3.createVectorHelper(posX - entity.posX, boundingBox.minY + height / 2.0F - entity.posY + entity.getEyeHeight(), posZ - entity.posZ);
+		Vec3 vec3d = new Vec3(posX - entity.posX, getEntityBoundingBox().minY + height / 2.0F - entity.posY + entity.getEyeHeight(), posZ - entity.posZ);
 		vec3d = vec3d.normalize();
 		final double d = 16D;
 		final double d1 = posX + (rand.nextDouble() - 0.5D) * 8D - vec3d.xCoord * d;
@@ -3665,13 +3674,15 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 		return teleportTo(d1, d2, d3);
 	}
 
-	private void toggleDoor(final int i, final int j, final int k) {
+	private void toggleDoor(Point p) {
+		IBlockState state=p.getBlockActualState(worldObj);
+		
+		if ((Boolean) state.getValue(BlockDoor.OPEN))
+			state=state.withProperty(BlockDoor.OPEN, false);
+		else
+			state=state.withProperty(BlockDoor.OPEN, true);
 
-		final int l = worldObj.getBlockMetadata(i, j, k);
-
-		MillCommonUtilities.setBlockMetadata(worldObj, i, j, k, l ^ 4, true);
-		worldObj.markBlockRangeForRenderUpdate(i, j - 1, k, i, j, k);
-
+		p.setBlockState(worldObj, state);
 	}
 
 	@Override
@@ -3688,9 +3699,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 			final EntityMob mob = (EntityMob) ent;
 
-			if (mob.getEntityToAttack() == null) {
+			if (mob.getAttackTarget() == null) {
 				if (mob.canEntityBeSeen(this)) {
-					mob.setTarget(this);
+					mob.setAttackTarget(this);
 				}
 			}
 		}
@@ -3795,51 +3806,51 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 				return;
 			}
 
-			if (entityToAttack != null) {
-				if (getPos().distanceTo(entityToAttack) > ATTACK_RANGE || worldObj.difficultySetting == EnumDifficulty.PEACEFUL) {
-					entityToAttack = null;
+			if (getAttackTarget() != null) {
+				if (getPos().distanceTo(getAttackTarget()) > ATTACK_RANGE || worldObj.getDifficulty() == EnumDifficulty.PEACEFUL) {
+					setAttackTarget(null);
 				}
 			} else {
-				if (isHostile() && worldObj.difficultySetting != EnumDifficulty.PEACEFUL && getTownHall().closestPlayer != null && getPos().distanceTo(getTownHall().closestPlayer) <= ATTACK_RANGE) {
-					entityToAttack = worldObj.getClosestPlayer(posX, posY, posZ, 100);
+				if (isHostile() && worldObj.getDifficulty() != EnumDifficulty.PEACEFUL && getTownHall().closestPlayer != null && getPos().distanceTo(getTownHall().closestPlayer) <= ATTACK_RANGE) {
+					setAttackTarget(worldObj.getClosestPlayer(posX, posY, posZ, 100));
 
 				}
 			}
 
-			if (entityToAttack == null) {
-				List<?> list = worldObj.getEntitiesWithinAABB(EntityCreature.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 8D, 16D));
+			if (getAttackTarget() == null) {
+				List<?> list = worldObj.getEntitiesWithinAABB(EntityCreature.class, AxisAlignedBB.fromBounds(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 8D, 16D));
 
 				// first possible target: entity attacking the player
 				for (final Object o : list) {
-					if (entityToAttack == null) {
+					if (getAttackTarget() == null) {
 						final EntityCreature creature = (EntityCreature) o;
 
-						if (creature.getEntityToAttack() == entityplayer && !(creature instanceof EntityCreeper)) {
-							entityToAttack = creature;
+						if (creature.getAttackTarget() == entityplayer && !(creature instanceof EntityCreeper)) {
+							setAttackTarget(creature);
 						}
 					}
 				}
 
 				// otherwise, any mob or hostile villager
-				if (entityToAttack == null && aggressiveStance) {
-					list = worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 8D, 16D));
+				if (getAttackTarget() == null && aggressiveStance) {
+					list = worldObj.getEntitiesWithinAABB(EntityMob.class, AxisAlignedBB.fromBounds(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 8D, 16D));
 
 					if (!list.isEmpty()) {
-						entityToAttack = (Entity) list.get(worldObj.rand.nextInt(list.size()));
+						setAttackTarget((EntityLivingBase) list.get(worldObj.rand.nextInt(list.size())));
 
-						if (entityToAttack instanceof EntityCreeper) {
-							entityToAttack = null;
+						if (getAttackTarget() instanceof EntityCreeper) {
+							setAttackTarget(null);
 						}
 					}
-					if (entityToAttack == null) {
-						list = worldObj.getEntitiesWithinAABB(MillVillager.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 8D, 16D));
+					if (getAttackTarget() == null) {
+						list = worldObj.getEntitiesWithinAABB(MillVillager.class, AxisAlignedBB.fromBounds(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(16D, 8D, 16D));
 
 						for (final Object o : list) {
-							if (entityToAttack == null) {
+							if (getAttackTarget() == null) {
 								final MillVillager villager = (MillVillager) o;
 
 								if (villager.isHostile()) {
-									entityToAttack = villager;
+									setAttackTarget(villager);
 								}
 							}
 						}
@@ -3851,13 +3862,14 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 			Entity target = null;
 
-			if (entityToAttack != null) {
-				target = entityToAttack;
+			if (getAttackTarget() != null) {
+				target = getAttackTarget();
 				heldItem = getWeapon();
 
-				final PathEntity pathentity = worldObj.getPathEntityToEntity(this, target, 16F, true, false, false, true);
+				final PathEntity pathentity = getNavigator().getPathToEntityLiving(target);
+				
 				if (pathentity != null) {
-					setPathToEntity(pathentity);
+					getNavigator().setPath(pathEntity, getAIMoveSpeed());
 				}
 
 			} else {
@@ -3871,9 +3883,9 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 				if (dist > 16) {
 					teleportToEntity(player);
 				} else if (dist > 4) {
-					final PathEntity pathentity = worldObj.getPathEntityToEntity(this, target, 16F, true, false, false, true);
+					final PathEntity pathentity = getNavigator().getPathToEntityLiving(target);
 					if (pathentity != null) {
-						setPathToEntity(pathentity);
+						getNavigator().setPath(pathEntity, getAIMoveSpeed());
 					}
 				}
 			}
@@ -3899,8 +3911,8 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 				getTownHall().monitor.nbPathing++;
 				getTownHall().monitor.nbReused++;
 			}
-			setPathToEntity(pathEntity);// because EntityCreature randomly
-			// clears it
+
+			getNavigator().setPath(pathEntity,getAIMoveSpeed());// because EntityCreature randomly clears it
 		} else {
 			if (MLN.jpsPathing) {
 				if (!jpsPathPlanner.isBusy()) {

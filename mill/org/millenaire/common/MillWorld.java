@@ -229,7 +229,7 @@ public class MillWorld {
 
 				if (village.keyLonebuilding || village.keyLoneBuildingGenerateTag != null) {
 
-					if (!village.generatedForPlayer || player.getDisplayName().equalsIgnoreCase(loneBuildingsList.generatedFor.get(i))) {
+					if (!village.generatedForPlayer || player.getName().equalsIgnoreCase(loneBuildingsList.generatedFor.get(i))) {
 
 						final Point p = loneBuildingsList.pos.get(i);
 
@@ -300,7 +300,7 @@ public class MillWorld {
 					if (i * i + j * j < radius * radius) {
 						if (!world.getChunkProvider().chunkExists(i + centreX, j + centreZ)) {
 							world.getChunkProvider().loadChunk(i + centreX, j + centreZ);
-							final Block block = world.getBlock((i + centreX) * 16, 60, (j + centreZ) * 16);
+							final Block block = MillCommonUtilities.getBlock(world, (i + centreX) * 16, 60, (j + centreZ) * 16);
 							world.getChunkProvider().saveChunks(false, null);
 							MLN.minor(this, "Forcing population of chunk " + (i + centreX) + "/" + (j + centreZ) + ", block: " + block);
 							nbGenerated++;

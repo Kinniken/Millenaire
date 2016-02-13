@@ -159,7 +159,7 @@ public class ContainerTrade extends Container {
 				if (building.countGoods(good.item.getItem(), good.item.meta) < 1 && !good.autoGenerate) {
 					return MLN.string("ui.outofstock");
 				}
-				if (building.getTownHall().getReputation(player.getDisplayName()) < good.minReputation) {
+				if (building.getTownHall().getReputation(player.getName()) < good.minReputation) {
 					return MLN.string("ui.reputationneeded", building.culture.getReputationLevelLabel(good.minReputation));
 				}
 				final int playerMoney = MillCommonUtilities.countMoney(player.inventory);
@@ -360,7 +360,7 @@ public class ContainerTrade extends Container {
 					nbItems = MillCommonUtilities.putItemsInChest(player.inventory, tslot.good.item.getItem(), tslot.good.item.meta, nbItems);
 					MillCommonUtilities.changeMoney(player.inventory, -tslot.good.getCalculatedSellingPrice(merchant) * nbItems, player);
 					merchant.getHouse().takeGoods(tslot.good.item, nbItems);
-					Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName()).adjustLanguage(merchant.getCulture().key, nbItems);
+					Mill.getMillWorld(player.worldObj).getProfile(player.getName()).adjustLanguage(merchant.getCulture().key, nbItems);
 				}
 				return slot.getStack();
 			}

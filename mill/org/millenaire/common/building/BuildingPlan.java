@@ -194,17 +194,17 @@ public class BuildingPlan implements IBuildingPlan {
 				return;
 			}
 
-			if (sign.signText[0] == null || sign.signText[0].length() == 0) {
+			if (sign.signText[0] == null || sign.signText[0].getUnformattedText().length() == 0) {
 				Mill.proxy.localTranslatedSentence(Mill.proxy.getTheSinglePlayer(), MLN.ORANGE, "export.errornoname");
 				return;
 			}
 
-			final String planName = sign.signText[0];
+			final String planName = sign.signText[0].getUnformattedText();
 
 			int xEnd = startPoint.getiX() + 1;
 			boolean found = false;
 			while (!found && xEnd < startPoint.getiX() + 257) {
-				final Block block = world.getBlock(xEnd, startPoint.getiY(), startPoint.getiZ());
+				final Block block = MillCommonUtilities.getBlock(world, xEnd, startPoint.getiY(), startPoint.getiZ());
 
 				if (block == Blocks.standing_sign) {
 					found = true;
@@ -221,7 +221,7 @@ public class BuildingPlan implements IBuildingPlan {
 			int zEnd = startPoint.getiZ() + 1;
 			found = false;
 			while (!found && zEnd < startPoint.getiZ() + 257) {
-				final Block block = world.getBlock(startPoint.getiX(), startPoint.getiY(), zEnd);
+				final Block block = MillCommonUtilities.getBlock(world, startPoint.getiX(), startPoint.getiY(), zEnd);
 
 				if (block == Blocks.standing_sign) {
 					found = true;
@@ -299,7 +299,7 @@ public class BuildingPlan implements IBuildingPlan {
 					for (int k = 0; k < width; k++) {
 						level[i][k] = null;
 
-						final Block block = world.getBlock(i + startPoint.getiX() + 1, j + startPoint.getiY() + startLevel, k + startPoint.getiZ() + 1);
+						final Block block = MillCommonUtilities.getBlock(world, i + startPoint.getiX() + 1, j + startPoint.getiY() + startLevel, k + startPoint.getiZ() + 1);
 						final int meta = world.getBlockMetadata(i + startPoint.getiX() + 1, j + startPoint.getiY() + startLevel, k + startPoint.getiZ() + 1);
 
 						if (block != Blocks.air) {
@@ -999,7 +999,7 @@ public class BuildingPlan implements IBuildingPlan {
 		charPoints.put('I', new PointType('I', Blocks.iron_block, 0, false));
 		charPoints.put('l', new PointType('h', Blocks.stone_slab, 0, false));
 		charPoints.put('T', new PointType('T', Blocks.torch, 0, true));
-		charPoints.put('f', new PointType('f', Blocks.fence, 0, true));
+		charPoints.put('f', new PointType('f', Blocks.oak_fence, 0, true));
 		charPoints.put('w', new PointType('w', Blocks.water, 0, true));
 		return false;
 	}
@@ -1354,17 +1354,17 @@ public class BuildingPlan implements IBuildingPlan {
 						reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.brewing_stand, i), pt);
 					}
 				} else if (pt.name.equals(bdoorTop)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 0), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 7), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 0), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 7), pt);
 				} else if (pt.name.equals(bdoorBottom)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 2), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 5), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 2), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 5), pt);
 				} else if (pt.name.equals(bdoorLeft)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 3), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 6), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 3), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 6), pt);
 				} else if (pt.name.equals(bdoorRight)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 1), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.wooden_door, 4), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 1), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_door, 4), pt);
 
 				} else if (pt.name.equals(birondoorTop)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.iron_door, 0), pt);
@@ -1389,15 +1389,15 @@ public class BuildingPlan implements IBuildingPlan {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.trapdoor, 2), pt);
 
 				} else if (pt.name.equals(bfenceGateHorizontal)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 1), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 3), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 5), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 7), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 1), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 3), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 5), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 7), pt);
 				} else if (pt.name.equals(bfenceGateVertical)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 0), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 2), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 4), pt);
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 6), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 0), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 2), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 4), pt);
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.oak_fence_gate, 6), pt);
 
 				} else if (pt.name.equals(bbedTop)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.bed, 8), pt);
@@ -1800,7 +1800,7 @@ public class BuildingPlan implements IBuildingPlan {
 				for (int x = location.pos.getiX() + length / 2; x >= location.pos.getiX() - length / 2; x--) {
 
 					for (int y = location.pos.getiY() + plan.length; y >= location.pos.getiY(); y--) {
-						if (worldObj.getBlock(x, y, z) == Blocks.wall_sign) {
+						if (MillCommonUtilities.getBlock(worldObj, x, y, z) == Blocks.wall_sign) {
 							final TileEntitySign sign = new Point(x, y, z).getSign(worldObj);
 							if (sign != null) {
 								if (signNb < hofData.size()) {
@@ -1916,9 +1916,9 @@ public class BuildingPlan implements IBuildingPlan {
 						addToCost(Blocks.cobblestone, 8);
 					} else if (p.block == Blocks.torch) {
 						plankCost++;
-					} else if (p.block == Blocks.fence) {
+					} else if (MillCommonUtilities.isFence(p.block)) {
 						plankCost++;
-					} else if (p.block == Blocks.fence_gate) {
+					} else if (MillCommonUtilities.isFenceGate(p.block)) {
 						plankCost += 4;
 					} else if (p.block == Blocks.wooden_pressure_plate) {
 						plankCost += 2;
@@ -2764,16 +2764,16 @@ public class BuildingPlan implements IBuildingPlan {
 						b = Blocks.ladder;
 						m = getSignOrLadderMeta(1, orientation);
 					} else if (pt.isType(bdoorTop)) {
-						b = Blocks.wooden_door;
+						b = Blocks.oak_door;
 						m = getDoorMeta(0, orientation);
 					} else if (pt.isType(bdoorRight)) {
-						b = Blocks.wooden_door;
+						b = Blocks.oak_door;
 						m = getDoorMeta(1, orientation);
 					} else if (pt.isType(bdoorBottom)) {
-						b = Blocks.wooden_door;
+						b = Blocks.oak_door;
 						m = getDoorMeta(2, orientation);
 					} else if (pt.isType(bdoorLeft)) {
-						b = Blocks.wooden_door;
+						b = Blocks.oak_door;
 						m = getDoorMeta(3, orientation);
 
 					} else if (pt.isType(birondoorTop)) {
@@ -2803,10 +2803,10 @@ public class BuildingPlan implements IBuildingPlan {
 						m = getTrapdoorMeta(3, orientation);
 
 					} else if (pt.isType(bfenceGateHorizontal)) {
-						b = Blocks.fence_gate;
+						b = Blocks.oak_fence_gate;
 						m = getFenceGateMeta(0, orientation);
 					} else if (pt.isType(bfenceGateVertical)) {
-						b = Blocks.fence_gate;
+						b = Blocks.oak_fence_gate;
 						m = getFenceGateMeta(1, orientation);
 
 					} else if (pt.isType(bbedTop)) {
@@ -3573,7 +3573,7 @@ public class BuildingPlan implements IBuildingPlan {
 			map.put(block.p, block);
 			if (block.block == Blocks.ladder && block.meta == -1) {
 				ladders.add(block);
-			} else if (block.block == Blocks.wooden_door) {
+			} else if (block.block == Blocks.oak_door) {
 				doors.add(block);
 			} else if ((block.block == Blocks.stone_stairs || block.block == Blocks.oak_stairs) && block.meta == -1) {
 				block.meta = -1;
@@ -3728,20 +3728,20 @@ public class BuildingPlan implements IBuildingPlan {
 		for (final BuildingBlock door : doors) {
 			final int orientation = door.meta & 3;
 			if (orientation == 2) {
-				if ((!map.containsKey(door.p.getWest()) || map.get(door.p.getWest()).block == Blocks.air || map.get(door.p.getWest()).block == Blocks.wooden_door) && map.containsKey(door.p.getEast())) {
+				if ((!map.containsKey(door.p.getWest()) || map.get(door.p.getWest()).block == Blocks.air || map.get(door.p.getWest()).block == Blocks.oak_door) && map.containsKey(door.p.getEast())) {
 					door.special = BuildingBlock.INVERTEDDOOR;
 				}
 			} else if (orientation == 3) {
-				if ((!map.containsKey(door.p.getNorth()) || map.get(door.p.getNorth()).block == Blocks.air || map.get(door.p.getNorth()).block == Blocks.wooden_door)
+				if ((!map.containsKey(door.p.getNorth()) || map.get(door.p.getNorth()).block == Blocks.air || map.get(door.p.getNorth()).block == Blocks.oak_door)
 						&& map.containsKey(door.p.getSouth())) {
 					door.special = BuildingBlock.INVERTEDDOOR;
 				}
 			} else if (orientation == 0) {
-				if ((!map.containsKey(door.p.getEast()) || map.get(door.p.getEast()).block == Blocks.air || map.get(door.p.getEast()).block == Blocks.wooden_door) && map.containsKey(door.p.getWest())) {
+				if ((!map.containsKey(door.p.getEast()) || map.get(door.p.getEast()).block == Blocks.air || map.get(door.p.getEast()).block == Blocks.oak_door) && map.containsKey(door.p.getWest())) {
 					door.special = BuildingBlock.INVERTEDDOOR;
 				}
 			} else if (orientation == 1) {
-				if ((!map.containsKey(door.p.getSouth()) || map.get(door.p.getSouth()).block == Blocks.air || map.get(door.p.getSouth()).block == Blocks.wooden_door)
+				if ((!map.containsKey(door.p.getSouth()) || map.get(door.p.getSouth()).block == Blocks.air || map.get(door.p.getSouth()).block == Blocks.oak_door)
 						&& map.containsKey(door.p.getNorth())) {
 					door.special = BuildingBlock.INVERTEDDOOR;
 				}
@@ -3895,7 +3895,7 @@ public class BuildingPlan implements IBuildingPlan {
 		for (int x = cx - width - 2; x < cx + width + 2; x++) {
 			for (int z = cz - length - 2; z < cz + length + 2; z++) {
 				for (int y = 0; y < plan.length + 2; y++) {
-					final Block block = world.getBlock(x, y, z);
+					final Block block = MillCommonUtilities.getBlock(world, x, y, z);
 
 					if (block != Blocks.bedrock && block != Blocks.stone && block != Blocks.dirt && block != Blocks.gravel && block != Blocks.coal_ore && block != Blocks.diamond_ore
 							&& block != Blocks.gold_ore && block != Blocks.iron_ore && block != Blocks.lapis_ore && block != Blocks.redstone_ore) {

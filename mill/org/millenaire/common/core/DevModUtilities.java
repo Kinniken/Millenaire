@@ -233,9 +233,9 @@ public class DevModUtilities {
 				}
 			}
 
-			if (villager.mw.getProfile(entityplayer.getDisplayName()).villagersInQuests.containsKey(villager.villager_id)) {
-				s += " quest: " + villager.mw.getProfile(entityplayer.getDisplayName()).villagersInQuests.get(villager.villager_id).quest.key + "/"
-						+ villager.mw.getProfile(entityplayer.getDisplayName()).villagersInQuests.get(villager.villager_id).getCurrentVillager().id;
+			if (villager.mw.getProfile(entityplayer.getName()).villagersInQuests.containsKey(villager.villager_id)) {
+				s += " quest: " + villager.mw.getProfile(entityplayer.getName()).villagersInQuests.get(villager.villager_id).quest.key + "/"
+						+ villager.mw.getProfile(entityplayer.getName()).villagersInQuests.get(villager.villager_id).getCurrentVillager().id;
 			}
 
 			if (s != null && s.length() > 0) {
@@ -254,8 +254,8 @@ public class DevModUtilities {
 
 		} else if (entityplayer.inventory.getCurrentItem() != null && entityplayer.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(Blocks.sand)) {
 			if (villager.hiredBy == null) {
-				villager.hiredBy = entityplayer.getDisplayName();
-				ServerSender.sendChat(entityplayer, EnumChatFormatting.GREEN, "Hired: " + entityplayer.getDisplayName());
+				villager.hiredBy = entityplayer.getName();
+				ServerSender.sendChat(entityplayer, EnumChatFormatting.GREEN, "Hired: " + entityplayer.getName());
 			} else {
 				villager.hiredBy = null;
 				ServerSender.sendChat(entityplayer, EnumChatFormatting.GREEN, "No longer hired");
@@ -264,20 +264,20 @@ public class DevModUtilities {
 			final int meta = MillCommonUtilities.randomInt(16);
 
 			for (final PathPoint p : villager.pathEntity.pointsCopy) {
-				if (villager.worldObj.getBlock(p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
+				if (MillCommonUtilities.getBlock(villager.worldObj, p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
 					MillCommonUtilities.setBlockAndMetadata(villager.worldObj, new Point(p).getBelow(), Blocks.wool, meta);
 				}
 			}
 			PathPoint p = villager.pathEntity.getCurrentTargetPathPoint();
-			if (p != null && villager.worldObj.getBlock(p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
+			if (p != null && MillCommonUtilities.getBlock(villager.worldObj, p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
 				MillCommonUtilities.setBlockAndMetadata(villager.worldObj, new Point(p).getBelow(), Blocks.gold_block, 0);
 			}
 			p = villager.pathEntity.getNextTargetPathPoint();
-			if (p != null && villager.worldObj.getBlock(p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
+			if (p != null && MillCommonUtilities.getBlock(villager.worldObj, p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
 				MillCommonUtilities.setBlockAndMetadata(villager.worldObj, new Point(p).getBelow(), Blocks.diamond_block, 0);
 			}
 			p = villager.pathEntity.getPreviousTargetPathPoint();
-			if (p != null && villager.worldObj.getBlock(p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
+			if (p != null && MillCommonUtilities.getBlock(villager.worldObj, p.xCoord, p.yCoord - 1, p.zCoord) != Mill.lockedChest) {
 				MillCommonUtilities.setBlockAndMetadata(villager.worldObj, new Point(p).getBelow(), Blocks.iron_block, 0);
 			}
 		}

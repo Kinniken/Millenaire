@@ -31,7 +31,7 @@ public class GoalLumbermanChopTrees extends Goal {
 
 	@Override
 	public int actionDuration(final MillVillager villager) {
-		final int toolEfficiency = (int) villager.getBestAxe().getDigSpeed(new ItemStack(villager.getBestAxe(), 1), Blocks.log, 0);
+		final int toolEfficiency = (int) villager.getBestAxe().getDigSpeed(new ItemStack(villager.getBestAxe(), 1), Blocks.log.getDefaultState());
 		;
 		return 1000 - toolEfficiency * 40;
 	}

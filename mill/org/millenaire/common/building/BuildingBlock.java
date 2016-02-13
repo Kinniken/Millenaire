@@ -234,53 +234,53 @@ public class BuildingBlock {
 			} else if (special == BuildingBlock.OAKSPAWN) {
 				if (worldGeneration) {
 					final WorldGenerator wg = new WorldGenTrees(false);
-					wg.generate(world, MillCommonUtilities.random, p.getiX(), p.getiY(), p.getiZ());
+					wg.generate(world, MillCommonUtilities.random, p.getBlockPos());
 				}
 			} else if (special == BuildingBlock.PINESPAWN) {
 				if (worldGeneration) {
 					final WorldGenerator wg = new WorldGenTaiga2(false);
-					wg.generate(world, MillCommonUtilities.random, p.getiX(), p.getiY(), p.getiZ());
+					wg.generate(world, MillCommonUtilities.random, p.getBlockPos());
 				}
 			} else if (special == BuildingBlock.BIRCHSPAWN) {
 				if (worldGeneration) {
 					final WorldGenerator wg = new WorldGenForest(false, true);
-					wg.generate(world, MillCommonUtilities.random, p.getiX(), p.getiY(), p.getiZ());
+					wg.generate(world, MillCommonUtilities.random, p.getBlockPos());
 				}
 			} else if (special == BuildingBlock.JUNGLESPAWN) {
 				if (worldGeneration) {
 					final WorldGenerator wg = new WorldGenTrees(true, 4 + MillCommonUtilities.random.nextInt(7), 3, 3, false);
-					wg.generate(world, MillCommonUtilities.random, p.getiX(), p.getiY(), p.getiZ());
+					wg.generate(world, MillCommonUtilities.random, p.getBlockPos());
 				}
 			} else if (special == BuildingBlock.SPAWNERSKELETON) {
 				MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.mob_spawner, 0);
 				final TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner) p.getTileEntity(world);
-				tileentitymobspawner.func_145881_a().setEntityName("Skeleton");
+				tileentitymobspawner.getSpawnerBaseLogic().setEntityName("Skeleton");
 			} else if (special == BuildingBlock.SPAWNERZOMBIE) {
 				MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.mob_spawner, 0);
 				final TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner) p.getTileEntity(world);
-				tileentitymobspawner.func_145881_a().setEntityName("Zombie");
+				tileentitymobspawner.getSpawnerBaseLogic().setEntityName("Zombie");
 			} else if (special == BuildingBlock.SPAWNERSPIDER) {
 				MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.mob_spawner, 0);
 				final TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner) p.getTileEntity(world);
-				tileentitymobspawner.func_145881_a().setEntityName("Spider");
+				tileentitymobspawner.getSpawnerBaseLogic().setEntityName("Spider");
 			} else if (special == BuildingBlock.SPAWNERCAVESPIDER) {
 				MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.mob_spawner, 0);
 				final TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner) p.getTileEntity(world);
-				tileentitymobspawner.func_145881_a().setEntityName("CaveSpider");
+				tileentitymobspawner.getSpawnerBaseLogic().setEntityName("CaveSpider");
 			} else if (special == BuildingBlock.SPAWNERCREEPER) {
 				MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.mob_spawner, 0);
 				final TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner) p.getTileEntity(world);
-				tileentitymobspawner.func_145881_a().setEntityName("Creeper");
+				tileentitymobspawner.getSpawnerBaseLogic().setEntityName("Creeper");
 			} else if (special == BuildingBlock.SPAWNERBLAZE) {
 				MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.mob_spawner, 0);
 				final TileEntityMobSpawner tileentitymobspawner = (TileEntityMobSpawner) p.getTileEntity(world);
-				tileentitymobspawner.func_145881_a().setEntityName("Blaze");
+				tileentitymobspawner.getSpawnerBaseLogic().setEntityName("Blaze");
 
 			} else if (special == BuildingBlock.DISPENDERUNKNOWNPOWDER) {
 				MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.dispenser, 0);
 				final TileEntityDispenser dispenser = p.getDispenser(world);
 				MillCommonUtilities.putItemsInChest(dispenser, Mill.unknownPowder, 2);
-			} else if (block == Blocks.wooden_door) {
+			} else if (block == Blocks.oak_door) {
 				if (special == BuildingBlock.INVERTEDDOOR) {
 					MillCommonUtilities.setBlockAndMetadata(world, p.getAbove(), block, 9, notifyBlocks, playSound);
 				} else {
@@ -306,7 +306,7 @@ public class BuildingBlock {
 					MillCommonUtilities.setBlockAndMetadata(world, p.getNorth(), block, meta - 8, notifyBlocks, playSound);
 				}
 			} else if (block == Blocks.stone_button) {
-				final int newmeta = ((BlockButton) Blocks.stone_button).onBlockPlaced(world, p.getiX(), p.getiY(), p.getiZ(), 0, 0, 0, 0, 0);
+				final int newmeta = ((BlockButton) Blocks.stone_button).onBlockPlaced(world, p.getBlockPos(), 0, 0, 0, 0, 0);
 
 				MillCommonUtilities.setBlockMetadata(world, p, newmeta, notifyBlocks);
 			} else if (block == Blocks.water) {

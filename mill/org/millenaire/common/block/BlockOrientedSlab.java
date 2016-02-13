@@ -84,7 +84,7 @@ public class BlockOrientedSlab extends BlockSlab {
 	@Override
 	public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase par5EntityLiving, final ItemStack par6ItemStack) {
 
-		if (world.getBlock(x, y - 1, z) == this) {
+		if (MillCommonUtilities.getBlock(world, x, y - 1, z) == this) {
 
 			final int meta = world.getBlockMetadata(x, y - 1, z);
 

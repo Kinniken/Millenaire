@@ -14,12 +14,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 import org.millenaire.common.core.MillCommonUtilities;
 import org.millenaire.common.forge.Mill;
-
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityMillDecoration extends EntityHanging implements IEntityAdditionalSpawnData {
 
@@ -88,13 +89,13 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 		final int i = p.getiX();
 		final int j = p.getiY();
 		final int k = p.getiZ();
-		if (MillCommonUtilities.isBlockIdSolid(world.getBlock(i - 1, j, k))) {
+		if (MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, i - 1, j, k))) {
 			return 3;
-		} else if (MillCommonUtilities.isBlockIdSolid(world.getBlock(i + 1, j, k))) {
+		} else if (MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, i + 1, j, k))) {
 			return 1;
-		} else if (MillCommonUtilities.isBlockIdSolid(world.getBlock(i, j, k - 1))) {
+		} else if (MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, i, j, k - 1))) {
 			return 2;
-		} else if (MillCommonUtilities.isBlockIdSolid(world.getBlock(i, j, k + 1))) {
+		} else if (MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, i, j, k + 1))) {
 			return 0;
 		}
 		return 0;
@@ -115,12 +116,8 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 		this.type = type;
 	}
 
-	public EntityMillDecoration(final World par1World, final int par2, final int par3, final int par4, final int par5) {
-		super(par1World, par2, par3, par4, par5);
-	}
-
 	public EntityMillDecoration(final World world, final int x, final int y, final int z, final int orientation, final int type, final boolean largestPossible) {
-		this(world, x, y, z, orientation);
+		super(world, new BlockPos(x,y,z));
 
 		this.type = type;
 
@@ -131,7 +128,6 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 			if (enumart.type == type) {
 				if (!largestPossible || enumart.sizeX * enumart.sizeY >= maxSize) {
 					millArt = enumart;
-					setDirection(orientation);
 					if (onValidSurface()) {
 						if (largestPossible && enumart.sizeX * enumart.sizeY > maxSize) {
 							arraylist.clear();
@@ -152,29 +148,29 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 					+ arraylist.size());
 		}
 
-		setDirection(orientation);
+		func_174859_a(EnumFacing.getHorizontal(orientation));
 	}
 
-	public EntityMillDecoration(final World world, final int i, final int j, final int k, final int l, final int type, final String s) {
-		super(world, i, j, k, l);
-		this.type = type;
-
-		final EnumWallDecoration aenumart[] = EnumWallDecoration.values();
-		final int i1 = aenumart.length;
-		int j1 = 0;
-		do {
-			if (j1 >= i1) {
-				break;
-			}
-			final EnumWallDecoration enumart = aenumart[j1];
-			if (enumart.title.equals(s)) {
-				millArt = enumart;
-				break;
-			}
-			j1++;
-		} while (true);
-		setDirection(l);
-	}
+//	public EntityMillDecoration(final World world, final int i, final int j, final int k, final int l, final int type, final String s) {
+//		super(world, i, j, k, l);
+//		this.type = type;
+//
+//		final EnumWallDecoration aenumart[] = EnumWallDecoration.values();
+//		final int i1 = aenumart.length;
+//		int j1 = 0;
+//		do {
+//			if (j1 >= i1) {
+//				break;
+//			}
+//			final EnumWallDecoration enumart = aenumart[j1];
+//			if (enumart.title.equals(s)) {
+//				millArt = enumart;
+//				break;
+//			}
+//			j1++;
+//		} while (true);
+//		setDirection(l);
+//	}
 
 	/**
 	 * Drop the item currently on this item frame.
@@ -254,28 +250,25 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 			type = NORMAN_TAPESTRY;
 		}
 
-		if (nbttagcompound.hasKey("Direction")) {
-			this.hangingDirection = nbttagcompound.getByte("Direction");
-		} else {
-			switch (nbttagcompound.getByte("Dir")) {
-			case 0:
-				this.hangingDirection = 2;
-				break;
-			case 1:
-				this.hangingDirection = 1;
-				break;
-			case 2:
-				this.hangingDirection = 0;
-				break;
-			case 3:
-				this.hangingDirection = 3;
-			}
-		}
+		EnumFacing enumfacing;
+		if (nbttagcompound.hasKey("Direction", 99))
+        {
+            enumfacing = EnumFacing.getHorizontal(nbttagcompound.getByte("Direction"));
+            this.hangingPosition = this.hangingPosition.offset(enumfacing);
+        }
+        else if (nbttagcompound.hasKey("Facing", 99))
+        {
+            enumfacing = EnumFacing.getHorizontal(nbttagcompound.getByte("Facing"));
+        }
+        else
+        {
+            enumfacing = EnumFacing.getHorizontal(nbttagcompound.getByte("Dir"));
+        }
+		this.func_174859_a(enumfacing);
 
 		this.posX = nbttagcompound.getInteger("TileX");
 		this.posY = nbttagcompound.getInteger("TileY");
 		this.posZ = nbttagcompound.getInteger("TileZ");
-		this.setDirection(this.hangingDirection);
 	}
 
 	@Override
@@ -284,7 +277,7 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 
 		try {
 			type = data.readByte();
-			hangingDirection = data.readByte();
+			func_174859_a(EnumFacing.getHorizontal(data.readByte()));
 			posX = data.readInt();
 			posY = data.readInt();
 			posZ = data.readInt();
@@ -316,24 +309,10 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 	public void writeEntityToNBT(final NBTTagCompound nbttagcompound) {
 		nbttagcompound.setInteger("Type", type);
 		nbttagcompound.setString("Motive", this.millArt.title);
-		nbttagcompound.setByte("Direction", (byte) this.hangingDirection);
+		nbttagcompound.setByte("Facing", (byte)field_174860_b.getHorizontalIndex());
 		nbttagcompound.setDouble("TileX", this.posX);
 		nbttagcompound.setDouble("TileY", this.posY);
 		nbttagcompound.setDouble("TileZ", this.posZ);
-
-		switch (this.hangingDirection) {
-		case 0:
-			nbttagcompound.setByte("Dir", (byte) 2);
-			break;
-		case 1:
-			nbttagcompound.setByte("Dir", (byte) 1);
-			break;
-		case 2:
-			nbttagcompound.setByte("Dir", (byte) 0);
-			break;
-		case 3:
-			nbttagcompound.setByte("Dir", (byte) 3);
-		}
 	}
 
 	@Override
@@ -341,7 +320,7 @@ public class EntityMillDecoration extends EntityHanging implements IEntityAdditi
 		final ByteBufOutputStream data = new ByteBufOutputStream(ds);
 		try {
 			data.write(type);
-			data.write(hangingDirection);
+			data.write((byte)field_174860_b.getHorizontalIndex());
 			data.writeDouble(posX);
 			data.writeDouble(posY);
 			data.writeDouble(posZ);

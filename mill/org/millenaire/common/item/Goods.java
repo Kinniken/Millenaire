@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -28,13 +27,15 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.millenaire.client.network.ClientSender;
 import org.millenaire.common.EntityMillDecoration;
@@ -50,9 +51,6 @@ import org.millenaire.common.core.MillCommonUtilities;
 import org.millenaire.common.core.MillCommonUtilities.VillageList;
 import org.millenaire.common.forge.Mill;
 import org.millenaire.common.network.ServerSender;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class Goods {
 
@@ -156,31 +154,31 @@ public class Goods {
 		}
 
 		@Override
-		public boolean onItemUseFirst(final ItemStack itemstack, final EntityPlayer entityplayer, final World world, int i, int j, int k, int l, final float hitX, final float hitY, final float hitZ) {
-			if (world.getBlock(i, j, k) == Blocks.snow) {
-				l = 0;
+		public boolean onItemUseFirst(final ItemStack itemstack, final EntityPlayer entityplayer, final World world, BlockPos pos, EnumFacing side, final float hitX, final float hitY, final float hitZ) {
+			if (world.getBlockState(pos).getBlock() == Blocks.snow) {
+				side=EnumFacing.DOWN;
 			} else {
-				if (l == 0) {
-					j--;
+				if (side==EnumFacing.DOWN) {
+					pos=pos.down();
 				}
-				if (l == 1) {
-					j++;
+				if (side==EnumFacing.UP) {
+					pos=pos.up();
 				}
-				if (l == 2) {
-					k--;
+				if (side==EnumFacing.EAST) {
+					pos=pos.east();
 				}
-				if (l == 3) {
-					k++;
+				if (side==EnumFacing.WEST) {
+					pos=pos.west();
 				}
-				if (l == 4) {
-					i--;
+				if (side==EnumFacing.SOUTH) {
+					pos=pos.south();
 				}
-				if (l == 5) {
-					i++;
+				if (side==EnumFacing.NORTH) {
+					pos=pos.north();
 				}
 			}
 
-			if (world.getBlock(i, j, k) != Blocks.air) {
+			if (world.getBlockState(pos).getBlock() != Blocks.air) {
 				return false;
 			}
 
@@ -195,7 +193,7 @@ public class Goods {
 			MillCommonUtilities.getItemsFromChest(entityplayer.inventory, Blocks.dirt, 0, 1);
 			MillCommonUtilities.getItemsFromChest(entityplayer.inventory, Blocks.sand, 0, 1);
 
-			MillCommonUtilities.setBlockAndMetadata(world, i, j, k, Mill.earth_decoration, 0, true, false);
+			MillCommonUtilities.setBlockAndMetadata(world, new Point(pos), Mill.earth_decoration, 0, true, false);
 
 			itemstack.damageItem(1, entityplayer);
 
@@ -303,19 +301,19 @@ public class Goods {
 		}
 
 		@Override
-		public boolean onItemUse(final ItemStack stack, final EntityPlayer par2EntityPlayer, final World par3World, final int par4, final int par5, final int par6, final int par7, final float par8,
+		public boolean onItemUse(final ItemStack stack, final EntityPlayer par2EntityPlayer, final World par3World, BlockPos pos, EnumFacing side, final float par8,
 				final float par9, final float par10) {
 
 			applyEnchantments(stack);
 
-			return super.onItemUse(stack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10);
+			return super.onItemUse(stack, par2EntityPlayer, par3World, pos, side, par8, par9, par10);
 		}
 
 		@Override
-		public boolean onItemUseFirst(final ItemStack stack, final EntityPlayer player, final World world, final int x, final int y, final int z, final int side, final float hitX, final float hitY,
+		public boolean onItemUseFirst(final ItemStack stack, final EntityPlayer player, final World world, BlockPos pos, EnumFacing side, final float hitX, final float hitY,
 				final float hitZ) {
 			applyEnchantments(stack);
-			return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+			return super.onItemUseFirst(stack, player, world, pos, side, hitX, hitY, hitZ);
 		}
 
 		@Override
@@ -741,7 +739,7 @@ public class Goods {
 
 			final Point pos = new Point(i, j, k);
 
-			final Block block = world.getBlock(i, j, k);
+			final Block block = MillCommonUtilities.getBlock(world, i, j, k);
 
 			if (block == Blocks.standing_sign) {
 				ClientSender.importBuilding(entityplayer, pos);
@@ -768,25 +766,40 @@ public class Goods {
 		}
 
 		@Override
-		public boolean onItemUse(final ItemStack itemstack, final EntityPlayer entityplayer, final World world, final int i, final int j, final int k, final int side, final float par8,
-				final float par9, final float par10) {
-			if (side == 0) {
-				return false;
-			}
-			if (side == 1) {
-				return false;
-			}
+		public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+			if (side == EnumFacing.DOWN)
+	        {
+	            return false;
+	        }
+	        else if (side == EnumFacing.UP)
+	        {
+	            return false;
+	        }
+	        else
+	        {
+	            BlockPos blockpos1 = pos.offset(side);
 
-			final int orientation = Direction.facingToDirection[side];
+	            if (!playerIn.canPlayerEdit(blockpos1, side, stack))
+	            {
+	                return false;
+	            }
+	            else
+	            {
+	            	final EntityMillDecoration entitypainting = new EntityMillDecoration(worldIn, pos, side, type, false);
 
-			final EntityMillDecoration entitypainting = new EntityMillDecoration(world, i, j, k, orientation, type, false);
-			if (entitypainting.onValidSurface()) {
-				if (!world.isRemote) {
-					world.spawnEntityInWorld(entitypainting);
-				}
-				itemstack.stackSize--;
-			}
-			return true;
+	                if (entitypainting != null && entitypainting.onValidSurface())
+	                {
+	                    if (!worldIn.isRemote)
+	                    {
+	                        worldIn.spawnEntityInWorld(entitypainting);
+	                    }
+
+	                    --stack.stackSize;
+	                }
+
+	                return true;
+	            }
+	        }
 		}
 	}
 

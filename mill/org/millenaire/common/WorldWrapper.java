@@ -23,7 +23,7 @@ public class WorldWrapper {
 
 		int y = findTopSoilBlock(x, z);
 
-		while (y < 127 && MillCommonUtilities.isBlockIdSolid(world.getBlock(x, y, z))) {
+		while (y < 127 && MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, x, y, z))) {
 			y++;
 		}
 
@@ -35,7 +35,7 @@ public class WorldWrapper {
 	}
 
 	public Block getBlockId(final int x, final int y, final int z) {
-		return world.getBlock(x, y, z);
+		return MillCommonUtilities.getBlock(world, x, y, z);
 	}
 
 	public EntityPlayer getClosestPlayer(final int i, final int j, final int k, final int l) {
@@ -44,6 +44,6 @@ public class WorldWrapper {
 
 	public boolean isChunkLoaded(final int i, final int j) {
 		final Chunk chunk = world.getChunkFromChunkCoords(i, j);
-		return chunk.isChunkLoaded;
+		return chunk.isLoaded();
 	}
 }

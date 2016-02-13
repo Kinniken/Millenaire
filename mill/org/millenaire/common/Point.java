@@ -1,6 +1,7 @@
 package org.millenaire.common;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathPoint;
@@ -10,7 +11,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -65,6 +66,12 @@ public class Point {
 		x = Double.parseDouble(scoord[0]);
 		y = Double.parseDouble(scoord[1]);
 		z = Double.parseDouble(scoord[2]);
+	}
+
+	public Point(BlockPos pos) {
+		x = pos.getX();
+		y = pos.getY();
+		z = pos.getZ();
 	}
 
 	public String approximateDistanceLongString(final Point p) {
@@ -249,11 +256,18 @@ public class Point {
 	}
 
 	public Block getBlock(final World world) {
-		return world.getBlock(getiX(), getiY(), getiZ());
+		return world.getBlockState(getBlockPos()).getBlock();
+	}
+	
+	public IBlockState getBlockActualState(final World world) {
+		Block block=getBlock(world);
+		BlockPos pos=getBlockPos();
+		IBlockState state = world.getBlockState(pos);
+		return block.getActualState(state, world, pos);
 	}
 
 	public TileEntityBrewingStand getBrewingStand(final World world) {
-		final TileEntity ent = world.getTileEntity(getiX(), getiY(), getiZ());
+		final TileEntity ent = world.getTileEntity(getBlockPos());
 
 		if (ent != null && ent instanceof TileEntityBrewingStand) {
 			return (TileEntityBrewingStand) ent;
@@ -263,7 +277,7 @@ public class Point {
 	}
 
 	public TileEntityChest getChest(final World world) {
-		final TileEntity ent = world.getTileEntity(getiX(), getiY(), getiZ());
+		final TileEntity ent = world.getTileEntity(getBlockPos());
 
 		if (ent != null && ent instanceof TileEntityChest) {
 			return (TileEntityChest) ent;
@@ -285,7 +299,7 @@ public class Point {
 	}
 
 	public TileEntityDispenser getDispenser(final World world) {
-		final TileEntity ent = world.getTileEntity(getiX(), getiY(), getiZ());
+		final TileEntity ent = world.getTileEntity(getBlockPos());
 
 		if (ent != null && ent instanceof TileEntityDispenser) {
 			return (TileEntityDispenser) ent;
@@ -299,7 +313,7 @@ public class Point {
 	}
 
 	public TileEntityFurnace getFurnace(final World world) {
-		final TileEntity ent = world.getTileEntity(getiX(), getiY(), getiZ());
+		final TileEntity ent = world.getTileEntity(getBlockPos());
 
 		if (ent != null && ent instanceof TileEntityFurnace) {
 			return (TileEntityFurnace) ent;
@@ -325,11 +339,16 @@ public class Point {
 	}
 
 	public int getMeta(final World world) {
-		return world.getBlockMetadata(getiX(), getiY(), getiZ());
+		IBlockState state=world.getBlockState(getBlockPos());
+		return state.getBlock().getMetaFromState(state);
+	}
+	
+	public void setBlockState(World world,IBlockState state) {
+		world.setBlockState(getBlockPos(), state);
 	}
 
 	public TileEntityMillChest getMillChest(final World world) {
-		final TileEntity ent = world.getTileEntity(getiX(), getiY(), getiZ());
+		final TileEntity ent = world.getTileEntity(getBlockPos());
 
 		if (ent != null && ent instanceof TileEntityMillChest) {
 			return (TileEntityMillChest) ent;
@@ -347,7 +366,7 @@ public class Point {
 	}
 
 	public TileEntityPanel getPanel(final World world) {
-		final TileEntity ent = world.getTileEntity(getiX(), getiY(), getiZ());
+		final TileEntity ent = world.getTileEntity(getBlockPos());
 
 		if (ent != null && ent instanceof TileEntityPanel) {
 			return (TileEntityPanel) ent;
@@ -371,9 +390,13 @@ public class Point {
 	public Point getRelative(final double dx, final double dy, final double dz) {
 		return new Point(x + dx, y + dy, z + dz);
 	}
+	
+	public BlockPos getBlockPos() {
+		return new BlockPos(x,y,z);
+	}
 
 	public TileEntitySign getSign(final World world) {
-		final TileEntity ent = world.getTileEntity(getiX(), getiY(), getiZ());
+		final TileEntity ent = world.getTileEntity(getBlockPos());
 
 		if (ent != null && ent instanceof TileEntitySign) {
 			return (TileEntitySign) ent;
@@ -387,7 +410,7 @@ public class Point {
 	}
 
 	public TileEntity getTileEntity(final World world) {
-		return world.getTileEntity(getiX(), getiY(), getiZ());
+		return world.getTileEntity(getBlockPos());
 	}
 
 	public Point getWest() {

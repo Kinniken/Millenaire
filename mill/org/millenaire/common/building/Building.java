@@ -23,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityMob;
@@ -43,6 +44,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -937,7 +939,7 @@ public class Building {
 	}
 
 	public void adjustLanguage(final EntityPlayer player, final int l) {
-		mw.getProfile(player.getDisplayName()).adjustLanguage(getTownHall().culture.key, l);
+		mw.getProfile(player.getName()).adjustLanguage(getTownHall().culture.key, l);
 	}
 
 	public void adjustRelation(final Point villagePos, final int change, final boolean reset) {
@@ -975,7 +977,7 @@ public class Building {
 	}
 
 	public void adjustReputation(final EntityPlayer player, final int l) {
-		mw.getProfile(player.getDisplayName()).adjustReputation(getTownHall(), l);
+		mw.getProfile(player.getName()).adjustReputation(getTownHall(), l);
 	}
 
 	public boolean areBlocksLeft() {
@@ -1261,7 +1263,7 @@ public class Building {
 					for (int dy = -2; dy < 3; dy++) {
 						final int y = dy + basey;
 
-						final Block block = worldObj.getBlock(x, y, z);
+						final Block block = MillCommonUtilities.getBlock(worldObj, x, y, z);
 						final int meta = worldObj.getBlockMetadata(x, y, z);
 
 						if ((block == Mill.path || block == Mill.pathSlab) && meta < 8) {
@@ -1292,22 +1294,22 @@ public class Building {
 		return culture.shopSells.get(location.shop);
 	}
 
-	public void callForHelp(final Entity attacker) {
+	public void callForHelp(final EntityLivingBase attacker) {
 		if (MLN.LogGeneralAI >= MLN.DEBUG) {
 			MLN.debug(this, "Calling for help among: " + villagers.size() + " villagers.");
 		}
 		for (final MillVillager villager : villagers) {
 			if (MLN.LogGeneralAI >= MLN.DEBUG) {
-				MLN.debug(villager, "Testing villager. Will fight? " + villager.helpsInAttacks() + ". Current target? " + villager.getEntityToAttack() + ". Distance to threat: "
+				MLN.debug(villager, "Testing villager. Will fight? " + villager.helpsInAttacks() + ". Current target? " + villager.getAttackTarget() + ". Distance to threat: "
 						+ villager.getPos().distanceTo(attacker));
 			}
-			if (villager.getEntityToAttack() == null && villager.helpsInAttacks() && !villager.isRaider) {
+			if (villager.getAttackTarget() == null && villager.helpsInAttacks() && !villager.isRaider) {
 
 				if (villager.getPos().distanceTo(attacker) < MillVillager.ATTACK_RANGE) {
 					if (MLN.LogGeneralAI >= MLN.MAJOR) {
 						MLN.major(villager, "Off to help a friend attacked by attacking: " + attacker);
 					}
-					villager.setEntityToAttack(attacker);
+					villager.setAttackTarget(attacker);
 					villager.clearGoal();
 					villager.speakSentence("calltoarms", 0, 50, 1);
 				}
@@ -1530,7 +1532,7 @@ public class Building {
 	}
 
 	private void checkExploreTag(final EntityPlayer player) {
-		if (player != null && location.getPlan() != null && !mw.getProfile(player.getDisplayName()).isTagSet(location.getPlan().exploreTag)) {
+		if (player != null && location.getPlan() != null && !mw.getProfile(player.getName()).isTagSet(location.getPlan().exploreTag)) {
 
 			if (this.resManager.getSleepingPos().distanceToSquared(player) < 16) {
 
@@ -1541,7 +1543,7 @@ public class Building {
 				int z = resManager.getSleepingPos().getiZ();
 
 				while (valid && (x != (int) player.posX || z != (int) player.posZ)) {
-					final Block block = worldObj.getBlock(x, resManager.getSleepingPos().getiY() + 1, z);
+					final Block block = MillCommonUtilities.getBlock(worldObj, x, resManager.getSleepingPos().getiY() + 1, z);
 
 					if (block != Blocks.air && block.getMaterial().blocksMovement()) {
 						valid = false;
@@ -1561,7 +1563,7 @@ public class Building {
 				}
 
 				if (valid) {
-					mw.getProfile(player.getDisplayName()).setTag(location.getPlan().exploreTag);
+					mw.getProfile(player.getName()).setTag(location.getPlan().exploreTag);
 
 					ServerSender.sendTranslatedSentence(player, MLN.DARKGREEN, "other.exploredbuilding", location.getPlan().nativeName);
 				}
@@ -1575,11 +1577,11 @@ public class Building {
 			return;
 		}
 
-		if (closestPlayer == null || controlledBy(closestPlayer.getDisplayName())) {
+		if (closestPlayer == null || controlledBy(closestPlayer.getName())) {
 			return;
 		}
 
-		if (closestPlayer != null && seller == null && getReputation(closestPlayer.getDisplayName()) >= MIN_REPUTATION_FOR_TRADE && chestLocked) {
+		if (closestPlayer != null && seller == null && getReputation(closestPlayer.getName()) >= MIN_REPUTATION_FOR_TRADE && chestLocked) {
 			sellingPlace = null;
 
 			for (final BuildingLocation l : getLocations()) {
@@ -1721,7 +1723,7 @@ public class Building {
 					shopSellsPlayer.put(g, g.getBasicSellingPrice(this));
 				}
 			}
-			shopSells.put(player.getDisplayName(), shopSellsPlayer);
+			shopSells.put(player.getName(), shopSellsPlayer);
 		}
 
 		final List<Goods> buyingGoods = calculateBuyingGoods(player.inventory);
@@ -1733,7 +1735,7 @@ public class Building {
 					shopBuysPlayer.put(g, g.getBasicBuyingPrice(this));
 				}
 			}
-			shopBuys.put(player.getDisplayName(), shopBuysPlayer);
+			shopBuys.put(player.getName(), shopBuysPlayer);
 		}
 	}
 
@@ -1887,7 +1889,7 @@ public class Building {
 			husbandType = location.maleResident.get(0);
 		}
 		String wifeType = null;
-		if (location.femaleResident.size() > 0 && !culture.getVillagerType(location.maleResident.get(0)).isChild) {
+		if (location.femaleResident.size() > 0 && !culture.getVillagerType(location.femaleResident.get(0)).isChild) {
 			wifeType = location.femaleResident.get(0);
 		}
 
@@ -2051,7 +2053,7 @@ public class Building {
 			ServerSender.sendChat(player, EnumChatFormatting.GREEN, "Current building plan: " + getCurrentBuildingPlan() + " at " + buildingLocationIP);
 			ServerSender.sendChat(player, EnumChatFormatting.GREEN, "Current builder: " + builder);
 			ServerSender.sendChat(player, EnumChatFormatting.GREEN, "Current seller: " + seller);
-			ServerSender.sendChat(player, EnumChatFormatting.GREEN, "Rep: " + getReputation(player.getDisplayName()) + " bought: " + buildingsBought);
+			ServerSender.sendChat(player, EnumChatFormatting.GREEN, "Rep: " + getReputation(player.getName()) + " bought: " + buildingsBought);
 		}
 
 		if (isInn) {
@@ -2216,8 +2218,8 @@ public class Building {
 
 		// removing targets from defending villagers
 		for (final MillVillager v : targetVillage.villagers) {
-			if (v.getEntityToAttack() != null && v.getEntityToAttack() instanceof MillVillager) {
-				v.setEntityToAttack(null);
+			if (v.getAttackTarget() != null && v.getAttackTarget() instanceof MillVillager) {
+				v.setAttackTarget(null);
 			}
 		}
 
@@ -2424,8 +2426,8 @@ public class Building {
 			tz = Math.max(tz, winfo.width / 2 - 50);
 
 			if (winfo.canBuild[tx][tz]) {
-				final Chunk chunk = worldObj.getChunkFromBlockCoords(winfo.mapStartX + tx, winfo.mapStartZ + tz);
-				if (chunk.isChunkLoaded) {
+				final Chunk chunk = worldObj.getChunkFromBlockCoords(new BlockPos(winfo.mapStartX + tx, 0, winfo.mapStartZ + tz));
+				if (chunk.isLoaded()) {
 					return new Point(winfo.mapStartX + tx, MillCommonUtilities.findTopSoilBlock(worldObj, winfo.mapStartX + tx, winfo.mapStartZ + tz) + 1, winfo.mapStartZ + tz);
 				}
 			}
@@ -2759,7 +2761,7 @@ public class Building {
 			for (int i = -50; i < 50; i++) {
 				for (int j = -10; j < 20; j++) {
 					for (int k = -50; k < 50; k++) {
-						final Block block = worldObj.getBlock(i + pos.getiX(), j + pos.getiY(), k + pos.getiZ());
+						final Block block = MillCommonUtilities.getBlock(worldObj, i + pos.getiX(), j + pos.getiY(), k + pos.getiZ());
 						if (block == Blocks.cactus) {
 							cactus++;
 						} else if (block == Blocks.log) {
@@ -2767,7 +2769,7 @@ public class Building {
 						} else if (block == Blocks.lava) {
 							lava++;
 						} else if (block == Blocks.water) {
-							if (worldObj.getBlock(i + pos.getiX(), j + pos.getiY() + 1, k + pos.getiZ()) == Blocks.air) {
+							if (MillCommonUtilities.getBlock(worldObj, i + pos.getiX(), j + pos.getiY() + 1, k + pos.getiZ()) == Blocks.air) {
 								if (j + pos.getiY() < 65) {
 									ocean++;
 								} else {
@@ -2858,19 +2860,19 @@ public class Building {
 
 	public Set<Goods> getBuyingGoods(final EntityPlayer player) {
 
-		if (!shopBuys.containsKey(player.getDisplayName())) {
+		if (!shopBuys.containsKey(player.getName())) {
 			return null;
 		}
 
-		return shopBuys.get(player.getDisplayName()).keySet();
+		return shopBuys.get(player.getName()).keySet();
 	}
 
 	public int getBuyingPrice(final Goods g, final EntityPlayer player) {
-		if (!shopBuys.containsKey(player.getDisplayName())) {
+		if (!shopBuys.containsKey(player.getName())) {
 			return 0;
 		}
 
-		return shopBuys.get(player.getDisplayName()).get(g);
+		return shopBuys.get(player.getName()).get(g);
 	}
 
 	public Point getClosestBlockAround(final Point p, final Block[] blocks, final int hlimit, int vstart, int vend) {
@@ -2891,7 +2893,7 @@ public class Building {
 
 			if (x > winfo.mapStartX && x < winfo.mapStartX + winfo.length && z > winfo.mapStartZ && z < winfo.mapStartZ + winfo.width) {
 				for (int i = vend; i >= vstart; i--) {
-					final Block block = worldObj.getBlock(x, i, z);
+					final Block block = MillCommonUtilities.getBlock(worldObj, x, i, z);
 					for (final Block tblock : blocks) {
 						if (block == tblock) {
 							final Point np = new Point(x, i, z);
@@ -3087,8 +3089,8 @@ public class Building {
 		neededGoodsCached = new HashMap<Goods, Integer>();
 
 		for (final Point vp : mw.villagesList.pos) {
-			final Chunk chunk = worldObj.getChunkFromBlockCoords(vp.getiX(), vp.getiZ());
-			if (chunk.isChunkLoaded) {
+			final Chunk chunk = worldObj.getChunkFromBlockCoords(new BlockPos(vp.getiX(),0, vp.getiZ()));
+			if (chunk.isLoaded()) {
 				final Building townHall = mw.getBuilding(vp);
 				if (townHall != null && getTownHall() != null && townHall.villageType != getTownHall().villageType && townHall.culture == getTownHall().culture) {
 					if (townHall.getBuildingsWithTag(tagInn).size() > 0) {
@@ -3267,19 +3269,19 @@ public class Building {
 
 	public Set<Goods> getSellingGoods(final EntityPlayer player) {
 
-		if (!shopSells.containsKey(player.getDisplayName())) {
+		if (!shopSells.containsKey(player.getName())) {
 			return null;
 		}
 
-		return shopSells.get(player.getDisplayName()).keySet();
+		return shopSells.get(player.getName()).keySet();
 	}
 
 	public int getSellingPrice(final Goods g, final EntityPlayer player) {
-		if (player == null || !shopSells.containsKey(player.getDisplayName())) {
+		if (player == null || !shopSells.containsKey(player.getName())) {
 			return 0;
 		}
 
-		return shopSells.get(player.getDisplayName()).get(g);
+		return shopSells.get(player.getName()).get(g);
 	}
 
 	public Building getShop(final String shop) {
@@ -3462,7 +3464,7 @@ public class Building {
 		for (int i = location.minx - 3; i < location.maxx + 3; i++) {
 			for (int j = location.pos.getiY() - 1; j < location.pos.getiY() + 10; j++) {
 				for (int k = location.minz - 3; k < location.maxz + 3; k++) {
-					if (worldObj.getBlock(i, j, k) == Blocks.log) {
+					if (MillCommonUtilities.getBlock(worldObj, i, j, k) == Blocks.log) {
 						nb++;
 					}
 				}
@@ -3479,7 +3481,7 @@ public class Building {
 		for (int i = location.minx - 3; i < location.maxx + 3; i++) {
 			for (int j = location.pos.getiY() - 1; j < location.pos.getiY() + 10; j++) {
 				for (int k = location.minz - 3; k < location.maxz + 3; k++) {
-					if (worldObj.getBlock(i, j, k) == Blocks.log) {
+					if (MillCommonUtilities.getBlock(worldObj, i, j, k) == Blocks.log) {
 						return new Point(i, j, k);
 					}
 				}
@@ -3625,7 +3627,7 @@ public class Building {
 		buildings.add(getPos());
 
 		if (villageType.playerControlled && controller != null) {
-			final UserProfile profile = mw.getProfile(controller.getDisplayName());
+			final UserProfile profile = mw.getProfile(controller.getName());
 			controlledBy = profile.key;
 			profile.adjustReputation(this, 32 * 64 * 64);
 		}
@@ -3748,7 +3750,7 @@ public class Building {
 					return false;
 				}
 
-				if (!worldObj.getChunkFromBlockCoords(x, z).isChunkLoaded) {
+				if (!worldObj.getChunkFromBlockCoords(new BlockPos(x, 0, z)).isLoaded()) {
 					return false;
 				}
 			}
@@ -5161,7 +5163,7 @@ public class Building {
 			MLN.printException(this + ": Error in sendUpdatePacket", e);
 		}
 
-		mw.getProfile(player.getDisplayName()).buildingsSent.put(pos, mw.world.getWorldTime());
+		mw.getProfile(player.getName()).buildingsSent.put(pos, mw.world.getWorldTime());
 
 		ServerSender.createAndSendPacketToPlayer(data, player);
 	}
@@ -5169,7 +5171,7 @@ public class Building {
 	private void sendInitialBuildingPackets() {
 		for (final EntityPlayer player : MillCommonUtilities.getServerPlayers(mw.world)) {
 			if (pos.distanceToSquared(player) < 16 * 16) {
-				final UserProfile profile = MillCommonUtilities.getServerProfile(mw.world, player.getDisplayName());
+				final UserProfile profile = MillCommonUtilities.getServerProfile(mw.world, player.getName());
 
 				if (!profile.buildingsSent.containsKey(pos)) {
 					this.sendBuildingPacket(player, false);
@@ -5194,23 +5196,23 @@ public class Building {
 
 			StreamReadWrite.writeNullablePoint(getPos(), data);
 
-			if (shopSells.containsKey(player.getDisplayName())) {
-				data.writeInt(shopSells.get(player.getDisplayName()).size());
+			if (shopSells.containsKey(player.getName())) {
+				data.writeInt(shopSells.get(player.getName()).size());
 
-				for (final Goods g : shopSells.get(player.getDisplayName()).keySet()) {
+				for (final Goods g : shopSells.get(player.getName()).keySet()) {
 					StreamReadWrite.writeNullableGoods(g, data);
-					data.writeInt(shopSells.get(player.getDisplayName()).get(g));
+					data.writeInt(shopSells.get(player.getName()).get(g));
 				}
 			} else {
 				data.writeInt(0);
 			}
 
-			if (shopBuys.containsKey(player.getDisplayName())) {
-				data.writeInt(shopBuys.get(player.getDisplayName()).size());
+			if (shopBuys.containsKey(player.getName())) {
+				data.writeInt(shopBuys.get(player.getName()).size());
 
-				for (final Goods g : shopBuys.get(player.getDisplayName()).keySet()) {
+				for (final Goods g : shopBuys.get(player.getName()).keySet()) {
 					StreamReadWrite.writeNullableGoods(g, data);
-					data.writeInt(shopBuys.get(player.getDisplayName()).get(g));
+					data.writeInt(shopBuys.get(player.getName()).get(g));
 				}
 			} else {
 				data.writeInt(0);
@@ -5950,7 +5952,7 @@ public class Building {
 			return;
 		}
 
-		if (worldObj.getBlock(p.getiX(), p.getiY(), p.getiZ()) != Mill.panel) {
+		if (MillCommonUtilities.getBlock(worldObj, p.getiX(), p.getiY(), p.getiZ()) != Mill.panel) {
 
 			final int meta = MillCommonUtilities.guessSignMetaData(worldObj, p);
 
@@ -6063,7 +6065,7 @@ public class Building {
 			return;
 		}
 
-		if (worldObj.getBlock(p.getiX(), p.getiY(), p.getiZ()) != Mill.panel) {
+		if (MillCommonUtilities.getBlock(worldObj, p.getiX(), p.getiY(), p.getiZ()) != Mill.panel) {
 
 			final int meta = MillCommonUtilities.guessSignMetaData(worldObj, p);
 
@@ -6466,7 +6468,7 @@ public class Building {
 			if (!villageType.playerControlled && !villageType.lonebuilding) {
 
 				for (final EntityPlayer player : MillCommonUtilities.getServerPlayers(worldObj)) {
-					final UserProfile profile = MillCommonUtilities.getServerProfile(worldObj, player.getDisplayName());
+					final UserProfile profile = MillCommonUtilities.getServerProfile(worldObj, player.getName());
 					profile.adjustDiplomacyPoint(this, 5);
 				}
 

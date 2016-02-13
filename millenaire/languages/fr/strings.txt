@@ -199,7 +199,7 @@ ui.confirm=Confirmer
 
 custombuilding.chest=coffre
 custombuilding.craft=établi
-custombuilding.sign=panneau
+custombuilding.sign=panneau mural
 custombuilding.field=champ
 custombuilding.spawn=paille (sera détruite; indique là où apparaîtront les animaux)
 custombuilding.sapling=arbustre ou arbre

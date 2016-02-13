@@ -159,7 +159,7 @@ public class VillageType implements WeightedChoice {
 
 		final List<VillageType> villages = new ArrayList<VillageType>();
 
-		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName());
+		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getName());
 
 		for (final Culture culture : Culture.ListCultures) {
 			for (final VillageType village : culture.listVillageTypes) {
@@ -594,7 +594,7 @@ public class VillageType implements WeightedChoice {
 		}
 
 		if (player != null) {
-			final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName());
+			final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getName());
 
 			if (keyLoneBuildingGenerateTag != null && profile.isTagSet(keyLoneBuildingGenerateTag)) {
 				return true;

@@ -62,7 +62,7 @@ public class ItemParchment extends ItemText {
 
 		final Chunk chunk = player.worldObj.getChunkFromChunkCoords(p.getChunkX(), p.getChunkZ());
 
-		if (!chunk.isChunkLoaded) {
+		if (!chunk.isLoaded()) {
 			ServerSender.sendTranslatedSentence(player, MLN.ORANGE, "panels.toofar");
 			return;
 		}

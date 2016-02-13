@@ -199,7 +199,7 @@ public class PathingBinary {
 		for (short i = 0; i < region.length; i++) {
 			for (short j = 0; j < region[0].length; j++) {
 				for (short k = 0; k < region[0][0].length; k++) {
-					final Block block = world.getBlock(surfaceXstart + i, surfaceYstart + j, surfaceZstart + k);
+					final Block block = MillCommonUtilities.getBlock(world, surfaceXstart + i, surfaceYstart + j, surfaceZstart + k);
 					// if (bid==Blocks.ladder.blockID) {
 					// region[i][j][k]=new MLPathingPathCalcTile(true, true, new
 					// short[]{i,j,k});
@@ -302,8 +302,8 @@ public class PathingBinary {
 					for (short k = 10; k > -10; k--) {
 						// let's check that the block is solid and the two above
 						// are not:
-						if (MillCommonUtilities.isBlockIdSolid(world.getBlock(p[0] + i, p[1] + k, p[2] + j)) && !MillCommonUtilities.isBlockIdSolid(world.getBlock(p[0] + i, p[1] + k + 1, p[2] + j))
-								&& !MillCommonUtilities.isBlockIdSolid(world.getBlock(p[0] + i, p[1] + k + 2, p[2] + j))) {
+						if (MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, p[0] + i, p[1] + k, p[2] + j)) && !MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, p[0] + i, p[1] + k + 1, p[2] + j))
+								&& !MillCommonUtilities.isBlockIdSolid(MillCommonUtilities.getBlock(world, p[0] + i, p[1] + k + 2, p[2] + j))) {
 
 							newP[1] = (short) (p[1] + k);
 							if (MLN.DEV) {

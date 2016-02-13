@@ -5,12 +5,15 @@ import io.netty.buffer.ByteBufInputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.World;
 
 import org.millenaire.common.building.Building;
@@ -22,23 +25,26 @@ public class TileEntityMillChest extends TileEntityChest implements ISidedInvent
 
 	public static class InventoryMillLargeChest extends InventoryLargeChest implements ISidedInventory {
 
-		public InventoryMillLargeChest(final String par1Str, final IInventory par2iInventory, final IInventory par3iInventory) {
+		public InventoryMillLargeChest(final String par1Str, final ILockableContainer par2iInventory, final ILockableContainer par3iInventory) {
 			super(par1Str, par2iInventory, par3iInventory);
 		}
 
 		@Override
-		public boolean canExtractItem(final int i, final ItemStack itemstack, final int j) {
+		public int[] getSlotsForFace(EnumFacing side) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public boolean canInsertItem(int index, ItemStack itemStackIn,
+				EnumFacing direction) {
 			return false;
 		}
 
 		@Override
-		public boolean canInsertItem(final int i, final ItemStack itemstack, final int j) {
+		public boolean canExtractItem(int index, ItemStack stack,
+				EnumFacing direction) {
 			return false;
-		}
-
-		@Override
-		public int[] getAccessibleSlotsFromSide(final int var1) {
-			return new int[0];
 		}
 
 	}
@@ -78,27 +84,12 @@ public class TileEntityMillChest extends TileEntityChest implements ISidedInvent
 	public boolean loaded = false;
 
 	public boolean serverDevMode = false;
-
+	
 	@Override
-	public boolean canExtractItem(final int i, final ItemStack itemstack, final int j) {
-		return false;
-	}
-
-	@Override
-	public boolean canInsertItem(final int i, final ItemStack itemstack, final int j) {
-		return false;
-	}
-
-	@Override
-	public int[] getAccessibleSlotsFromSide(final int var1) {
-		return new int[0];
-	}
-
-	@Override
-	public String getInventoryName() {
+	public IChatComponent getDisplayName() {
 
 		if (buildingPos == null) {
-			return MLN.string("ui.unlockedchest");
+			return new ChatComponentText(MLN.string("ui.unlockedchest"));
 		}
 
 		Building building = null;
@@ -108,15 +99,15 @@ public class TileEntityMillChest extends TileEntityChest implements ISidedInvent
 		}
 
 		if (building == null) {
-			return MLN.string("ui.unlockedchest");
+			return new ChatComponentText(MLN.string("ui.unlockedchest"));
 		}
 
 		final String s = building.getNativeBuildingName();
 
 		if (building.chestLocked) {
-			return s + ": " + MLN.string("ui.lockedchest");
+			return new ChatComponentText(s + ": " + MLN.string("ui.lockedchest"));
 		} else {
-			return s + ": " + MLN.string("ui.unlockedchest");
+			return new ChatComponentText(s + ": " + MLN.string("ui.unlockedchest"));
 		}
 	}
 
@@ -181,7 +172,7 @@ public class TileEntityMillChest extends TileEntityChest implements ISidedInvent
 			return true;
 		}
 
-		if (building.lockedForPlayer(player.getDisplayName())) {
+		if (building.lockedForPlayer(player.getName())) {
 			return true;
 		}
 		return false;
@@ -205,6 +196,23 @@ public class TileEntityMillChest extends TileEntityChest implements ISidedInvent
 		if (buildingPos != null) {
 			buildingPos.write(nbttagcompound, "buildingPos");
 		}
+	}
+
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+		return new int[0];
+	}
+
+	@Override
+	public boolean canInsertItem(int index, ItemStack itemStackIn,
+			EnumFacing direction) {
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int index, ItemStack stack,
+			EnumFacing direction) {
+		return false;
 	}
 
 }

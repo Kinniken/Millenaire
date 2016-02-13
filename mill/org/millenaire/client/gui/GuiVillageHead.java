@@ -1,5 +1,6 @@
 package org.millenaire.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -103,7 +104,7 @@ public class GuiVillageHead extends GuiText {
 	}
 
 	@Override
-	protected void actionPerformed(final GuiButton guibutton) {
+	protected void actionPerformed(final GuiButton guibutton) throws IOException {
 
 		if (guibutton instanceof GuiButtonChief) {
 
@@ -160,8 +161,8 @@ public class GuiVillageHead extends GuiText {
 		List<Line> text = new ArrayList<Line>();
 
 		String game = "";
-		if (chief.getGameOccupationName(player.getDisplayName()).length() > 0) {
-			game = " (" + chief.getGameOccupationName(player.getDisplayName()) + ")";
+		if (chief.getGameOccupationName(player.getName()).length() > 0) {
+			game = " (" + chief.getGameOccupationName(player.getName()) + ")";
 		}
 
 		text.add(new Line(chief.getName() + ", " + chief.getNativeOccupationName() + game, false));
@@ -170,18 +171,18 @@ public class GuiVillageHead extends GuiText {
 
 		String col = "";
 
-		if (chief.getTownHall().getReputation(player.getDisplayName()) >= 8 * 64 * 64) {
+		if (chief.getTownHall().getReputation(player.getName()) >= 8 * 64 * 64) {
 			col = DARKGREEN;
-		} else if (chief.getTownHall().getReputation(player.getDisplayName()) >= 64 * 64) {
+		} else if (chief.getTownHall().getReputation(player.getName()) >= 64 * 64) {
 			col = DARKBLUE;
-		} else if (chief.getTownHall().getReputation(player.getDisplayName()) < -4 * 64) {
+		} else if (chief.getTownHall().getReputation(player.getName()) < -4 * 64) {
 			col = DARKRED;
-		} else if (chief.getTownHall().getReputation(player.getDisplayName()) < 0) {
+		} else if (chief.getTownHall().getReputation(player.getName()) < 0) {
 			col = LIGHTRED;
 		}
 
-		text.add(new Line(col + MLN.string("ui.yourstatus") + ": " + chief.getTownHall().getReputationLevelLabel(player.getDisplayName()), false));
-		text.add(new Line(col + chief.getTownHall().getReputationLevelDesc(player.getDisplayName()).replaceAll("\\$name", player.getDisplayName())));
+		text.add(new Line(col + MLN.string("ui.yourstatus") + ": " + chief.getTownHall().getReputationLevelLabel(player.getName()), false));
+		text.add(new Line(col + chief.getTownHall().getReputationLevelDesc(player.getName()).replaceAll("\\$name", player.getName())));
 		text.add(new Line());
 		text.add(new Line(MLN.string("ui.possiblehousing") + ":"));
 		text.add(new Line());
@@ -189,7 +190,7 @@ public class GuiVillageHead extends GuiText {
 
 		final UserProfile profile = Mill.proxy.getClientProfile();
 
-		final int reputation = chief.getTownHall().getReputation(player.getDisplayName());
+		final int reputation = chief.getTownHall().getReputation(player.getName());
 
 		for (final EnumProjects ep : EnumProjects.values()) {
 			if (chief.getTownHall().buildingProjects.containsKey(ep)) {

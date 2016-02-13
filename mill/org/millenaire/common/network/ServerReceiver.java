@@ -11,6 +11,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
 import org.millenaire.common.Culture;
 import org.millenaire.common.GuiActions;
@@ -23,9 +25,6 @@ import org.millenaire.common.building.BuildingPlan;
 import org.millenaire.common.building.BuildingProject;
 import org.millenaire.common.core.DevModUtilities;
 import org.millenaire.common.forge.Mill;
-
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
 
 public class ServerReceiver {
 
@@ -127,7 +126,7 @@ public class ServerReceiver {
 			} else if (packettype == PACKET_VILLAGELIST_REQUEST) {
 				mw.displayVillageList(sender, dataStream.readBoolean());
 			} else if (packettype == PACKET_DECLARERELEASENUMBER) {
-				mw.getProfile(sender.getDisplayName()).receiveDeclareReleaseNumberPacket(dataStream);
+				mw.getProfile(sender.getName()).receiveDeclareReleaseNumberPacket(dataStream);
 			} else if (packettype == PACKET_VILLAGERINTERACT_REQUEST) {
 				readVillagerInteractRequestPacket(sender, dataStream);
 			} else if (packettype == PACKET_AVAILABLECONTENT) {

@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 import org.millenaire.common.Point;
+import org.millenaire.common.core.MillCommonUtilities;
 
 public class TextureAmuletAlchemist extends TextureAtlasSprite {
 
@@ -32,7 +33,7 @@ public class TextureAmuletAlchemist extends TextureAtlasSprite {
 			for (int i = p.getiX() - radius; i < p.getiX() + radius; i++) {
 				for (int j = p.getiZ() - radius; j < p.getiZ() + radius; j++) {
 					for (int k = startY; k < endY; k++) {
-						final Block block = world.getBlock(i, k, j);
+						final Block block = MillCommonUtilities.getBlock(world, i, k, j);
 						if (block == Blocks.coal_ore) {
 							score++;
 						} else if (block == Blocks.diamond_ore) {

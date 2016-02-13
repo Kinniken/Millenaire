@@ -24,7 +24,7 @@ public class EntityTargetedBlaze extends EntityBlaze {
 		final double d4 = (this.target.x - this.posX) / par7;
 		final double d5 = (this.target.y - this.posY) / par7;
 		final double d6 = (this.target.z - this.posZ) / par7;
-		final AxisAlignedBB axisalignedbb = this.boundingBox.copy();
+		final AxisAlignedBB axisalignedbb = this.getBoundingBox().expand(0, 0, 0);
 
 		for (int i = 1; i < par7; ++i) {
 			axisalignedbb.offset(d4, d5, d6);

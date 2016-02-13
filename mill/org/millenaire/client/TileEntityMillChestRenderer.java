@@ -1,17 +1,21 @@
 package org.millenaire.client;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 
-import org.lwjgl.opengl.GL11;
 import org.millenaire.common.MLN;
-import org.millenaire.common.block.BlockMillChest;
+import org.millenaire.common.TileEntityMillChest;
 
 public class TileEntityMillChestRenderer extends TileEntitySpecialRenderer {
+	
+	private ModelLockedChest simpleChest = new ModelLockedChest();
+    private ModelLargeLockedChest largeChest = new ModelLargeLockedChest();
+	
 	public class ModelLargeLockedChest extends ModelLockedChest {
 		public ModelLargeLockedChest() {
 			chestLid = new ModelRenderer(this, 0, 0).setTextureSize(128, 64);
@@ -55,7 +59,7 @@ public class TileEntityMillChestRenderer extends TileEntitySpecialRenderer {
 			chestBelow.rotationPointZ = 1.0F;
 		}
 
-		public void func_35402_a() {
+		public void renderAll() {
 			chestKnob.rotateAngleX = chestLid.rotateAngleX;
 			chestLid.render(0.0625F);
 			chestKnob.render(0.0625F);
@@ -63,90 +67,162 @@ public class TileEntityMillChestRenderer extends TileEntitySpecialRenderer {
 		}
 	}
 
-	private final ModelLockedChest field_35377_b;
-
-	private final ModelLockedChest field_35378_c;
-
 	public TileEntityMillChestRenderer() {
-		field_35377_b = new ModelLockedChest();
-		field_35378_c = new ModelLargeLockedChest();
+
 	}
 
 	@Override
-	public void renderTileEntityAt(final TileEntity tileentity, final double d, final double d1, final double d2, final float f) {
-		renderTileEntityChestAt((TileEntityChest) tileentity, d, d1, d2, f);
-	}
+	public void renderTileEntityAt(TileEntity p_180535_1_, double posX, double posZ, double p_180535_6_, float p_180535_8_, int p_180535_9_)
+    {
+        this.renderTileEntityChestAt((TileEntityMillChest)p_180535_1_, posX, posZ, p_180535_6_, p_180535_8_, p_180535_9_);
+    }
 
-	public void renderTileEntityChestAt(final TileEntityChest tileentitychest, final double d, final double d1, final double d2, final float f) {
-		int i;
-		if (tileentitychest.getWorldObj() == null) {
-			i = 0;
-		} else {
-			final Block block = tileentitychest.getBlockType();
-			i = tileentitychest.getBlockMetadata();
-			if (block != null && i == 0 && block instanceof BlockMillChest) {
-				((BlockMillChest) block).unifyMillChests(tileentitychest.getWorldObj(), tileentitychest.xCoord, tileentitychest.yCoord, tileentitychest.zCoord);
-				i = tileentitychest.getBlockMetadata();
-			}
-			tileentitychest.checkForAdjacentChests();
-		}
-		if (tileentitychest.adjacentChestZNeg != null || tileentitychest.adjacentChestXNeg != null) {
-			return;
-		}
-		ModelLockedChest modelchest;
-		if (tileentitychest.adjacentChestXPos != null || tileentitychest.adjacentChestZPos != null) {
-			modelchest = field_35378_c;
-			bindTexture(MLN.getLargeLockedChestTexture());
-		} else {
-			modelchest = field_35377_b;
-			bindTexture(MLN.getLockedChestTexture());
-		}
-		GL11.glPushMatrix();
-		GL11.glEnable(32826 /* GL_RESCALE_NORMAL_EXT */);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glTranslatef((float) d, (float) d1 + 1.0F, (float) d2 + 1.0F);
-		GL11.glScalef(1.0F, -1F, -1F);
-		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		int j = 0;
-		if (i == 2) {
-			j = 180;
-		}
-		if (i == 3) {
-			j = 0;
-		}
-		if (i == 4) {
-			j = 90;
-		}
-		if (i == 5) {
-			j = -90;
-		}
-		if (i == 2 && tileentitychest.adjacentChestXPos != null) {
-			GL11.glTranslatef(1.0F, 0.0F, 0.0F);
-		}
-		if (i == 5 && tileentitychest.adjacentChestZPos != null) {
-			GL11.glTranslatef(0.0F, 0.0F, -1F);
-		}
-		GL11.glRotatef(j, 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		float f1 = tileentitychest.prevLidAngle + (tileentitychest.lidAngle - tileentitychest.prevLidAngle) * f;
-		if (tileentitychest.adjacentChestZNeg != null) {
-			final float f2 = tileentitychest.adjacentChestZNeg.prevLidAngle + (tileentitychest.adjacentChestZNeg.lidAngle - tileentitychest.adjacentChestZNeg.prevLidAngle) * f;
-			if (f2 > f1) {
-				f1 = f2;
-			}
-		}
-		if (tileentitychest.adjacentChestXNeg != null) {
-			final float f3 = tileentitychest.adjacentChestXNeg.prevLidAngle + (tileentitychest.adjacentChestXNeg.lidAngle - tileentitychest.adjacentChestXNeg.prevLidAngle) * f;
-			if (f3 > f1) {
-				f1 = f3;
-			}
-		}
-		f1 = 1.0F - f1;
-		f1 = 1.0F - f1 * f1 * f1;
-		modelchest.chestLid.rotateAngleX = -(f1 * 3.141593F / 2.0F);
-		modelchest.func_35402_a();
-		GL11.glDisable(32826 /* GL_RESCALE_NORMAL_EXT */);
-		GL11.glPopMatrix();
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	}
+	public void renderTileEntityChestAt(TileEntityMillChest p_180538_1_, double p_180538_2_, double p_180538_4_, double p_180538_6_, float p_180538_8_, int p_180538_9_)
+    {
+        int j;
+
+        if (!p_180538_1_.hasWorldObj())
+        {
+            j = 0;
+        }
+        else
+        {
+            Block block = p_180538_1_.getBlockType();
+            j = p_180538_1_.getBlockMetadata();
+
+            if (block instanceof BlockChest && j == 0)
+            {
+                ((BlockChest)block).checkForSurroundingChests(p_180538_1_.getWorld(), p_180538_1_.getPos(), p_180538_1_.getWorld().getBlockState(p_180538_1_.getPos()));
+                j = p_180538_1_.getBlockMetadata();
+            }
+
+            p_180538_1_.checkForAdjacentChests();
+        }
+
+        if (p_180538_1_.adjacentChestZNeg == null && p_180538_1_.adjacentChestXNeg == null)
+        {
+            ModelLockedChest modelchest;
+
+            if (p_180538_1_.adjacentChestXPos == null && p_180538_1_.adjacentChestZPos == null)
+            {
+                modelchest = this.simpleChest;
+
+                if (p_180538_9_ >= 0)
+                {
+                    this.bindTexture(DESTROY_STAGES[p_180538_9_]);
+                    GlStateManager.matrixMode(5890);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(4.0F, 4.0F, 1.0F);
+                    GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
+                    GlStateManager.matrixMode(5888);
+                }
+                else
+                {
+                    this.bindTexture(MLN.getLockedChestTexture());
+                }
+            }
+            else
+            {
+                modelchest = this.largeChest;
+
+                if (p_180538_9_ >= 0)
+                {
+                    this.bindTexture(DESTROY_STAGES[p_180538_9_]);
+                    GlStateManager.matrixMode(5890);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.scale(8.0F, 4.0F, 1.0F);
+                    GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
+                    GlStateManager.matrixMode(5888);
+                }
+                else
+                {
+                    this.bindTexture(MLN.getLargeLockedChestTexture());
+                }
+            }
+
+            GlStateManager.pushMatrix();
+            GlStateManager.enableRescaleNormal();
+
+            if (p_180538_9_ < 0)
+            {
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            }
+
+            GlStateManager.translate((float)p_180538_2_, (float)p_180538_4_ + 1.0F, (float)p_180538_6_ + 1.0F);
+            GlStateManager.scale(1.0F, -1.0F, -1.0F);
+            GlStateManager.translate(0.5F, 0.5F, 0.5F);
+            short short1 = 0;
+
+            if (j == 2)
+            {
+                short1 = 180;
+            }
+
+            if (j == 3)
+            {
+                short1 = 0;
+            }
+
+            if (j == 4)
+            {
+                short1 = 90;
+            }
+
+            if (j == 5)
+            {
+                short1 = -90;
+            }
+
+            if (j == 2 && p_180538_1_.adjacentChestXPos != null)
+            {
+                GlStateManager.translate(1.0F, 0.0F, 0.0F);
+            }
+
+            if (j == 5 && p_180538_1_.adjacentChestZPos != null)
+            {
+                GlStateManager.translate(0.0F, 0.0F, -1.0F);
+            }
+
+            GlStateManager.rotate((float)short1, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+            float f1 = p_180538_1_.prevLidAngle + (p_180538_1_.lidAngle - p_180538_1_.prevLidAngle) * p_180538_8_;
+            float f2;
+
+            if (p_180538_1_.adjacentChestZNeg != null)
+            {
+                f2 = p_180538_1_.adjacentChestZNeg.prevLidAngle + (p_180538_1_.adjacentChestZNeg.lidAngle - p_180538_1_.adjacentChestZNeg.prevLidAngle) * p_180538_8_;
+
+                if (f2 > f1)
+                {
+                    f1 = f2;
+                }
+            }
+
+            if (p_180538_1_.adjacentChestXNeg != null)
+            {
+                f2 = p_180538_1_.adjacentChestXNeg.prevLidAngle + (p_180538_1_.adjacentChestXNeg.lidAngle - p_180538_1_.adjacentChestXNeg.prevLidAngle) * p_180538_8_;
+
+                if (f2 > f1)
+                {
+                    f1 = f2;
+                }
+            }
+
+            f1 = 1.0F - f1;
+            f1 = 1.0F - f1 * f1 * f1;
+            modelchest.chestLid.rotateAngleX = -(f1 * (float)Math.PI / 2.0F);
+            modelchest.renderAll();
+            GlStateManager.disableRescaleNormal();
+            GlStateManager.popMatrix();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+            if (p_180538_9_ >= 0)
+            {
+                GlStateManager.matrixMode(5890);
+                GlStateManager.popMatrix();
+                GlStateManager.matrixMode(5888);
+            }
+        }
+    }
+	
 }

@@ -200,7 +200,7 @@ ui.confirm=Continue
 
 custombuilding.chest=chest
 custombuilding.craft=crafting table
-custombuilding.sign=pannel
+custombuilding.sign=wall sign
 custombuilding.field=field
 custombuilding.spawn=hay bale (will be destroyed; shows where animals will spawn)
 custombuilding.sapling=sapling or tree

@@ -34,21 +34,21 @@ public class ItemPurse extends ItemText {
 	}
 
 	private void removeDeniersFromPurse(final ItemStack purse, final EntityPlayer player) {
-		if (purse.stackTagCompound != null) {
-			final int deniers = purse.stackTagCompound.getInteger(ML_PURSE_DENIER);
-			final int denierargent = purse.stackTagCompound.getInteger(ML_PURSE_DENIERARGENT);
-			final int denieror = purse.stackTagCompound.getInteger(ML_PURSE_DENIEROR);
+		if (purse.getTagCompound() != null) {
+			final int deniers = purse.getTagCompound().getInteger(ML_PURSE_DENIER);
+			final int denierargent = purse.getTagCompound().getInteger(ML_PURSE_DENIERARGENT);
+			final int denieror = purse.getTagCompound().getInteger(ML_PURSE_DENIEROR);
 
 			int result = MillCommonUtilities.putItemsInChest(player.inventory, Mill.denier, deniers);
-			purse.stackTagCompound.setInteger(ML_PURSE_DENIER, deniers - result);
+			purse.getTagCompound().setInteger(ML_PURSE_DENIER, deniers - result);
 
 			result = MillCommonUtilities.putItemsInChest(player.inventory, Mill.denier_argent, denierargent);
-			purse.stackTagCompound.setInteger(ML_PURSE_DENIERARGENT, denierargent - result);
+			purse.getTagCompound().setInteger(ML_PURSE_DENIERARGENT, denierargent - result);
 
 			result = MillCommonUtilities.putItemsInChest(player.inventory, Mill.denier_or, denieror);
-			purse.stackTagCompound.setInteger(ML_PURSE_DENIEROR, denieror - result);
+			purse.getTagCompound().setInteger(ML_PURSE_DENIEROR, denieror - result);
 
-			purse.stackTagCompound.setInteger(ML_PURSE_RAND, player.worldObj.isRemote ? 0 : 1);
+			purse.getTagCompound().setInteger(ML_PURSE_RAND, player.worldObj.isRemote ? 0 : 1);
 
 			setItemName(purse);
 		}
@@ -65,26 +65,26 @@ public class ItemPurse extends ItemText {
 	}
 
 	public void setDeniers(final ItemStack purse, final EntityPlayer player, final int denier, final int denierargent, final int denieror) {
-		if (purse.stackTagCompound == null) {
+		if (purse.getTagCompound() == null) {
 			purse.setTagCompound(new NBTTagCompound());
 		}
 
-		purse.stackTagCompound.setInteger(ML_PURSE_DENIER, denier);
-		purse.stackTagCompound.setInteger(ML_PURSE_DENIERARGENT, denierargent);
-		purse.stackTagCompound.setInteger(ML_PURSE_DENIEROR, denieror);
+		purse.getTagCompound().setInteger(ML_PURSE_DENIER, denier);
+		purse.getTagCompound().setInteger(ML_PURSE_DENIERARGENT, denierargent);
+		purse.getTagCompound().setInteger(ML_PURSE_DENIEROR, denieror);
 
-		purse.stackTagCompound.setInteger(ML_PURSE_RAND, player.worldObj.isRemote ? 0 : 1);
+		purse.getTagCompound().setInteger(ML_PURSE_RAND, player.worldObj.isRemote ? 0 : 1);
 
 		setItemName(purse);
 	}
 
 	private void setItemName(final ItemStack purse) {
-		if (purse.stackTagCompound == null) {
+		if (purse.getTagCompound() == null) {
 			purse.setStackDisplayName(MLN.string("item.purse"));
 		} else {
-			final int deniers = purse.stackTagCompound.getInteger(ML_PURSE_DENIER);
-			final int denierargent = purse.stackTagCompound.getInteger(ML_PURSE_DENIERARGENT);
-			final int denieror = purse.stackTagCompound.getInteger(ML_PURSE_DENIEROR);
+			final int deniers = purse.getTagCompound().getInteger(ML_PURSE_DENIER);
+			final int denierargent = purse.getTagCompound().getInteger(ML_PURSE_DENIERARGENT);
+			final int denieror = purse.getTagCompound().getInteger(ML_PURSE_DENIEROR);
 
 			String label = "";
 
@@ -121,13 +121,13 @@ public class ItemPurse extends ItemText {
 	}
 
 	public int totalDeniers(final ItemStack purse) {
-		if (purse.stackTagCompound == null) {
+		if (purse.getTagCompound() == null) {
 			return 0;
 		}
 
-		final int deniers = purse.stackTagCompound.getInteger(ML_PURSE_DENIER);
-		final int denierargent = purse.stackTagCompound.getInteger(ML_PURSE_DENIERARGENT);
-		final int denieror = purse.stackTagCompound.getInteger(ML_PURSE_DENIEROR);
+		final int deniers = purse.getTagCompound().getInteger(ML_PURSE_DENIER);
+		final int denierargent = purse.getTagCompound().getInteger(ML_PURSE_DENIERARGENT);
+		final int denieror = purse.getTagCompound().getInteger(ML_PURSE_DENIEROR);
 
 		return deniers + denierargent * 64 + denieror * 64 * 64;
 	}

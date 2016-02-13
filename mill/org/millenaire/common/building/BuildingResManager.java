@@ -11,6 +11,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCocoa;
 import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -167,10 +169,9 @@ public class BuildingResManager {
 		for (int i = 0; i < soilTypes.size(); i++) {
 			if (soilTypes.get(i).equals(Mill.CROP_CACAO)) {
 				for (final Point p : soils.get(i)) {
-					if (p.getBlock(building.worldObj) == Blocks.cocoa) {
-						final int meta = p.getMeta(building.worldObj);
-
-						if (BlockCocoa.func_149987_c(meta) >= 2) {
+					IBlockState state=p.getBlockActualState(building.worldObj);
+					if (state.getBlock() == Blocks.cocoa) {
+						if ((Integer)state.getValue(BlockCocoa.AGE) >= 2) {
 							return p;
 						}
 					}
@@ -181,22 +182,26 @@ public class BuildingResManager {
 
 		return null;
 	}
+	
+	private boolean isBlockJungleWood(IBlockState state) {
+		return state.getValue(BlockPlanks.VARIANT) == BlockPlanks.EnumType.JUNGLE;
+	}
 
 	public Point getCocoaPlantingLocation() {
 		for (int i = 0; i < soilTypes.size(); i++) {
 			if (soilTypes.get(i).equals(Mill.CROP_CACAO)) {
 				for (final Point p : soils.get(i)) {
 					if (p.getBlock(building.worldObj) == Blocks.air) {
-						if (p.getNorth().getBlock(building.worldObj) == Blocks.log && BlockLog.func_150165_c(p.getNorth().getMeta(building.worldObj)) == 3) {
+						if (p.getNorth().getBlock(building.worldObj) == Blocks.log && isBlockJungleWood(p.getNorth().getBlockActualState(building.worldObj))) {
 							return p;
 						}
-						if (p.getEast().getBlock(building.worldObj) == Blocks.log && BlockLog.func_150165_c(p.getEast().getMeta(building.worldObj)) == 3) {
+						if (p.getEast().getBlock(building.worldObj) == Blocks.log && isBlockJungleWood(p.getEast().getBlockActualState(building.worldObj))) {
 							return p;
 						}
-						if (p.getSouth().getBlock(building.worldObj) == Blocks.log && BlockLog.func_150165_c(p.getSouth().getMeta(building.worldObj)) == 3) {
+						if (p.getSouth().getBlock(building.worldObj) == Blocks.log && isBlockJungleWood(p.getSouth().getBlockActualState(building.worldObj))) {
 							return p;
 						}
-						if (p.getWest().getBlock(building.worldObj) == Blocks.log && BlockLog.func_150165_c(p.getWest().getMeta(building.worldObj)) == 3) {
+						if (p.getWest().getBlock(building.worldObj) == Blocks.log && isBlockJungleWood(p.getWest().getBlockActualState(building.worldObj))) {
 							return p;
 						}
 					}

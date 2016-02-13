@@ -22,8 +22,8 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStairs;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
@@ -42,10 +42,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 import org.millenaire.common.Culture;
 import org.millenaire.common.InvItem;
@@ -65,9 +68,6 @@ import org.millenaire.common.pathing.atomicstryker.AStarNode;
 import org.millenaire.common.pathing.atomicstryker.AStarStatic;
 
 import com.google.common.collect.Multimap;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class MillCommonUtilities {
 
@@ -718,7 +718,7 @@ public class MillCommonUtilities {
 				for (int k = z - rz; k <= z + rz; k++) {
 					// if (worldObj.getBlock(i, j, k) != 0 &&
 					// worldObj.getBlock(i, j, k) != Blocks.snow.blockID)
-					if (world.getBlock(i, j, k) != null && world.getBlock(i, j, k).getMaterial().blocksMovement()) {
+					if (getBlock(world, i, j, k) != null && getBlock(world, i, j, k).getMaterial().blocksMovement()) {
 						counter++;
 					}
 				}
@@ -818,8 +818,8 @@ public class MillCommonUtilities {
 		for (int i = 0; i < 50; i++) {
 			dest = dest.getRelative(5 - MillCommonUtilities.randomInt(10), 5 - MillCommonUtilities.randomInt(20), 5 - MillCommonUtilities.randomInt(10));
 
-			if (isBlockIdSolid(world.getBlock(dest.getiX(), dest.getiY() - 1, dest.getiZ())) && !isBlockIdSolid(world.getBlock(dest.getiX(), dest.getiY(), dest.getiZ()))
-					&& !isBlockIdSolid(world.getBlock(dest.getiX(), dest.getiY() + 1, dest.getiZ()))) {
+			if (isBlockIdSolid(getBlock(world, dest.getiX(), dest.getiY() - 1, dest.getiZ())) && !isBlockIdSolid(getBlock(world, dest.getiX(), dest.getiY(), dest.getiZ()))
+					&& !isBlockIdSolid(getBlock(world, dest.getiX(), dest.getiY() + 1, dest.getiZ()))) {
 				return dest;
 			}
 		}
@@ -839,17 +839,17 @@ public class MillCommonUtilities {
 
 	public static int findTopSoilBlock(final World world, final int x, final int z) {
 
-		int y = world.getTopSolidOrLiquidBlock(x, z);
+		BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
 
-		while (y > -1 && !MillCommonUtilities.isBlockIdGround(world.getBlock(x, y, z))) {
-			y--;
+		while (pos.getY() > -1 && !MillCommonUtilities.isBlockIdGround(getBlock(world, x, pos.getY(), z))) {
+			pos=new BlockPos(x,pos.getY()-1,z);
 		}
 
-		if (y > 254) {
-			y = 254;
+		if (pos.getY() > 254) {
+			pos=new BlockPos(x,254,z);
 		}
 
-		return y + 1;
+		return pos.getY()+1;
 	}
 
 	public static Point findVerticalStandingPos(final World world, final Point dest) {
@@ -859,7 +859,7 @@ public class MillCommonUtilities {
 		}
 
 		int y = dest.getiY();
-		while (y < 250 && (isBlockIdSolid(world.getBlock(dest.getiX(), y, dest.getiZ())) || isBlockIdSolid(world.getBlock(dest.getiX(), y + 1, dest.getiZ())))) {
+		while (y < 250 && (isBlockIdSolid(getBlock(world, dest.getiX(), y, dest.getiZ())) || isBlockIdSolid(getBlock(world, dest.getiX(), y + 1, dest.getiZ())))) {
 			y++;
 		}
 
@@ -876,8 +876,8 @@ public class MillCommonUtilities {
 			final double var6 = random.nextGaussian() * 0.02D;
 			final double var8 = random.nextGaussian() * 0.02D;
 
-			ent.worldObj.spawnParticle("heart", ent.posX + random.nextFloat() * ent.width * 2.0F - ent.width, ent.posY + 0.5D + random.nextFloat() * ent.height, ent.posZ + random.nextFloat()
-					* ent.width * 2.0F - ent.width, var4, var6, var8);
+			ent.worldObj.spawnParticle(EnumParticleTypes.HEART, ent.posX + random.nextFloat() * ent.width * 2.0F - ent.width, ent.posY + 0.5D + random.nextFloat() * ent.height, ent.posZ + random.nextFloat()
+					* ent.width * 2.0F - ent.width, var4, var6, var8, new int[0]);
 		}
 	}
 
@@ -896,7 +896,7 @@ public class MillCommonUtilities {
 			return null;
 		}
 
-		return world.getBlock(p.getiX(), p.getiY(), p.getiZ());
+		return getBlock(world, p.getiX(), p.getiY(), p.getiZ());
 	}
 
 	public static int getBlockId(final Block b) {
@@ -938,8 +938,10 @@ public class MillCommonUtilities {
 		if (p.y >= 256) {
 			return -1;
 		}
+		
+		IBlockState state=p.getBlockActualState(world);
 
-		return world.getBlockMetadata(p.getiX(), p.getiY(), p.getiZ());
+		return state.getBlock().getMetaFromState(state);
 	}
 
 	public static List<Point> getBlocksAround(final World world, final Block[] targetBlocks, final Point pos, final int rx, final int ry, final int rz) {
@@ -950,7 +952,7 @@ public class MillCommonUtilities {
 			for (int j = pos.getiY() - ry; j <= pos.getiY() + ry; j++) {
 				for (int k = pos.getiZ() - rz; k <= pos.getiZ() + rz; k++) {
 					for (int l = 0; l < targetBlocks.length; l++) {
-						if (world.getBlock(i, j, k) == targetBlocks[l]) {
+						if (getBlock(world, i, j, k) == targetBlocks[l]) {
 							matches.add(new Point(i, j, k));
 						}
 					}
@@ -994,8 +996,8 @@ public class MillCommonUtilities {
 			for (int j = pos.getiY() - ry; j <= pos.getiY() + ry; j++) {
 				for (int k = pos.getiZ() - rz; k <= pos.getiZ() + rz; k++) {
 					for (int l = 0; l < blocks.length; l++) {
-						if (world.getBlock(i, j, k) == blocks[l]) {
-							if (meta == -1 || world.getBlockMetadata(i, j, k) == meta) {
+						if (getBlock(world, i, j, k) == blocks[l]) {
+							if (meta == -1 || getBlockMeta(world, i, j, k) == meta) {
 
 								final Point temp = new Point(i, j, k);
 
@@ -1015,6 +1017,10 @@ public class MillCommonUtilities {
 		} else {
 			return null;
 		}
+	}
+
+	public static int getBlockMeta(World world, int i, int j, int k) {
+		return getBlockMeta(world,new Point(i,j,k));
 	}
 
 	public static EntityItem getClosestItemVertical(final World world, final Point p, final InvItem[] items, final int radius, final int vertical) {
@@ -1055,14 +1061,14 @@ public class MillCommonUtilities {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static public List<Entity> getEntitiesWithinAABB(final World world, final Class type, final Point p, final int hradius, final int vradius) {
 
-		final AxisAlignedBB area = AxisAlignedBB.getBoundingBox(p.x, p.y, p.z, p.x + 1.0D, p.y + 1.0D, p.z + 1.0D).expand(hradius, vradius, hradius);
+		final AxisAlignedBB area = AxisAlignedBB.fromBounds(p.x, p.y, p.z, p.x + 1.0D, p.y + 1.0D, p.z + 1.0D).expand(hradius, vradius, hradius);
 		return world.getEntitiesWithinAABB(type, area);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	static public List<Entity> getEntitiesWithinAABB(final World world, final Class type, final Point pstart, final Point pend) {
 
-		final AxisAlignedBB area = AxisAlignedBB.getBoundingBox(pstart.x, pstart.y, pstart.z, pend.x, pend.y, pend.z);
+		final AxisAlignedBB area = AxisAlignedBB.fromBounds(pstart.x, pstart.y, pstart.z, pend.x, pend.y, pend.z);
 		return world.getEntitiesWithinAABB(type, area);
 	}
 
@@ -1285,7 +1291,7 @@ public class MillCommonUtilities {
 			if (o instanceof EntityPlayer) {
 				final EntityPlayer player = (EntityPlayer) o;
 
-				if (player.getDisplayName().equals(playerName)) {
+				if (player.getName().equals(playerName)) {
 					return player;
 				}
 			}
@@ -1508,7 +1514,7 @@ public class MillCommonUtilities {
 		if (b.isOpaqueCube()) {
 			return true;
 		}
-		if (b == Blocks.glass || b == Blocks.glass_pane || b == Blocks.stone_slab || b instanceof BlockSlab || b instanceof BlockStairs || b == Blocks.fence || b == Mill.paperWall) {
+		if (b == Blocks.glass || b == Blocks.glass_pane || b == Blocks.stone_slab || b instanceof BlockSlab || b instanceof BlockStairs || MillCommonUtilities.isFence(b) || b == Mill.paperWall) {
 			return true;
 		}
 
@@ -1523,7 +1529,7 @@ public class MillCommonUtilities {
 	}
 
 	static public boolean isBlockOpaqueCube(final World world, final int i, final int j, final int k) {
-		final Block b = world.getBlock(i, j, k);
+		final Block b = getBlock(world, i, j, k);
 		if (b == null) {
 			return false;
 		}
@@ -1658,7 +1664,7 @@ public class MillCommonUtilities {
 	}
 
 	public static void notifyBlock(final World world, final Point p) {
-		world.notifyBlockChange(p.getiX() + 1, p.getiY(), p.getiZ(), null);
+		world.markBlockForUpdate(p.getBlockPos());
 	}
 
 	static public int[] packLong(final long nb) {
@@ -1671,13 +1677,13 @@ public class MillCommonUtilities {
 
 	public static void playSoundBlockBreaking(final World world, final Point p, final Block b, final float volume) {
 		if (b != null && b.stepSound != null) {
-			playSound(world, p, b.stepSound.getBreakSound(), b.stepSound.getVolume() * volume, b.stepSound.getPitch());
+			playSound(world, p, b.stepSound.getBreakSound(), b.stepSound.getVolume() * volume, b.stepSound.getFrequency());
 		}
 	}
 
 	public static void playSoundBlockPlaced(final World world, final Point p, final Block b, final float volume) {
 		if (b != null && b.stepSound != null) {
-			playSound(world, p, b.stepSound.soundName, b.stepSound.getVolume() * volume, b.stepSound.getPitch());
+			playSound(world, p, b.stepSound.soundName, b.stepSound.getVolume() * volume, b.stepSound.getFrequency());
 		}
 	}
 
@@ -1821,7 +1827,7 @@ public class MillCommonUtilities {
 		}
 
 		if (playSound && block == Blocks.air) {
-			final Block oldBlock = world.getBlock(p.getiX(), p.getiY(), p.getiZ());
+			final Block oldBlock = getBlock(world, p.getiX(), p.getiY(), p.getiZ());
 
 			if (oldBlock != null) {
 				if (oldBlock.stepSound != null) {
@@ -1831,9 +1837,9 @@ public class MillCommonUtilities {
 		}
 
 		if (notify) {
-			world.setBlock(p.getiX(), p.getiY(), p.getiZ(), block, 0, 3);
+			world.setBlockState(p.getBlockPos(), block.getDefaultState());
 		} else {
-			world.setBlock(p.getiX(), p.getiY(), p.getiZ(), block, 0, 2);
+			world.setBlockState(p.getBlockPos(), block.getDefaultState(), 2);
 		}
 
 		if (playSound && block != Blocks.air) {
@@ -1857,7 +1863,7 @@ public class MillCommonUtilities {
 		}
 
 		if (playSound && block != Blocks.air) {
-			final Block oldBlock = world.getBlock(x, y, z);
+			final Block oldBlock = getBlock(world, x, y, z);
 
 			if (oldBlock != null) {
 				if (oldBlock.stepSound != null) {
@@ -1866,15 +1872,18 @@ public class MillCommonUtilities {
 
 			}
 		}
-
+		
 		if (block == null) {
 			MLN.printException("Trying to set null block", new Exception());
+			return false;
 		}
 
+		IBlockState state=block.getStateFromMeta(metadata);
+
 		if (notify) {
-			world.setBlock(x, y, z, block, metadata, 3);
+			world.setBlockState(new BlockPos(x,y,z), state);
 		} else {
-			world.setBlock(x, y, z, block, metadata, 2);
+			world.setBlockState(new BlockPos(x,y,z), state, 2);
 		}
 
 		if (playSound && block != Blocks.air) {
@@ -1904,11 +1913,16 @@ public class MillCommonUtilities {
 		if (y >= 256) {
 			return false;
 		}
+		
+		Point p=new Point(x,y,z);
+		
+		IBlockState state=p.getBlockActualState(world);
+		state=state.getBlock().getStateFromMeta(metadata);
 
 		if (notify) {
-			world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
+			world.setBlockState(p.getBlockPos(),state);
 		} else {
-			world.setBlockMetadataWithNotify(x, y, z, metadata, 2);
+			world.setBlockState(p.getBlockPos(),state, 2);
 		}
 
 		return true;
@@ -1946,7 +1960,7 @@ public class MillCommonUtilities {
 
 	static public EntityItem spawnItem(final World world, final Point p, final ItemStack itemstack, final float f) {
 		final EntityItem entityitem = new EntityItem(world, p.x, p.y + f, p.z, itemstack);
-		entityitem.delayBeforeCanPickup = 10;
+		entityitem.setDefaultPickupDelay();
 		world.spawnEntityInWorld(entityitem);
 		return entityitem;
 	}
@@ -2001,7 +2015,7 @@ public class MillCommonUtilities {
 		final int ey = (int) p.y;
 		final int ez = (int) (p.z + z);
 
-		if (world.getBlock(ex, ey, ez) != Blocks.air && world.getBlock(ex, ey + 1, ez) != Blocks.air) {
+		if (getBlock(world, ex, ey, ez) != Blocks.air && getBlock(world, ex, ey + 1, ez) != Blocks.air) {
 			return null;
 		}
 
@@ -2041,5 +2055,24 @@ public class MillCommonUtilities {
 
 		}
 		return nbttaglist;
+	}
+	
+	public static boolean isWoodenDoor(Block block) {
+		return (block == Blocks.acacia_door || block == Blocks.birch_door || block == Blocks.dark_oak_door || block == Blocks.jungle_door
+				 || block == Blocks.oak_door || block == Blocks.spruce_door);
+	}
+	
+	public static boolean isFenceGate(Block block) {
+		return (block == Blocks.acacia_fence_gate || block == Blocks.birch_fence_gate || block == Blocks.dark_oak_fence_gate || block == Blocks.jungle_fence_gate
+				 || block == Blocks.oak_fence_gate || block == Blocks.spruce_fence_gate);
+	}
+	
+	public static boolean isFence(Block block) {
+		return (block == Blocks.acacia_fence || block == Blocks.birch_fence || block == Blocks.dark_oak_fence || block == Blocks.jungle_fence
+				 || block == Blocks.oak_fence || block == Blocks.spruce_fence);
+	}
+	
+	public static Block getBlock(World world,int x,int y,int z) {
+		return world.getBlockState(new BlockPos(x,y,z)).getBlock();
 	}
 }

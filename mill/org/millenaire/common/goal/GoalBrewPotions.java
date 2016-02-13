@@ -20,7 +20,7 @@ public class GoalBrewPotions extends Goal {
 
 			final TileEntityBrewingStand brewingStand = p.getBrewingStand(villager.worldObj);
 
-			if (brewingStand != null && brewingStand.getBrewTime() == 0) {
+			if (brewingStand != null && brewingStand.getField(0) == 0) {
 				if (brewingStand.getStackInSlot(3) == null && nbWarts > 0 && nbPotions < 64) {
 					return packDest(p, villager.getHouse());
 				}
@@ -58,7 +58,7 @@ public class GoalBrewPotions extends Goal {
 			return true;
 		}
 
-		if (brewingStand.getBrewTime() == 0) {
+		if (brewingStand.getField(0) == 0) {
 			if (brewingStand.getStackInSlot(3) == null && nbWarts > 0 && nbPotions < 64) {
 				brewingStand.setInventorySlotContents(3, new ItemStack(Items.nether_wart, 1));
 				villager.getHouse().takeGoods(Items.nether_wart, 1);

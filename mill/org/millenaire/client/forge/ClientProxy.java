@@ -7,13 +7,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import org.lwjgl.input.Keyboard;
 import org.millenaire.client.MillClientUtilities;
@@ -37,11 +40,6 @@ import org.millenaire.common.UserProfile;
 import org.millenaire.common.forge.CommonProxy;
 import org.millenaire.common.forge.Mill;
 import org.millenaire.common.item.Goods.ItemMillenaireBow;
-
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ClientProxy extends CommonProxy {
 	@Override
@@ -90,11 +88,11 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public UserProfile getClientProfile() {
-		if (Mill.clientWorld.profiles.containsKey(Mill.proxy.getTheSinglePlayer().getDisplayName())) {
-			return Mill.clientWorld.profiles.get(Mill.proxy.getTheSinglePlayer().getDisplayName());
+		if (Mill.clientWorld.profiles.containsKey(Mill.proxy.getTheSinglePlayer().getName())) {
+			return Mill.clientWorld.profiles.get(Mill.proxy.getTheSinglePlayer().getName());
 		}
 
-		final UserProfile profile = new UserProfile(Mill.clientWorld, Mill.proxy.getTheSinglePlayer().getDisplayName(), Mill.proxy.getTheSinglePlayer().getDisplayName());
+		final UserProfile profile = new UserProfile(Mill.clientWorld, Mill.proxy.getTheSinglePlayer().getName(), Mill.proxy.getTheSinglePlayer().getName());
 		Mill.clientWorld.profiles.put(profile.key, profile);
 		return profile;
 	}

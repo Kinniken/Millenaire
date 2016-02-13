@@ -133,13 +133,13 @@ public class GuiActions {
 	}
 
 	public static void hireExtend(final EntityPlayer player, final MillVillager villager) {
-		villager.hiredBy = player.getDisplayName();
+		villager.hiredBy = player.getName();
 		villager.hiredUntil += 24000;
 		MillCommonUtilities.changeMoney(player.inventory, -villager.getHireCost(player), player);
 	}
 
 	public static void hireHire(final EntityPlayer player, final MillVillager villager) {
-		villager.hiredBy = player.getDisplayName();
+		villager.hiredBy = player.getName();
 		villager.hiredUntil = villager.worldObj.getWorldTime() + 24000;
 		final VillagerRecord vr = villager.getTownHall().getVillagerRecordById(villager.villager_id);
 		if (vr != null) {
@@ -265,7 +265,7 @@ public class GuiActions {
 	}
 
 	public static void questCompleteStep(final EntityPlayer player, final MillVillager villager) {
-		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName());
+		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getName());
 		final QuestInstance qi = profile.villagersInQuests.get(villager.villager_id);
 
 		if (qi == null) {
@@ -276,7 +276,7 @@ public class GuiActions {
 	}
 
 	public static void questRefuse(final EntityPlayer player, final MillVillager villager) {
-		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName());
+		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getName());
 		final QuestInstance qi = profile.villagersInQuests.get(villager.villager_id);
 		if (qi == null) {
 			MLN.error(villager, "Could not find quest instance for this villager.");
@@ -315,7 +315,7 @@ public class GuiActions {
 		final Building closestVillage = mw.getClosestVillage(pos);
 
 		if (closestVillage != null && pos.squareRadiusDistance(closestVillage.getPos()) < closestVillage.villageType.radius + 10) {
-			if (closestVillage.controlledBy(player.getDisplayName())) {
+			if (closestVillage.controlledBy(player.getName())) {
 				final Building b = closestVillage.getBuildingAtCoordPlanar(pos);
 
 				if (b != null) {
@@ -358,14 +358,14 @@ public class GuiActions {
 	}
 
 	public static void villageChiefPerformCrop(final EntityPlayer player, final MillVillager chief, final String value) {
-		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName());
+		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getName());
 		profile.setTag(MillWorld.CROP_PLANTING + value);
 		MillCommonUtilities.changeMoney(player.inventory, -CROP_PRICE, player);
 		ServerSender.sendTranslatedSentence(player, MLN.WHITE, "ui.croplearned", chief.getName(), "item." + value);
 	}
 
 	public static void villageChiefPerformCultureControl(final EntityPlayer player, final MillVillager chief) {
-		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName());
+		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getName());
 		profile.setTag(MillWorld.CULTURE_CONTROL + chief.getCulture().key);
 		ServerSender.sendTranslatedSentence(player, MLN.WHITE, "ui.control_gotten", chief.getName(), "culture." + chief.getCulture().key);
 	}
@@ -379,7 +379,7 @@ public class GuiActions {
 			effect = -10;
 		}
 
-		final int reputation = Math.min(chief.getTownHall().getReputation(player.getDisplayName()), Building.MAX_REPUTATION);
+		final int reputation = Math.min(chief.getTownHall().getReputation(player.getName()), Building.MAX_REPUTATION);
 
 		// coeff is weighted average of log ration and regular ratio (to make it
 		// progressive but not too much)
@@ -391,7 +391,7 @@ public class GuiActions {
 
 		chief.getTownHall().adjustRelation(village, (int) effect, false);
 
-		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getDisplayName());
+		final UserProfile profile = Mill.getMillWorld(player.worldObj).getProfile(player.getName());
 		profile.adjustDiplomacyPoint(chief.getTownHall(), -1);
 
 		if (MLN.LogVillage >= MLN.MAJOR) {

@@ -1,5 +1,6 @@
 package org.millenaire.common.goal;
 
+import net.minecraft.block.BlockDirt;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ public class GoalBuildPath extends Goal {
 
 	@Override
 	public int actionDuration(final MillVillager villager) {
-		final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.dirt, 0);
+		final int toolEfficiency = (int) villager.getBestShovel().getDigSpeed(new ItemStack(villager.getBestShovel(), 1), Blocks.dirt.getDefaultState());
 
 		return 100 - toolEfficiency * 5;
 	}

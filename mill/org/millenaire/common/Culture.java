@@ -1073,7 +1073,7 @@ public class Culture {
 			culture.mainLanguageServer = main;
 			culture.fallbackLanguageServer = fallback;
 
-			final String playerName = Mill.proxy.getTheSinglePlayer().getDisplayName();
+			final String playerName = Mill.proxy.getTheSinglePlayer().getName();
 
 			final CultureLanguage[] langs = new CultureLanguage[] { main, fallback };
 

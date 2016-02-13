@@ -1,5 +1,6 @@
 package org.millenaire.client.gui;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -393,7 +394,7 @@ public class GuiPujas extends GuiContainer {
 	}
 
 	@Override
-	protected void mouseClicked(final int x, final int y, final int par3) {
+	protected void mouseClicked(final int x, final int y, final int par3) throws IOException {
 
 		super.mouseClicked(x, y, par3);
 
