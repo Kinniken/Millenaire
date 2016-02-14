@@ -37,6 +37,14 @@ import org.millenaire.common.network.ServerReceiver;
 import org.millenaire.common.network.ServerSender;
 import org.millenaire.common.network.StreamReadWrite;
 
+/**
+ * Class containing the data on a world that's specific to Millénaire (but not to a particular village).
+ * Basically things that would be in the Minecraft world object itself if it could be extended.
+ * 
+ * For instance, the buildings and villagers arrays contain all buildings and all villagers known to Millénaire in the current world.
+ * 
+ * @author cedricdj
+ */
 public class MillWorld {
 
 	public static final String CULTURE_CONTROL = "culturecontrol_";

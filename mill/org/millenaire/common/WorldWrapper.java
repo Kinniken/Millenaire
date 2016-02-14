@@ -7,6 +7,14 @@ import net.minecraft.world.chunk.Chunk;
 
 import org.millenaire.common.core.MillCommonUtilities;
 
+/**
+ * Class once used to simulate a Minecraft world to work on pathing outside the game.
+ * 
+ * Seems no longer used.
+ * 
+ * @author cedricdj
+ *
+ */
 public class WorldWrapper {
 
 	World world;

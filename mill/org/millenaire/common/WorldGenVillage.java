@@ -25,12 +25,21 @@ import org.millenaire.common.forge.Mill;
 import org.millenaire.common.network.ServerSender;
 import org.millenaire.common.pathing.AStarPathing;
 
+/**
+ * Main class handling village generation (initial generation, not new buildings in existing villages)
+ * 
+ * @author cedricdj
+ *
+ */
 public class WorldGenVillage implements IWorldGenerator {
 
 	private static final double MINIMUM_USABLE_BLOCK_PERC = 0.7;
 
 	static public HashSet<Integer> coordsTried = new HashSet<Integer>();
 
+	/**
+	 * Special code to build bedrock level lone buildings, only used for the creation quest
+	 */
 	public static boolean generateBedrockLoneBuilding(final Point p, final World world, final VillageType village, final Random random, final int minDistance, final int maxDistance,
 			final EntityPlayer player) throws MillenaireException {
 
@@ -121,6 +130,9 @@ public class WorldGenVillage implements IWorldGenerator {
 		return true;
 	}
 
+	/**
+	 * Called by Forge when a new zone is being generated
+	 */
 	@Override
 	public void generate(final Random random, final int chunkX, final int chunkZ, final World world, final IChunkProvider chunkGenerator, final IChunkProvider chunkProvider) {
 
@@ -185,6 +197,9 @@ public class WorldGenVillage implements IWorldGenerator {
 
 	}
 
+	/**
+	 * Attempts to generate a hamlet (satellite village of an existing village)
+	 */
 	private void generateHamlet(final World world, final VillageType hamlet, final Point centralVillage, final String name, final Random random) {
 		boolean generated = false;
 

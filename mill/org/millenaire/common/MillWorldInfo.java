@@ -15,7 +15,9 @@ import org.millenaire.common.core.MillCommonUtilities;
 import org.millenaire.common.forge.Mill;
 
 /**
- * Server-side object representing what a village knows of the land around it
+ * Server-side object representing what a village knows of the land around it.
+ * 
+ * Can basically be thought of being the raw data for the village map (with more details, of course)
  * 
  * @author cedricdj
  * 
