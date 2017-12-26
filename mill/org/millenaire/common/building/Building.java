@@ -1887,7 +1887,7 @@ public class Building {
 			husbandType = location.maleResident.get(0);
 		}
 		String wifeType = null;
-		if (location.femaleResident.size() > 0 && !culture.getVillagerType(location.maleResident.get(0)).isChild) {
+		if (location.femaleResident.size() > 0 && !culture.getVillagerType(location.femaleResident.get(0)).isChild) {
 			wifeType = location.femaleResident.get(0);
 		}
 

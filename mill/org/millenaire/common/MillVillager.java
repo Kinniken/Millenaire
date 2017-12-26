@@ -2838,6 +2838,10 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 	public boolean performNightAction() {
 
+		if ((getRecord() == null) || (getHouse() == null) || (getTownHall() == null)) {
+			return false;
+		}
+		
 		if (isChild()) {
 			if (size < MAX_CHILD_SIZE) {
 				growSize();
