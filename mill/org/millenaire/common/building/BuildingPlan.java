@@ -341,7 +341,7 @@ public class BuildingPlan implements IBuildingPlan {
 										level[i][k] = pt;
 									}
 								} else {
-									if (existing != pt && !(existing.isType(bempty) && pt.block != Blocks.air)) {
+									if (existing != pt && !(existing.isType(bempty) && pt.block == Blocks.air)) {
 										level[i][k] = pt;
 									}
 								}
