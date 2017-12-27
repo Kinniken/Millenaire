@@ -4,17 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 import org.millenaire.client.gui.DisplayActions;
 import org.millenaire.client.gui.GuiPanelParchment;
 import org.millenaire.client.gui.GuiText;
@@ -42,24 +39,6 @@ public class MillClientUtilities {
 
 	private static long lastPing = 0;
 	private static long lastFreeRes = 0;
-
-	private static final ResourceLocation textureTest = new ResourceLocation(Mill.modId, "textures/blocks/blockGold.png");
-
-	public static void checkTextSize() {
-		final ITextureObject texture = Minecraft.getMinecraft().renderEngine.getTexture(textureTest);
-
-		if (texture == null) {
-			return;
-		}
-
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getGlTextureId());
-		final int textSize = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
-
-		if (textSize != MLN.textureSize) {
-			MLN.textureSize = textSize;
-			Minecraft.getMinecraft().renderEngine.tick();
-		}
-	}
 
 	public static void displayChunkPanel(final World world, final EntityPlayer player) {
 

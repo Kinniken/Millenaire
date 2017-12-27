@@ -1056,8 +1056,6 @@ public class MillWorld {
 			}
 		}
 
-		Mill.proxy.checkTextureSize();
-
 		testLog();
 
 	}

@@ -121,7 +121,6 @@ public class MillWorldInfo implements Cloneable {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public MillWorldInfo clone() throws CloneNotSupportedException {
 		final MillWorldInfo o = (MillWorldInfo) super.clone();
 		o.topGround = shortArrayDeepClone(topGround);

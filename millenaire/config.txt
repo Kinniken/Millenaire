@@ -18,9 +18,9 @@ escort_key=G
 //Fallback Language; Secondary game language, used when the main one is not available.
 fallback_language=en
 
-//Textures dynamiques; Utiliser automatiquement les textures 64x si le pack de texture est 64x ou plus. Défaut: vrai.
-//Dynamic Textures; Automatically switch to the 64x texture pack if the Minecraft texture pack is 64x or above.
-dynamic_textures=true
+//Textures HD; Utiliser les textures HD (64x64)
+//HD Textures; Use HD (64x64) textures.
+hd_textures=false
 
 //Apprentissage des langues; Les langues doivent être "apprises" (les traductions n'apparaissent qu'après assez d'interaction avec une culture).
 //Language Learning; Whether languages need to be "learned" (translations will only appear after the player interacts enough with a culture).

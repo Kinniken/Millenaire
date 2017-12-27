@@ -3,7 +3,6 @@ package org.millenaire.client.gui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -185,7 +184,6 @@ public class GuiVillageHead extends GuiText {
 		text.add(new Line());
 		text.add(new Line(MLN.string("ui.possiblehousing") + ":"));
 		text.add(new Line());
-		final Map<EnumProjects, List<BuildingProject>> projects = chief.getTownHall().buildingProjects;
 
 		final UserProfile profile = Mill.proxy.getClientProfile();
 

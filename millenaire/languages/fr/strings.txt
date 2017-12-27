@@ -1004,8 +1004,8 @@ config.escort_key.desc=Touche pour changer le mode des escortes (agressif ou non
 config.fallback_language.label=Langue de recours
 config.fallback_language.desc=Langue de recours, pour les textes non disponibles dans la principale.
 
-config.dynamic_textures.label=Textures dynamiques
-config.dynamic_textures.desc=Utiliser automatiquement les textures 64x si le pack de texture est 64x ou plus.
+config.hd_textures.label=Textures HD
+config.hd_textures.desc=Utiliser les textures HD (64x64) (nécessite de relancer Minecraft).
 
 config.language_learning.label=Apprentissage des langues
 config.language_learning.desc=Les langues doivent être "apprises" (les traductions n'apparaissent qu'après assez d'interaction avec une culture).

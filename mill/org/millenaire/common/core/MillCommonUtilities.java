@@ -1067,7 +1067,7 @@ public class MillCommonUtilities {
 	}
 
 	public static IIcon getIcon(final IIconRegister register, final String iconName) {
-		return register.registerIcon(Mill.modId + ":" + iconName + MLN.getTextSuffix());
+		return register.registerIcon(Mill.modId + ":" + iconName + MLN.getTextSuffix(register));
 	}
 
 	public static int getInvItemHashTotal(final HashMap<InvItem, Integer> map) {
@@ -1144,6 +1144,7 @@ public class MillCommonUtilities {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static double getItemWeaponDamage(final Item item) {
+		@SuppressWarnings("deprecation")
 		final Multimap multimap = item.getItemAttributeModifiers();
 
 		if (multimap.containsKey(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())) {

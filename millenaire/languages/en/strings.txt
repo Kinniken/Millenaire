@@ -1008,8 +1008,8 @@ config.escort_key.desc=Key to toggle hired villagers between agressive and defen
 config.fallback_language.label=Fallback Language
 config.fallback_language.desc=Secondary game language, used when the main one is not available.
 
-config.dynamic_textures.label=Dynamic Textures
-config.dynamic_textures.desc=Automatically switch to the 64x texture pack if the Minecraft texture pack is 64x or above.
+config.hd_textures.label=HD Textures
+config.hd_textures.desc=Use HD (64x64) textures (requires restarting Minecraft).
 
 config.language_learning.label=Language Learning
 config.language_learning.desc=Whether languages need to be "learned" (translations will only appear after the player interacts enough with a culture).

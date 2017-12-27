@@ -58,3 +58,6 @@ logbuildingplan=major
 //Rayon de protection spawn; Rayon autour du point d'apparition dans lequel Millénaire ne génère rien. Défaut: 150.
 spawn_protection_radius=500
 
+//HD Textures; Use HD (64x64) textures.
+hd_textures=true
+

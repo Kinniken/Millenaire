@@ -34,7 +34,6 @@ public class BlockMillCrops extends BlockCrops implements IGrowable {
 		this.requireIrrigation = requireIrrigation;
 		this.slowGrowth = slowGrowth;
 		setTickRandomly(true);
-		final float f = 0.5F;
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.25F, 1.0F);
 	}
 
@@ -48,6 +47,7 @@ public class BlockMillCrops extends BlockCrops implements IGrowable {
 		return (Item) seed;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public ArrayList getDrops(final World world, final int x, final int y, final int z, final int metadata, final int fortune) {
 		final ArrayList ret = new ArrayList();

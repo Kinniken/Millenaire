@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -607,8 +608,7 @@ public class MLN {
 	private static FileWriter writer;
 
 	private static String loadedLanguage = null;
-	public static int textureSize = -1;
-	public static boolean dynamictextures = true;
+	public static boolean hdtextures = true;
 
 	public static String customTexture = null;
 
@@ -778,7 +778,7 @@ public class MLN {
 
 	public static ResourceLocation getLargeLockedChestTexture() {
 
-		if (MLN.dynamictextures && textureSize >= 64) {
+		if (MLN.hdtextures) {
 			return textureLargeChest64;
 		}
 
@@ -787,7 +787,7 @@ public class MLN {
 
 	public static ResourceLocation getLockedChestTexture() {
 
-		if (MLN.dynamictextures && textureSize >= 64) {
+		if (MLN.hdtextures) {
 			return textureChest64;
 		}
 
@@ -858,17 +858,8 @@ public class MLN {
 		return getRawString(key, mustFind, true, false);
 	}
 
-	public static String getTextSuffix() {
-
-		if (textureSize == -1) {
-			Mill.proxy.testTextureSize();
-		}
-
-		if (customTexture != null) {
-			return "";
-		}
-
-		if (MLN.dynamictextures && textureSize >= 64) {
+	public static String getTextSuffix(final IIconRegister register) {
+		if (MLN.hdtextures) {
 			return "_64";
 		}
 
@@ -884,7 +875,7 @@ public class MLN {
 			configPage.add(new MillConfig(MLN.class.getField("keyAggressiveEscorts"), "escort_key", MillConfig.KEY).setMaxStringLength(1));
 
 			configPage.add(new MillConfig(MLN.class.getField("fallback_language"), "fallback_language", "en", "fr"));
-			configPage.add(new MillConfig(MLN.class.getField("dynamictextures"), "dynamic_textures"));
+			configPage.add(new MillConfig(MLN.class.getField("hdtextures"), "hd_textures"));
 			configPage.add(new MillConfig(MLN.class.getField("languageLearning"), "language_learning"));
 			configPage.add(new MillConfig(MLN.class.getField("loadAllLanguages"), "load_all_languages"));
 			configPage.add(new MillConfig(MLN.class.getField("displayStart"), "display_start"));
@@ -1724,8 +1715,8 @@ public class MLN {
 								// RaidingRate=Integer.parseInt(value);
 							} else if (key.equalsIgnoreCase("sprites_path")) {
 								customTexture = value.trim();
-							} else if (key.equalsIgnoreCase("dynamic_textures")) {
-								dynamictextures = Boolean.parseBoolean(value);
+							} else if (key.equalsIgnoreCase("hd_textures")) {
+								hdtextures = Boolean.parseBoolean(value);
 							} else if (key.equalsIgnoreCase("quest_biome_forest")) {
 								questBiomeForest = value.trim().toLowerCase();
 							} else if (key.equalsIgnoreCase("quest_biome_desert")) {

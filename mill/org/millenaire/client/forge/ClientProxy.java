@@ -44,10 +44,6 @@ import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ClientProxy extends CommonProxy {
-	@Override
-	public void checkTextureSize() {
-		MillClientUtilities.checkTextSize();
-	}
 
 	@Override
 	public IGuiHandler createGuiHandler() {
@@ -58,9 +54,9 @@ public class ClientProxy extends CommonProxy {
 	public void declareAmuletTextures(final IIconRegister iconRegister) {
 		final TextureMap textureMap = (TextureMap) iconRegister;
 
-		textureMap.setTextureEntry(Mill.modId + ":amulet_alchemist" + MLN.getTextSuffix(), new TextureAmuletAlchemist(Mill.modId + ":amulet_alchemist" + MLN.getTextSuffix()));
-		textureMap.setTextureEntry(Mill.modId + ":amulet_vishnu" + MLN.getTextSuffix(), new TextureAmuletVishnu(Mill.modId + ":amulet_vishnu" + MLN.getTextSuffix()));
-		textureMap.setTextureEntry(Mill.modId + ":amulet_yggdrasil" + MLN.getTextSuffix(), new TextureAmuletYddrasil(Mill.modId + ":amulet_yggdrasil" + MLN.getTextSuffix()));
+		textureMap.setTextureEntry(Mill.modId + ":amulet_alchemist" + MLN.getTextSuffix(iconRegister), new TextureAmuletAlchemist(Mill.modId + ":amulet_alchemist" + MLN.getTextSuffix(iconRegister)));
+		textureMap.setTextureEntry(Mill.modId + ":amulet_vishnu" + MLN.getTextSuffix(iconRegister), new TextureAmuletVishnu(Mill.modId + ":amulet_vishnu" + MLN.getTextSuffix(iconRegister)));
+		textureMap.setTextureEntry(Mill.modId + ":amulet_yggdrasil" + MLN.getTextSuffix(iconRegister), new TextureAmuletYddrasil(Mill.modId + ":amulet_yggdrasil" + MLN.getTextSuffix(iconRegister)));
 
 	}
 
@@ -304,11 +300,6 @@ public class ClientProxy extends CommonProxy {
 		Mill.japaneseGuardArmourId = RenderingRegistry.addNewArmourRendererPrefix("ML_japanese_guard");
 		Mill.byzantineArmourId = RenderingRegistry.addNewArmourRendererPrefix("ML_byzantine");
 		Mill.mayanQuestArmourId = RenderingRegistry.addNewArmourRendererPrefix("ML_mayan_quest");
-	}
-
-	@Override
-	public void testTextureSize() {
-		MillClientUtilities.checkTextSize();
 	}
 
 	@Override

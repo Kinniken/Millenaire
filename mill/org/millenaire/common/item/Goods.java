@@ -75,7 +75,7 @@ public class Goods {
 		@Override
 		public void registerIcons(final IIconRegister iconRegister) {
 			Mill.proxy.declareAmuletTextures(iconRegister);
-			itemIcon = iconRegister.registerIcon(Mill.modId + ":" + baseIconName + MLN.getTextSuffix());
+			itemIcon = iconRegister.registerIcon(Mill.modId + ":" + baseIconName + MLN.getTextSuffix(iconRegister));
 		}
 	}
 
@@ -126,7 +126,7 @@ public class Goods {
 		public void registerIcons(final IIconRegister iconRegister) {
 
 			Mill.proxy.declareAmuletTextures(iconRegister);
-			itemIcon = iconRegister.registerIcon(Mill.modId + ":" + baseIconName + MLN.getTextSuffix());
+			itemIcon = iconRegister.registerIcon(Mill.modId + ":" + baseIconName + MLN.getTextSuffix(iconRegister));
 		}
 
 	}
@@ -144,7 +144,7 @@ public class Goods {
 		@Override
 		public void registerIcons(final IIconRegister iconRegister) {
 			Mill.proxy.declareAmuletTextures(iconRegister);
-			itemIcon = iconRegister.registerIcon(Mill.modId + ":" + baseIconName + MLN.getTextSuffix());
+			itemIcon = iconRegister.registerIcon(Mill.modId + ":" + baseIconName + MLN.getTextSuffix(iconRegister));
 		}
 	}
 

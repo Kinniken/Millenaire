@@ -25,10 +25,6 @@ public class CommonProxy {
 
 	protected File customDir = null;
 
-	public void checkTextureSize() {
-
-	}
-
 	public IGuiHandler createGuiHandler() {
 		return new CommonGuiHandler();
 	}
@@ -173,10 +169,6 @@ public class CommonProxy {
 	}
 
 	public void setTextureIds() {
-
-	}
-
-	public void testTextureSize() {
 
 	}
 
