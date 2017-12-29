@@ -42,6 +42,9 @@ well_A0=Well
 alchemyworkshop_A0=
 townhall_A0=
 townhallagricole_A0=
+largefort_A_armoury_A0=
+largefort_A_barrack_A0=Guard Room
+largefort_A0=
 
 playerfort_A0=
 anomalyone_A0=

@@ -33,7 +33,7 @@ hameau:hameau_artisans
 hameau:hameau_abbatiale
 
 //starting buildings:
-centre:fort
+centre:largefort
 start:guardhouse
 start:guardhouse
 start:inn
@@ -50,7 +50,6 @@ player:gifthouse
 //to be built in priority
 core:forge
 core:church
-core:armoury
 core:tavern
 core:market
 core:fountain
@@ -72,6 +71,7 @@ never:lumbermanhut
 never:bakery
 never:quarry
 never:grove
+never:armoury
 
 //Selling prices:
 sellingPrice:cider,60

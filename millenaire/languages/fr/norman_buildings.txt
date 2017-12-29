@@ -44,6 +44,9 @@ watchtower_A0=
 fountain_A0=
 largefountain_A0=
 well_A0=
+largefort_A_armoury_A0=
+largefort_A_barrack_A0=
+largefort_A0=
 
 playerfort_A0=
 anomalyone_A0=

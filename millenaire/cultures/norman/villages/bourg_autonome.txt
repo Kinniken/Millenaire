@@ -15,7 +15,7 @@ pathmaterial:pathgravel
 pathmaterial:pathslabs
 
 //starting buildings:
-centre:fort
+centre:largefort
 start:lumbermanhut
 start:farm
 start:pigfarm
