@@ -1520,7 +1520,7 @@ public class MillCommonUtilities {
 		if (b == null) {
 			return false;
 		}
-		return b.getMaterial().blocksMovement();
+		return b.isOpaqueCube();
 	}
 
 	static public boolean isBlockOpaqueCube(final World world, final int i, final int j, final int k) {
