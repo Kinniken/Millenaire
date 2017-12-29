@@ -200,6 +200,17 @@ public class BuildingPlan implements IBuildingPlan {
 			}
 
 			final String planName = sign.signText[0];
+			
+			int upgradeLevel = -1;
+			
+			if (sign.signText[1] != null && sign.signText[1].length() > 0) {
+				try {
+					upgradeLevel = Integer.parseInt(sign.signText[1]);
+				} catch (final Exception e) {
+					ServerSender.sendTranslatedSentence(player, MLN.ORANGE, "export.errorinvalidupgradelevel");
+					return;
+				}
+			}
 
 			int xEnd = startPoint.getiX() + 1;
 			boolean found = false;
@@ -247,7 +258,6 @@ public class BuildingPlan implements IBuildingPlan {
 
 			PointType[][][] existingPoints = null;
 			int existingMinLevel = 0;
-			int upgradeLevel = 0;
 
 			if (buildingFile.exists()) {
 
@@ -263,9 +273,17 @@ public class BuildingPlan implements IBuildingPlan {
 					return;
 				}
 
-				existingPoints = existingSet.getConsolidatedPlan(0, existingSet.plans.get(0).length - 1);
-				existingMinLevel = existingSet.getMinLevel(0, existingSet.plans.get(0).length - 1);
-				upgradeLevel = existingSet.plans.get(0).length;
+				if (upgradeLevel == -1) {
+					//By default, we aim for the next level :
+					upgradeLevel = existingSet.plans.get(0).length;
+				}
+				
+				existingPoints = existingSet.getConsolidatedPlan(0, upgradeLevel - 1);
+				existingMinLevel = existingSet.getMinLevel(0, upgradeLevel - 1);
+								
+			} else {
+				//whatever the sign said, if there is no existing building we have to do 0
+				upgradeLevel = 0;
 			}
 
 			int startLevel = -1;
