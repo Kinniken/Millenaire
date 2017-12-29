@@ -845,7 +845,7 @@ public class BuildingPlan implements IBuildingPlan {
 
 		try {
 
-			final TileEntitySign sign = startPoint.getSign(world);
+			TileEntitySign sign = startPoint.getSign(world);
 
 			if (sign == null) {
 				return;
@@ -922,6 +922,24 @@ public class BuildingPlan implements IBuildingPlan {
 				existingSet.buildLocation(Mill.getMillWorld(world), null, location, true, false, null, true, null);
 				location.level++;
 			}
+			
+			Point eastSign = startPoint.getRelative(plan.length+1, 0, 0);			
+			eastSign.setBlock(world, Blocks.standing_sign, 0, true, false);
+			sign = eastSign.getSign(world);
+			sign.signText = new String[4];
+			sign.signText[0] = "East End";
+			sign.signText[1] = "(length)";
+			sign.signText[2] = "";
+			sign.signText[3] = "";
+			
+			Point southSign = startPoint.getRelative(0, 0, plan.width+1);	
+			southSign.setBlock(world, Blocks.standing_sign, 0, true, false);
+			sign = southSign.getSign(world);
+			sign.signText = new String[4];
+			sign.signText[0] = "South End";
+			sign.signText[1] = "(width)";
+			sign.signText[2] = "";
+			sign.signText[3] = "";
 
 		} catch (final Exception e) {
 			MLN.printException("Error when importing a building:", e);
