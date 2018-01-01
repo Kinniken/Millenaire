@@ -1435,14 +1435,16 @@ public class BuildingPlan implements IBuildingPlan {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 4), pt);
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.fence_gate, 6), pt);
 
-				} else if (pt.name.equals(bbedTop)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.bed, 8), pt);
-				} else if (pt.name.equals(bbedBottom)) {
-					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.bed, 10), pt);
 				} else if (pt.name.equals(bbedLeft)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.bed, 8), pt);
+				} else if (pt.name.equals(bbedTop)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.bed, 9), pt);
 				} else if (pt.name.equals(bbedRight)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.bed, 10), pt);
+				} else if (pt.name.equals(bbedBottom)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.bed, 11), pt);
+					
+				
 
 				} else if (pt.name.equals(bplainSignGuess)) {
 					for (int i = 0; i < 16; i++) {
