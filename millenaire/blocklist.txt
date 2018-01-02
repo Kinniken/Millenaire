@@ -35,6 +35,12 @@ logjungle;17;3;false;54/43/20
 logjunglevert;;0;;54/43/30
 logjunglehor;;0;;54/43/40
 
+logacacia;minecraft:log2;0;false;218/134/150
+logacaciavert;;0;;218/134/151
+logacaciahor;;0;;218/134/152
+logdarkoak;minecraft:log2;1;false;83/57/0
+logdarkoakvert;;0;;83/57/1
+logdarkoakhor;;0;;83/57/2
 
 
 woodstairsOakTop;;0;;100/0/0
@@ -56,6 +62,16 @@ woodstairsJungleTop;;0;;100/0/70
 woodstairsJungleBottom;;0;;101/0/70
 woodstairsJungleLeft;;0;;102/0/70
 woodstairsJungleRight;;0;;103/0/70
+
+woodstairsAcaciaTop;;0;;100/0/80
+woodstairsAcaciaBottom;;0;;101/0/80
+woodstairsAcaciaLeft;;0;;102/0/80
+woodstairsAcaciaRight;;0;;103/0/80
+
+woodstairsDarkOakTop;;0;;100/0/90
+woodstairsDarkOakBottom;;0;;101/0/90
+woodstairsDarkOakLeft;;0;;102/0/90
+woodstairsDarkOakRight;;0;;103/0/90
 
 stonestairsTop;;0;;120/0/0
 stonestairsBottom;;0;;121/0/0
@@ -94,6 +110,16 @@ woodstairsJungleInvTop;;0;;100/0/132
 woodstairsJungleInvBottom;;0;;101/0/132
 woodstairsJungleInvLeft;;0;;102/0/132
 woodstairsJungleInvRight;;0;;103/0/132
+
+woodstairsAcaciaInvTop;;0;;100/0/142
+woodstairsAcaciaInvBottom;;0;;101/0/142
+woodstairsAcaciaInvLeft;;0;;102/0/142
+woodstairsAcaciaInvRight;;0;;103/0/142
+
+woodstairsDarkOakInvTop;;0;;100/0/152
+woodstairsDarkOakInvBottom;;0;;101/0/152
+woodstairsDarkOakInvLeft;;0;;102/0/152
+woodstairsDarkOakInvRight;;0;;103/0/152
 
 stonestairsInvTop;;0;;120/0/102
 stonestairsInvBottom;;0;;121/0/202
@@ -168,6 +194,8 @@ oakspawn;;0;;0/100/0
 pinespawn;;0;;34/53/34
 birchspawn;;0;;162/201/101
 junglespawn;;0;;40/51/62
+acaciaspawn;;0;;255/5/220
+darkoakspawn;;0;;120/5/5
 brickspot;;0;;135/0/0
 indianstatue;;0;;179/154/117
 spawnerskeleton;;0;;80/0/120
@@ -220,15 +248,40 @@ planks;minecraft:planks;0;false;109/71/35
 planks pine;minecraft:planks;1;false;66/47/27
 planks birch;minecraft:planks;2;false;200/183/22
 planks jungle;minecraft:planks;3;false;177/128/92
+planks acacia;minecraft:planks;4;false;177/10/160
+planks dark oak;minecraft:planks;5;false;50/44/25
+
 saplings;minecraft:sapling;0;false;0/50/0
 saplings pine;minecraft:sapling;1;false;0/50/10
 saplings birch;minecraft:sapling;2;false;0/50/20
 saplings jungle;minecraft:sapling;3;false;0/50/30
+saplings acacia;minecraft:sapling;3;false;0/50/40
+saplings dark oak;minecraft:sapling;3;false;0/50/50
+
 water;minecraft:water;0;true;0/255/255
 sand;minecraft:sand;0;false;228/231/113
 gravel;minecraft:gravel;0;false;50/50/50
 glass;minecraft:glass;0;false;102/204/255
 glass pane;minecraft:glass_pane;0;true;180/255/255
+
+glass pane white;minecraft:stained_glass_pane;1;true;180/255/239
+glass pane orange;minecraft:stained_glass_pane;1;true;180/255/254
+glass pane magenta;minecraft:stained_glass_pane;2;true;180/255/253
+glass pane light blue;minecraft:stained_glass_pane;3;true;180/255/252
+glass pane yellow;minecraft:stained_glass_pane;4;true;180/255/251
+glass pane lime;minecraft:stained_glass_pane;5;true;180/255/250
+glass pane pink;minecraft:stained_glass_pane;6;true;180/255/249
+glass pane gray;minecraft:stained_glass_pane;7;true;180/255/248
+glass pane light gray;minecraft:stained_glass_pane;8;true;180/255/247
+glass pane cyan;minecraft:stained_glass_pane;9;true;180/255/246
+glass pane purple;minecraft:stained_glass_pane;10;true;180/255/245
+glass pane blue;minecraft:stained_glass_pane;11;true;180/255/244
+glass pane brown;minecraft:stained_glass_pane;12;true;180/255/243
+glass pane green;minecraft:stained_glass_pane;13;true;180/255/242
+glass pane red;minecraft:stained_glass_pane;14;true;180/255/241
+glass pane black;minecraft:stained_glass_pane;15;true;180/255/240
+
+
 lapis;minecraft:lapis_block;0;false;0/40/255
 sandstone;minecraft:sandstone;0;false;185/188/41
 yellowflower;minecraft:yellow_flower;0;false;255/255/65
@@ -247,6 +300,8 @@ woodenslaboak;minecraft:wooden_slab;0;false;120/80/40
 woodenslabpine;minecraft:wooden_slab;1;false;120/80/50
 woodenslabbirch;minecraft:wooden_slab;2;false;120/80/60
 woodenslabjungle;minecraft:wooden_slab;3;false;120/80/70
+woodenslabacacia;minecraft:wooden_slab;4;false;120/80/80
+woodenslabdarkoak;minecraft:wooden_slab;5;false;120/80/90
  
  
 stoneslabInv;minecraft:stone_slab;8;false;160/160/161
@@ -260,6 +315,8 @@ woodenslaboakInv;minecraft:wooden_slab;8;false;120/80/41
 woodenslabpineInv;minecraft:wooden_slab;9;false;120/80/51
 woodenslabbirchInv;minecraft:wooden_slab;10;false;120/80/61
 woodenslabjungleInv;minecraft:wooden_slab;11;false;120/80/71
+woodenslabacaciaInv;minecraft:wooden_slab;12;false;120/80/81
+woodenslabdarkoakInv;minecraft:wooden_slab;13;false;120/80/91
  
 brick;minecraft:brick_block;0;false;128/0/0
 bookshelf;minecraft:bookshelf;0;false;128/64/35
@@ -324,6 +381,8 @@ oak leaves;minecraft:leaves;0;false;40/107/14
 pine leaves;minecraft:leaves;1;false;42/111/15
 birch leaves;minecraft:leaves;2;false;44/119/15
 jungle leaves;minecraft:leaves;3;false;46/119/15
+acacia leaves;minecraft:leaves2;0;false;48/119/15
+dark oak leaves;minecraft:leaves2;1;false;50/119/15
 melon;minecraft:melon_block;0;false;75/243/10
 pine sappling;minecraft:sapling;1;true;21/147/21
 bedrock;minecraft:bedrock;0;false;40/42/40

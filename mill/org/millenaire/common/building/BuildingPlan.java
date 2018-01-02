@@ -98,6 +98,9 @@ public class BuildingPlan implements IBuildingPlan {
 
 			blogoakvert = "logoakvert", blogoakhor = "logoakhor", blogpinevert = "logpinevert", blogpinehor = "logpinehor", blogbirchvert = "logbirchvert", blogbirchhor = "logbirchhor",
 			blogjunglevert = "logjunglevert", blogjunglehor = "logjunglehor",
+			
+			blogdarkoakvert = "logdarkoakvert", blogdarkoakhor = "logdarkoakhor",
+			blogacaciavert = "logacaciavert", blogacaciahor = "logacaciahor",
 
 			bstonestairGuess = "stonestairGuess", bladderGuess = "ladderGuess", bsignwallGuess = "signwallGuess",
 
@@ -108,6 +111,12 @@ public class BuildingPlan implements IBuildingPlan {
 			bwoodstairsBirchTop = "woodstairsBirchTop", bwoodstairsBirchBottom = "woodstairsBirchBottom", bwoodstairsBirchLeft = "woodstairsBirchLeft", bwoodstairsBirchRight = "woodstairsBirchRight",
 			bwoodstairsJungleTop = "woodstairsJungleTop", bwoodstairsJungleBottom = "woodstairsJungleBottom", bwoodstairsJungleLeft = "woodstairsJungleLeft",
 			bwoodstairsJungleRight = "woodstairsJungleRight",
+			
+			bwoodstairsDarkOakTop = "woodstairsDarkOakTop", bwoodstairsDarkOakBottom = "woodstairsDarkOakBottom", bwoodstairsDarkOakLeft = "woodstairsDarkOakLeft",
+			bwoodstairsDarkOakRight = "woodstairsDarkOakRight",
+			bwoodstairsAcaciaTop = "woodstairsAcaciaTop", bwoodstairsAcaciaBottom = "woodstairsAcaciaBottom", bwoodstairsAcaciaLeft = "woodstairsAcaciaLeft",
+			bwoodstairsAcaciaRight = "woodstairsAcaciaRight",
+			
 
 			bstonestairsTop = "stonestairsTop", bstonestairsBottom = "stonestairsBottom", bstonestairsLeft = "stonestairsLeft", bstonestairsRight = "stonestairsRight",
 			bstonebrickstairsTop = "stonebrickstairsTop", bstonebrickstairsBottom = "stonebrickstairsBottom", bstonebrickstairsLeft = "stonebrickstairsLeft",
@@ -121,6 +130,11 @@ public class BuildingPlan implements IBuildingPlan {
 			bwoodstairsBirchInvBottom = "woodstairsBirchInvBottom", bwoodstairsBirchInvLeft = "woodstairsBirchInvLeft", bwoodstairsBirchInvRight = "woodstairsBirchInvRight",
 			bwoodstairsJungleInvTop = "woodstairsJungleInvTop", bwoodstairsJungleInvBottom = "woodstairsJungleInvBottom", bwoodstairsJungleInvLeft = "woodstairsJungleInvLeft",
 			bwoodstairsJungleInvRight = "woodstairsJungleInvRight",
+			
+			bwoodstairsDarkOakInvTop = "woodstairsDarkOakInvTop", bwoodstairsDarkOakInvBottom = "woodstairsDarkOakInvBottom", bwoodstairsDarkOakInvLeft = "woodstairsDarkOakInvLeft",
+			bwoodstairsDarkOakInvRight = "woodstairsDarkOakInvRight",
+			bwoodstairsAcaciaInvTop = "woodstairsAcaciaInvTop", bwoodstairsAcaciaInvBottom = "woodstairsAcaciaInvBottom", bwoodstairsAcaciaInvLeft = "woodstairsAcaciaInvLeft",
+			bwoodstairsAcaciaInvRight = "woodstairsAcaciaInvRight",
 
 			bstonestairsInvTop = "stonestairsInvTop", bstonestairsInvBottom = "stonestairsInvBottom", bstonestairsInvLeft = "stonestairsInvLeft", bstonestairsInvRight = "stonestairsInvRight",
 			bstonebrickstairsInvTop = "stonebrickstairsInvTop", bstonebrickstairsInvBottom = "stonebrickstairsInvBottom", bstonebrickstairsInvLeft = "stonebrickstairsInvLeft",
@@ -141,6 +155,7 @@ public class BuildingPlan implements IBuildingPlan {
 			birondoorBottom = "irondoorBottom", birondoorRight = "irondoorRight", birondoorLeft = "irondoorLeft", btrapdoorTop = "trapdoorTop", btrapdoorBottom = "trapdoorBottom",
 			btrapdoorRight = "trapdoorRight", btrapdoorLeft = "trapdoorLeft", bfenceGateHorizontal = "fencegateHorizontal", bfenceGateVertical = "fencegateVertical", bbedTop = "bedTop",
 			bbedBottom = "bedBottom", bbedRight = "bedRight", bbedLeft = "bedLeft", boakspawn = "oakspawn", bpinespawn = "pinespawn", bbirchspawn = "birchspawn", bjunglespawn = "junglespawn",
+			bdarkoakspawn = "darkoakspawn", bacaciaspawn = "acaciaspawn",
 			bbrickspot = "brickspot", bindianstatue = "indianstatue", bmayanstatue = "mayanstatue", bbyzantineiconsmall = "byzantineiconsmall", bbyzantineiconmedium = "byzantineiconmedium",
 			bbyzantineiconlarge = "byzantineiconlarge", bfishingspot = "fishingspot", bspawnerskeleton = "spawnerskeleton", bspawnerzombie = "spawnerzombie", bspawnerspider = "spawnerspider",
 			bspawnercavespider = "spawnercavespider", bspawnercreeper = "spawnercreeper", bspawnerblaze = "spawnerblaze", bdispenserunknownpowder = "dispenserunknownpowder",
@@ -161,6 +176,7 @@ public class BuildingPlan implements IBuildingPlan {
 	public static final int NORTH_FACING = 0;
 
 	private static final String prefixWoodstairOak = "woodstairsOak", prefixWoodstairPine = "woodstairsPine", prefixWoodstairBirch = "woodstairsBirch", prefixWoodstairJungle = "woodstairsJungle",
+			prefixWoodstairDarkOak = "woodstairsDarkOak",prefixWoodstairAcacia = "woodstairsAcacia",
 			prefixStonestair = "stonestair", prefixBrickstair = "brickstairs", prefixBrickStonestair = "stonebrickstairs", prefixSandStoneStair = "standstonestairs", prefixLadder = "ladder",
 			prefixSign = "sign", prefixDoor = "door", prefixTrapdoor = "trapdoor", prefixBed = "bed";
 
@@ -653,6 +669,8 @@ public class BuildingPlan implements IBuildingPlan {
 		picts.put(new InvItem(Blocks.log, 1), "Wood_Pine.png");
 		picts.put(new InvItem(Blocks.log, 2), "Wood_Birch.png");
 		picts.put(new InvItem(Blocks.log, 3), "Wood_Jungle.png");
+		picts.put(new InvItem(Blocks.log2, 0), "Wood_Acacia.png");
+		picts.put(new InvItem(Blocks.log2, 1), "Wood_DarkOak.png");
 
 		picts.put(new InvItem(Blocks.stone, 0), "Stone.png");
 		picts.put(new InvItem(Blocks.glass, 0), "Glass.png");
@@ -1189,6 +1207,16 @@ public class BuildingPlan implements IBuildingPlan {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.log, 8 + 3), pt);
 				} else if (pt.name.equals(blogjunglevert)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.log, 4 + 3), pt);
+					
+				} else if (pt.name.equals(blogacaciahor)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.log2, 8 + 0), pt);
+				} else if (pt.name.equals(blogacaciavert)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.log2, 4 + 0), pt);
+					
+				} else if (pt.name.equals(blogdarkoakhor)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.log2, 8 + 1), pt);
+				} else if (pt.name.equals(blogdarkoakvert)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.log2, 4 + 1), pt);
 
 					// Regular stairs:
 				} else if (pt.name.equals(bwoodstairsOakTop)) {
@@ -1225,6 +1253,24 @@ public class BuildingPlan implements IBuildingPlan {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.jungle_stairs, 2), pt);
 				} else if (pt.name.equals(bwoodstairsJungleRight)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.jungle_stairs, 3), pt);
+					
+				} else if (pt.name.equals(bwoodstairsAcaciaTop)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 1), pt);
+				} else if (pt.name.equals(bwoodstairsAcaciaBottom)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 0), pt);
+				} else if (pt.name.equals(bwoodstairsAcaciaLeft)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 2), pt);
+				} else if (pt.name.equals(bwoodstairsAcaciaRight)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 3), pt);
+					
+				} else if (pt.name.equals(bwoodstairsDarkOakTop)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 1), pt);
+				} else if (pt.name.equals(bwoodstairsDarkOakBottom)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 0), pt);
+				} else if (pt.name.equals(bwoodstairsDarkOakLeft)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 2), pt);
+				} else if (pt.name.equals(bwoodstairsDarkOakRight)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 3), pt);
 
 				} else if (pt.name.equals(bstonestairsTop)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.stone_stairs, 1), pt);
@@ -1298,6 +1344,24 @@ public class BuildingPlan implements IBuildingPlan {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.jungle_stairs, 6), pt);
 				} else if (pt.name.equals(bwoodstairsJungleInvRight)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.jungle_stairs, 7), pt);
+					
+				} else if (pt.name.equals(bwoodstairsAcaciaInvTop)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 5), pt);
+				} else if (pt.name.equals(bwoodstairsAcaciaInvBottom)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 4), pt);
+				} else if (pt.name.equals(bwoodstairsAcaciaInvLeft)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 6), pt);
+				} else if (pt.name.equals(bwoodstairsAcaciaInvRight)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.acacia_stairs, 7), pt);
+					
+				} else if (pt.name.equals(bwoodstairsDarkOakInvTop)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 5), pt);
+				} else if (pt.name.equals(bwoodstairsDarkOakInvBottom)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 4), pt);
+				} else if (pt.name.equals(bwoodstairsDarkOakInvLeft)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 6), pt);
+				} else if (pt.name.equals(bwoodstairsDarkOakInvRight)) {
+					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.dark_oak_stairs, 7), pt);
 
 				} else if (pt.name.equals(bstonestairsInvTop)) {
 					reverseColourPoints.put(MillCommonUtilities.getPointHash(Blocks.stone_stairs, 5), pt);
@@ -1908,7 +1972,8 @@ public class BuildingPlan implements IBuildingPlan {
 
 		resCost = new HashMap<InvItem, Integer>();
 
-		int plankCost = 0, plankOakCost = 0, plankPineCost = 0, plankBirchCost = 0, plankJungleCost = 0, glassPaneCost = 0, byzBricksHalf = 0;
+		int plankCost = 0, plankOakCost = 0, plankPineCost = 0, plankBirchCost = 0, 
+				plankJungleCost = 0, plankAcaciaCost = 0, plankDarkOakCost = 0, glassPaneCost = 0, byzBricksHalf = 0;
 
 		for (int i = 0; i < nbfloors; i++) {
 			for (int j = 0; j < length; j++) {
@@ -1927,6 +1992,10 @@ public class BuildingPlan implements IBuildingPlan {
 						plankBirchCost += 4;
 					} else if (p.block == Blocks.log && (p.meta & 3) == 3) {
 						plankJungleCost += 4;
+					} else if (p.block == Blocks.log2 && (p.meta & 3) == 0) {
+						plankAcaciaCost += 4;
+					} else if (p.block == Blocks.log2 && (p.meta & 3) == 1) {
+						plankDarkOakCost += 4;
 					} else if (p.block == Blocks.planks && p.meta == 0) {
 						plankOakCost++;
 					} else if (p.block == Blocks.planks && p.meta == 1) {
@@ -1935,6 +2004,10 @@ public class BuildingPlan implements IBuildingPlan {
 						plankBirchCost++;
 					} else if (p.block == Blocks.planks && p.meta == 3) {
 						plankJungleCost++;
+					} else if (p.block == Blocks.planks && p.meta == 4) {
+						plankAcaciaCost++;
+					} else if (p.block == Blocks.planks && p.meta == 5) {
+						plankDarkOakCost++;
 
 					} else if (p.block == Mill.byzantine_tiles) {
 						byzBricksHalf += 2;
@@ -1992,6 +2065,10 @@ public class BuildingPlan implements IBuildingPlan {
 						plankBirchCost++;
 					} else if (p.block == Blocks.wooden_slab && (p.meta & 7) == 3) {
 						plankJungleCost++;
+					} else if (p.block == Blocks.wooden_slab && (p.meta & 7) == 4) {
+						plankAcaciaCost++;
+					} else if (p.block == Blocks.wooden_slab && (p.meta & 7) == 5) {
+						plankDarkOakCost++;
 
 					} else if (p.block == Blocks.wool) {
 						addToCost(Blocks.wool, 1);
@@ -2025,6 +2102,10 @@ public class BuildingPlan implements IBuildingPlan {
 						plankBirchCost += 2;
 					} else if (p.isSubType(prefixWoodstairJungle)) {
 						plankJungleCost += 2;
+					} else if (p.isSubType(prefixWoodstairAcacia)) {
+						plankAcaciaCost += 2;
+					} else if (p.isSubType(prefixWoodstairDarkOak)) {
+						plankDarkOakCost += 2;
 					} else if (p.isSubType(prefixStonestair)) {
 						addToCost(Blocks.cobblestone, 2);
 					} else if (p.isSubType(prefixBrickStonestair)) {
@@ -2105,6 +2186,14 @@ public class BuildingPlan implements IBuildingPlan {
 
 		if (plankJungleCost > 0) {
 			addToCost(Blocks.log, 3, (int) Math.max(Math.ceil(plankJungleCost * 1.0 / 4), 1));
+		}
+		
+		if (plankAcaciaCost > 0) {
+			addToCost(Blocks.log2, 0, (int) Math.max(Math.ceil(plankAcaciaCost * 1.0 / 4), 1));
+		}
+		
+		if (plankDarkOakCost > 0) {
+			addToCost(Blocks.log2, 1, (int) Math.max(Math.ceil(plankDarkOakCost * 1.0 / 4), 1));
 		}
 
 		if (glassPaneCost > 0) {
@@ -2457,6 +2546,20 @@ public class BuildingPlan implements IBuildingPlan {
 					} else if (pt.isType(blogjunglevert)) {
 						b = Blocks.log;
 						m = 3 + getWoodMeta(1, orientation);
+						
+					} else if (pt.isType(blogacaciahor)) {
+						b = Blocks.log2;
+						m = 0 + getWoodMeta(0, orientation);
+					} else if (pt.isType(blogacaciavert)) {
+						b = Blocks.log2;
+						m = 0 + getWoodMeta(1, orientation);
+						
+					} else if (pt.isType(blogdarkoakhor)) {
+						b = Blocks.log2;
+						m = 1 + getWoodMeta(0, orientation);
+					} else if (pt.isType(blogdarkoakvert)) {
+						b = Blocks.log2;
+						m = 1 + getWoodMeta(1, orientation);
 
 					} else if (pt.isType(bwoodstairsOakTop)) {
 						b = Blocks.oak_stairs;
@@ -2508,6 +2611,32 @@ public class BuildingPlan implements IBuildingPlan {
 						m = getStairMeta(2, orientation);
 					} else if (pt.isType(bwoodstairsJungleLeft)) {
 						b = Blocks.jungle_stairs;
+						m = getStairMeta(3, orientation);
+						
+					} else if (pt.isType(bwoodstairsAcaciaTop)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(0, orientation);
+					} else if (pt.isType(bwoodstairsAcaciaRight)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(1, orientation);
+					} else if (pt.isType(bwoodstairsAcaciaBottom)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(2, orientation);
+					} else if (pt.isType(bwoodstairsAcaciaLeft)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(3, orientation);
+						
+					} else if (pt.isType(bwoodstairsDarkOakTop)) {
+						b = Blocks.dark_oak_stairs;
+						m = getStairMeta(0, orientation);
+					} else if (pt.isType(bwoodstairsDarkOakRight)) {
+						b = Blocks.dark_oak_stairs;
+						m = getStairMeta(1, orientation);
+					} else if (pt.isType(bwoodstairsDarkOakBottom)) {
+						b = Blocks.dark_oak_stairs;
+						m = getStairMeta(2, orientation);
+					} else if (pt.isType(bwoodstairsDarkOakLeft)) {
+						b = Blocks.dark_oak_stairs;
 						m = getStairMeta(3, orientation);
 
 					} else if (pt.isType(bstonestairsTop)) {
@@ -2609,6 +2738,32 @@ public class BuildingPlan implements IBuildingPlan {
 						m = getStairMeta(2, orientation) + 4;
 					} else if (pt.isType(bwoodstairsJungleInvLeft)) {
 						b = Blocks.jungle_stairs;
+						m = getStairMeta(3, orientation) + 4;
+						
+					} else if (pt.isType(bwoodstairsAcaciaInvTop)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(0, orientation) + 4;
+					} else if (pt.isType(bwoodstairsAcaciaInvRight)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(1, orientation) + 4;
+					} else if (pt.isType(bwoodstairsAcaciaInvBottom)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(2, orientation) + 4;
+					} else if (pt.isType(bwoodstairsAcaciaInvLeft)) {
+						b = Blocks.acacia_stairs;
+						m = getStairMeta(3, orientation) + 4;
+						
+					} else if (pt.isType(bwoodstairsDarkOakInvTop)) {
+						b = Blocks.dark_oak_stairs;
+						m = getStairMeta(0, orientation) + 4;
+					} else if (pt.isType(bwoodstairsDarkOakInvRight)) {
+						b = Blocks.dark_oak_stairs;
+						m = getStairMeta(1, orientation) + 4;
+					} else if (pt.isType(bwoodstairsDarkOakInvBottom)) {
+						b = Blocks.dark_oak_stairs;
+						m = getStairMeta(2, orientation) + 4;
+					} else if (pt.isType(bwoodstairsDarkOakInvLeft)) {
+						b = Blocks.dark_oak_stairs;
 						m = getStairMeta(3, orientation) + 4;
 
 					} else if (pt.isType(bstonestairsInvTop)) {
@@ -2912,6 +3067,14 @@ public class BuildingPlan implements IBuildingPlan {
 					} else if (pt.isType(bjunglespawn)) {
 						final Point p = adjustForOrientation(x, y + i + startLevel, z, j - lengthOffset, k - widthOffset, orientation);
 						bblocks.add(new BuildingBlock(p, 0, 0, BuildingBlock.JUNGLESPAWN));
+						nbBlocksToPut++;
+					} else if (pt.isType(bacaciaspawn)) {
+						final Point p = adjustForOrientation(x, y + i + startLevel, z, j - lengthOffset, k - widthOffset, orientation);
+						bblocks.add(new BuildingBlock(p, 0, 0, BuildingBlock.ACACIASPAWN));
+						nbBlocksToPut++;
+					} else if (pt.isType(bdarkoakspawn)) {
+						final Point p = adjustForOrientation(x, y + i + startLevel, z, j - lengthOffset, k - widthOffset, orientation);
+						bblocks.add(new BuildingBlock(p, 0, 0, BuildingBlock.DARKOAKSPAWN));
 						nbBlocksToPut++;
 					} else if (pt.isType(bspawnerskeleton)) {
 						final Point p = adjustForOrientation(x, y + i + startLevel, z, j - lengthOffset, k - widthOffset, orientation);
@@ -3514,6 +3677,14 @@ public class BuildingPlan implements IBuildingPlan {
 							building.getResManager().woodspawn.add(p);
 						}
 					} else if (pt.isType(bjunglespawn)) {
+						if (!building.getResManager().woodspawn.contains(p)) {
+							building.getResManager().woodspawn.add(p);
+						}
+					} else if (pt.isType(bacaciaspawn)) {
+						if (!building.getResManager().woodspawn.contains(p)) {
+							building.getResManager().woodspawn.add(p);
+						}
+					} else if (pt.isType(bdarkoakspawn)) {
 						if (!building.getResManager().woodspawn.contains(p)) {
 							building.getResManager().woodspawn.add(p);
 						}

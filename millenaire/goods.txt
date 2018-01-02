@@ -208,7 +208,9 @@ pathslabs;millenaire:tile.ml_path;2;tile.ml_path.2.name
 pathslabs_slab;millenaire:tile.ml_path_slab;2;tile.ml_path_slab.2.name
 pathslabs_slab_stable;millenaire:tile.ml_path_slab;10;tile.ml_path_slab.10.name
 pathslabs_stable;millenaire:tile.ml_path;10;tile.ml_path.10.name
+planks_acacia;minecraft:planks;4;Planches d'acacia
 planks_birch;minecraft:planks;2;Planches de bouleau
+planks_darkoak;minecraft:planks;5;Planches de chêne noir
 planks_jungle;minecraft:planks;3;Planches d'acajou
 planks_oak;minecraft:planks;0;Planches de chêne
 planks_pine;minecraft:planks;1;Planches de sapin
@@ -228,7 +230,9 @@ sake;millenaire:item.ml_sake;0;item.ml_sake.name
 sand;minecraft:sand;0;Sable
 sandstone;minecraft:sandstone;0;Grès
 sapling;minecraft:sapling;0;Pousse de chêne
+sapling_acacia;minecraft:sapling;4;Pousse d'acacia
 sapling_birch;minecraft:sapling;2;Pousse de bouleau
+sapling_darkoak;minecraft:sapling;5;Pousse de chêne noir
 sapling_jungle;minecraft:sapling;3;Pousse d'acajou
 sapling_pine;minecraft:sapling;1;Pousse de sapin
 seeds;minecraft:wheat_seeds;0;Graines de blé
@@ -278,8 +282,10 @@ wheat;minecraft:wheat;0;Blé
 wine;millenaire:item.ml_wine;0;item.ml_wine.name
 winebasic;millenaire:item.ml_wine_basic;0;item.ml_wine_basic.name
 wood;minecraft:log;0;
+wood_acacia;minecraft:log2;0;
 wood_any;minecraft:log;-1;
 wood_birch;minecraft:log;2;
+wood_darkoak;minecraft:log2;1;
 wood_jungle;minecraft:log;3;
 wood_oak;minecraft:log;0;
 wood_pine;minecraft:log;1;

@@ -187,6 +187,10 @@ public class InvItem implements Comparable<InvItem> {
 			return MLN.string("ui.woodbirch");
 		} else if (meta == 3 && block == Blocks.log) {
 			return MLN.string("ui.woodjungle");
+		} else if (meta == 0 && block == Blocks.log2) {
+			return MLN.string("ui.woodacacia");
+		} else if (meta == 1 && block == Blocks.log2) {
+			return MLN.string("ui.wooddarkoak");
 		} else if (meta == -1) {
 			return Mill.proxy.getItemName(item, 0);
 		} else {

@@ -7,7 +7,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenCanopyTree;
 import net.minecraft.world.gen.feature.WorldGenForest;
+import net.minecraft.world.gen.feature.WorldGenSavannaTree;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -42,6 +44,8 @@ public class BuildingBlock {
 	public static byte BYZANTINEICONLARGE = 20;
 	public static byte PRESERVEGROUNDSURFACE = 21;
 	public static byte SPAWNERBLAZE = 22;
+	public static byte ACACIASPAWN = 23;
+	public static byte DARKOAKSPAWN = 24;
 
 	public static BuildingBlock read(final NBTTagCompound nbttagcompound, final String label) {
 		final Point p = Point.read(nbttagcompound, label + "pos");
@@ -249,6 +253,16 @@ public class BuildingBlock {
 			} else if (special == BuildingBlock.JUNGLESPAWN) {
 				if (worldGeneration) {
 					final WorldGenerator wg = new WorldGenTrees(true, 4 + MillCommonUtilities.random.nextInt(7), 3, 3, false);
+					wg.generate(world, MillCommonUtilities.random, p.getiX(), p.getiY(), p.getiZ());
+				}
+			} else if (special == BuildingBlock.ACACIASPAWN) {
+				if (worldGeneration) {
+					final WorldGenerator wg = new WorldGenSavannaTree(false);
+					wg.generate(world, MillCommonUtilities.random, p.getiX(), p.getiY(), p.getiZ());
+				}
+			} else if (special == BuildingBlock.DARKOAKSPAWN) {
+				if (worldGeneration) {
+					final WorldGenerator wg = new WorldGenCanopyTree(true);
 					wg.generate(world, MillCommonUtilities.random, p.getiX(), p.getiY(), p.getiZ());
 				}
 			} else if (special == BuildingBlock.SPAWNERSKELETON) {

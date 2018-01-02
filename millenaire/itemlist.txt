@@ -87,6 +87,8 @@ planks_birch;minecraft:planks;2
 planks_jungle;minecraft:planks;3
 planks_oak;minecraft:planks;0
 planks_pine;minecraft:planks;1
+planks_acacia;minecraft:planks;4
+planks_darkoak;minecraft:planks;5
 porkchops;minecraft:porkchop;0
 porkchopscooked;minecraft:cooked_porkchop;0
 pumpkin;minecraft:pumpkin;0
@@ -101,6 +103,8 @@ sapling;minecraft:sapling;0
 sapling_birch;minecraft:sapling;2
 sapling_jungle;minecraft:sapling;3
 sapling_pine;minecraft:sapling;1
+sapling_acacia;minecraft:sapling;4
+sapling_darkoak;minecraft:sapling;5
 seeds;minecraft:wheat_seeds;0
 shears;minecraft:shears;0
 slimeball;minecraft:slime_ball;0
@@ -270,6 +274,8 @@ wood_oak;minecraft:log;0
 wood_birch;minecraft:log;2
 wood_jungle;minecraft:log;3
 wood_pine;minecraft:log;1
+wood_acacia;minecraft:log2;0
+wood_darkoak;minecraft:log2;1
 woodaxe;minecraft:wooden_axe;0
 woodhoe;minecraft:wooden_hoe;0
 woodpickaxe;minecraft:wooden_pickaxe;0
