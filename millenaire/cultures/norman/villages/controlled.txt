@@ -10,7 +10,7 @@ oceanQualifier:l'océan
 carriesraid:true
 
 //starting buildings:
-centre:playerfort
+centre:playerlargefort
 start:lumbermanhut
 start:lumbermanhut
 start:grove
