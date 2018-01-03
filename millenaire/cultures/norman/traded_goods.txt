@@ -7,6 +7,8 @@ wood,2,1,128,1024,0,false,,0,tradehelp.wood
 wood_pine,2,1,64,256,0,false,,0,tradehelp.wood
 wood_birch,2,1,64,256,0,false,,0,tradehelp.wood
 wood_jungle,2,1,0,64,0,false,,0,tradehelp.wood
+wood_acacia,2,1,0,64,0,false,,0,tradehelp.wood
+wood_darkoak,2,1,0,64,0,false,,0,tradehelp.wood
 cobblestone,2,1,128,1024,0,false,,0,tradehelp.stone
 stone,5,3,128,1024,0,false,,0,tradehelp.stone
 sandstone,6,4,0,0,8,0,false,,0,tradehelp.stone

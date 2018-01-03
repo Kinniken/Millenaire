@@ -163,7 +163,7 @@ public class BuildingBlock {
 			} else if (special == BuildingBlock.CLEARTREE) {
 				final Block block = MillCommonUtilities.getBlock(world, p);
 
-				if (block == Blocks.log || block == Blocks.leaves) {
+				if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves) {
 					MillCommonUtilities.setBlockAndMetadata(world, p, Blocks.air, 0, notifyBlocks, playSound);
 
 					final Block blockBelow = MillCommonUtilities.getBlock(world, p.getBelow());

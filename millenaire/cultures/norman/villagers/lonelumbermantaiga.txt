@@ -23,12 +23,16 @@ collectGood=wood
 collectGood=wood_pine
 collectGood=wood_birch
 collectGood=wood_jungle
+collectGood=wood_acacia
+collectGood=wood_darkoak
 collectGood=sapling_pine
 
 bringBackHomeGood=wood
 bringBackHomeGood=wood_pine
 bringBackHomeGood=wood_birch
 bringBackHomeGood=wood_jungle
+bringBackHomeGood=wood_acacia
+bringBackHomeGood=wood_darkoak
 
 startingInv=sapling_pine,10
 

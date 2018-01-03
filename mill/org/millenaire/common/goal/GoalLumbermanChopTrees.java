@@ -114,15 +114,19 @@ public class GoalLumbermanChopTrees extends Goal {
 
 						final Block block = villager.getBlock(p);
 
-						if (block == Blocks.log || block == Blocks.leaves) {
+						if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves) {
 							if (!woodFound) {
-								if (block == Blocks.log) {
+								if (block == Blocks.log || block == Blocks.log2) {
 									final int meta = villager.getBlockMeta(p) & 3;
 									villager.setBlock(p, Blocks.air);
 
 									villager.swingItem();
 
-									villager.addToInv(Blocks.log, meta, 1);
+									if (block == Blocks.log)
+										villager.addToInv(Blocks.log, meta, 1);
+									else
+										villager.addToInv(Blocks.log2, meta, 1);
+										
 									woodFound = true;
 
 									if (MLN.LogLumberman >= MLN.DEBUG) {

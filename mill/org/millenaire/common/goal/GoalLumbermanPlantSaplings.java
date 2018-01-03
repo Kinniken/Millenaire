@@ -66,6 +66,10 @@ public class GoalLumbermanPlantSaplings extends Goal {
 			meta = 2;
 		} else if (villager.takeFromInv(Blocks.sapling, 3, 1) == 1) {
 			meta = 3;
+		} else if (villager.takeFromInv(Blocks.sapling, 4, 1) == 1) {
+			meta = 4;
+		} else if (villager.takeFromInv(Blocks.sapling, 5, 1) == 1) {
+			meta = 5;
 		}
 
 		return new ItemStack[] { new ItemStack(Blocks.sapling, 1, meta) };

@@ -2762,7 +2762,7 @@ public class Building {
 						final Block block = worldObj.getBlock(i + pos.getiX(), j + pos.getiY(), k + pos.getiZ());
 						if (block == Blocks.cactus) {
 							cactus++;
-						} else if (block == Blocks.log) {
+						} else if (block == Blocks.log || block == Blocks.log2) {
 							wood++;
 						} else if (block == Blocks.lava) {
 							lava++;
@@ -3462,7 +3462,7 @@ public class Building {
 		for (int i = location.minx - 3; i < location.maxx + 3; i++) {
 			for (int j = location.pos.getiY() - 1; j < location.pos.getiY() + 10; j++) {
 				for (int k = location.minz - 3; k < location.maxz + 3; k++) {
-					if (worldObj.getBlock(i, j, k) == Blocks.log) {
+					if (worldObj.getBlock(i, j, k) == Blocks.log || worldObj.getBlock(i, j, k) == Blocks.log2) {
 						nb++;
 					}
 				}
@@ -3479,7 +3479,7 @@ public class Building {
 		for (int i = location.minx - 3; i < location.maxx + 3; i++) {
 			for (int j = location.pos.getiY() - 1; j < location.pos.getiY() + 10; j++) {
 				for (int k = location.minz - 3; k < location.maxz + 3; k++) {
-					if (worldObj.getBlock(i, j, k) == Blocks.log) {
+					if (worldObj.getBlock(i, j, k) == Blocks.log || worldObj.getBlock(i, j, k) == Blocks.log2) {
 						return new Point(i, j, k);
 					}
 				}

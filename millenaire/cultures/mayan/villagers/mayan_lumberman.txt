@@ -22,19 +22,25 @@ goal=chat
 startinginv=sapling,5
 startinginv=sapling_jungle,5
 
-bringBackHomeGood=wood
-bringBackHomeGood=wood_pine
-bringBackHomeGood=wood_birch
-bringBackHomeGood=wood_jungle
-
 collectGood=wood
 collectGood=wood_pine
 collectGood=wood_birch
 collectGood=wood_jungle
+collectGood=wood_acacia
+collectGood=wood_darkoak
 collectGood=sapling
 collectGood=sapling_pine
 collectGood=sapling_birch
 collectGood=sapling_jungle
+collectGood=sapling_acacia
+collectGood=sapling_darkoak
+
+bringBackHomeGood=wood
+bringBackHomeGood=wood_pine
+bringBackHomeGood=wood_birch
+bringBackHomeGood=wood_jungle
+bringBackHomeGood=wood_acacia
+bringBackHomeGood=wood_darkoak
 
 toolneededclass=axes
 

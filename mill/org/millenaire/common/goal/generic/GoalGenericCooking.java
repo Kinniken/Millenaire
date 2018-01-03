@@ -91,7 +91,8 @@ public class GoalGenericCooking extends GoalGeneric {
 
 					if (furnace != null) {
 						// check for fuel addition
-						if ((furnace.getStackInSlot(1) == null || furnace.getStackInSlot(1).stackSize < 32) && dest.countGoods(Blocks.log, -1) > 4) {
+						if ((furnace.getStackInSlot(1) == null || furnace.getStackInSlot(1).stackSize < 32) 
+								&& dest.countGoods(Blocks.log, -1) > 4) {
 							return packDest(p, dest);
 						}
 
@@ -159,21 +160,27 @@ public class GoalGenericCooking extends GoalGeneric {
 				furnace.setInventorySlotContents(2, null);
 			}
 		}
-
+		
+		//Note : we treat all wood as identical, and turn them into oak planks
+		//Would be more realistic to use the proper planks but would be trickier to handle 
 		if (dest.countGoods(Blocks.log, -1) > 0) {
 			if (furnace.getStackInSlot(1) == null) {
 				final int nbplanks = Math.min(64, dest.countGoods(Blocks.log, -1) * 4);
 
 				furnace.setInventorySlotContents(1, new ItemStack(Blocks.planks, nbplanks));
+				
+				//takes log2 also if available
 				dest.takeGoods(Blocks.log, -1, nbplanks / 4);
-
+			
 			} else if (furnace.getStackInSlot(1).stackSize < 64) {
 
 				final int nbplanks = Math.min(64 - furnace.getStackInSlot(1).stackSize, dest.countGoods(Blocks.log, -1) * 4);
 
 				furnace.setInventorySlotContents(1, new ItemStack(Blocks.planks, furnace.getStackInSlot(1).stackSize + nbplanks));
-				dest.takeGoods(Blocks.log, -1, nbplanks / 4);
-
+				
+				
+				//takes log2 as well, if available
+				dest.takeGoods(Blocks.log, -1, nbplanks / 4);				
 			}
 		}
 

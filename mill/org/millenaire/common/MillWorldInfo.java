@@ -464,7 +464,7 @@ public class MillWorldInfo implements Cloneable {
 
 				while (block != null && (MillCommonUtilities.isBlockIdSolid(block) || MillCommonUtilities.isBlockIdLiquid(block) || !onground)) {
 
-					if (block == Blocks.log) {
+					if (block == Blocks.log || block == Blocks.log2) {
 						heightDone = true;
 					} else if (!heightDone) {// everything solid but wood counts
 						constructionHeight[mx][mz]++;

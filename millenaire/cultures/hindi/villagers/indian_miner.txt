@@ -29,8 +29,10 @@ toolneededclass=meleeweapons
 
 requiredGood=wood,64
 requiredGood=wood_pine,64
-requiredGood=wood_birch,64
 requiredGood=wood_jungle,64
+requiredGood=wood_birch,64
+requiredGood=wood_acacia,64
+requiredGood=wood_darkoak,64
 
 baseAttackStrength=5
 tag=helpInAttacks

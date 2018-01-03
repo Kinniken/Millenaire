@@ -3449,7 +3449,7 @@ public class BuildingPlan implements IBuildingPlan {
 	}
 
 	public boolean isBuildable(final Block block) {
-		return block == Blocks.air || block == Blocks.leaves || block == Blocks.log || block == Blocks.brown_mushroom || block == Blocks.red_mushroom || block == Blocks.red_flower
+		return block == Blocks.air || block == Blocks.leaves || block == Blocks.log || block == Blocks.log2 || block == Blocks.brown_mushroom || block == Blocks.red_mushroom || block == Blocks.red_flower
 				|| block == Blocks.yellow_flower;
 	}
 

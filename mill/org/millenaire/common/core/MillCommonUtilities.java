@@ -748,8 +748,16 @@ public class MillCommonUtilities {
 
 		for (int i = 0; i < maxSlot; i++) {
 			final ItemStack stack = chest.getStackInSlot(i);
+			//meta == -1 is the wildcard : any meta will do
 			if (stack != null && stack.getItem() == item && (meta == -1 || stack.getItemDamage() < 0 || stack.getItemDamage() == meta)) {
 				nb += stack.stackSize;
+			}
+			
+			//Super special hack : "any wood" can be log or log2			
+			if (item == Item.getItemFromBlock(Blocks.log) && meta == -1) {
+				if (stack != null && stack.getItem() == Item.getItemFromBlock(Blocks.log2)) {
+					nb += stack.stackSize;
+				}
 			}
 
 		}
@@ -764,8 +772,16 @@ public class MillCommonUtilities {
 		int nb = 0;
 
 		final ItemStack stack = furnace.getStackInSlot(2);
+		//meta == -1 is the wildcard : any meta will do
 		if (stack != null && stack.getItem() == item && (meta == -1 || stack.getItemDamage() < 0 || stack.getItemDamage() == meta)) {
 			nb += stack.stackSize;
+		}
+		
+		//Super special hack : "any wood" can be log or log2			
+		if (item == Item.getItemFromBlock(Blocks.log) && meta == -1) {
+			if (stack != null && stack.getItem() == Item.getItemFromBlock(Blocks.log2)) {
+				nb += stack.stackSize;
+			}
 		}
 
 		return nb;
@@ -1114,6 +1130,19 @@ public class MillCommonUtilities {
 				} else {
 					chest.decrStackSize(i, toTake - nb);
 					nb = toTake;
+				}
+			}
+			
+			//special handling for log and log2 (any wood)
+			if (item == Item.getItemFromBlock(Blocks.log) && meta == -1) {
+				if (stack != null && stack.getItem() == Item.getItemFromBlock(Blocks.log2)) {
+					if (stack.stackSize <= toTake - nb) {
+						nb += stack.stackSize;
+						chest.setInventorySlotContents(i, null);
+					} else {
+						chest.decrStackSize(i, toTake - nb);
+						nb = toTake;
+					}
 				}
 			}
 		}
@@ -1695,6 +1724,8 @@ public class MillCommonUtilities {
 			playSoundBlockPlaced(world, p, Blocks.stone, volume);
 		} else if (soundMill.equals("earth")) {
 			playSoundBlockPlaced(world, p, Blocks.dirt, volume);
+		} else if (soundMill.equals("sand")) {
+			playSoundBlockPlaced(world, p, Blocks.sand, volume);
 		} else {
 			MLN.printException("Tried to play unknown sound: " + soundMill, new Exception());
 		}

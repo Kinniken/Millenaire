@@ -1013,6 +1013,51 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 	}
 
 	public int countInv(final InvItem key) {
+		
+		//very special case : any wood
+		if (key.block == Blocks.log && key.meta == -1) {
+
+			int nb = 0;
+
+			try {
+				InvItem tkey;
+				
+				//oak
+				tkey = new InvItem(Item.getItemFromBlock(Blocks.log), 0);
+				if (inventory.containsKey(tkey)) {
+					nb += inventory.get(tkey);
+				}
+				//pine
+				tkey = new InvItem(Item.getItemFromBlock(Blocks.log), 1);
+				if (inventory.containsKey(tkey)) {
+					nb += inventory.get(tkey);
+				}
+				//birch
+				tkey = new InvItem(Item.getItemFromBlock(Blocks.log), 2);
+				if (inventory.containsKey(tkey)) {
+					nb += inventory.get(tkey);
+				}
+				//jungle
+				tkey = new InvItem(Item.getItemFromBlock(Blocks.log), 3);
+				if (inventory.containsKey(tkey)) {
+					nb += inventory.get(tkey);
+				}
+				//acacia
+				tkey = new InvItem(Item.getItemFromBlock(Blocks.log2), 0);
+				if (inventory.containsKey(tkey)) {
+					nb += inventory.get(tkey);
+				}
+				//dark oak
+				tkey = new InvItem(Item.getItemFromBlock(Blocks.log2), 1);
+				if (inventory.containsKey(tkey)) {
+					nb += inventory.get(tkey);
+				}
+			} catch (final MillenaireException e) {
+				MLN.printException(e);
+			}
+
+			return nb;
+		}
 
 		if (key.meta == -1) {// undefined, so has to try the 16 possible values
 			int nb = 0;
@@ -3451,14 +3496,30 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 
 	public int takeFromBuilding(final Building building, final Item item, final int meta, int nb) {
 		if (item == Item.getItemFromBlock(Blocks.log) && meta == -1) {
+			//try and take every wood available
 			int nb2, total = 0;
+			//oak
 			nb2 = building.takeGoods(item, 0, nb);
 			addToInv(item, 0, nb2);
 			total += nb2;
-			nb2 = building.takeGoods(item, 0, nb - total);
+			//pine
+			nb2 = building.takeGoods(item, 1, nb - total);
 			addToInv(item, 0, nb2);
 			total += nb2;
-			nb2 = building.takeGoods(item, 0, nb - total);
+			//birch
+			nb2 = building.takeGoods(item, 2, nb - total);
+			addToInv(item, 0, nb2);
+			total += nb2;
+			//jungle
+			nb2 = building.takeGoods(item, 3, nb - total);
+			addToInv(item, 0, nb2);
+			total += nb2;
+			//acacia
+			nb2 = building.takeGoods(Item.getItemFromBlock(Blocks.log2), 0, nb - total);
+			addToInv(item, 0, nb2);
+			total += nb2;
+			//dark oak
+			nb2 = building.takeGoods(Item.getItemFromBlock(Blocks.log2), 1, nb - total);
 			addToInv(item, 0, nb2);
 			total += nb2;
 			return total;
@@ -3490,8 +3551,18 @@ public abstract class MillVillager extends EntityCreature implements IEntityAddi
 			int total = 0, nb2;
 			InvItem key;
 			try {
+				//Blocks.log
 				for (int i = 0; i < 16; i++) {
 					key = new InvItem(item, i);
+					if (inventory.containsKey(key)) {
+						nb2 = Math.min(nb, inventory.get(key));
+						inventory.put(key, inventory.get(key) - nb2);
+						total += nb2;
+					}
+				}
+				//Blocks.log2
+				for (int i = 0; i < 16; i++) {
+					key = new InvItem(Item.getItemFromBlock(Blocks.log2), i);
 					if (inventory.containsKey(key)) {
 						nb2 = Math.min(nb, inventory.get(key));
 						inventory.put(key, inventory.get(key) - nb2);
