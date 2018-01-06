@@ -1594,7 +1594,7 @@ public class Building {
 
 			if (sellingPlace != null) {
 				for (final MillVillager villager : villagers) {
-					if (villager.isSeller()) {
+					if (villager.isSeller() && !villager.isDead) {
 						if (builder != villager && (seller == null || sellingPlace.distanceToSquared(villager) < sellingPlace.distanceToSquared(seller))) {
 							seller = villager;
 						}
