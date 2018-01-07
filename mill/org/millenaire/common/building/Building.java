@@ -47,7 +47,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.feature.WorldGenCanopyTree;
 import net.minecraft.world.gen.feature.WorldGenForest;
+import net.minecraft.world.gen.feature.WorldGenSavannaTree;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -3489,20 +3491,40 @@ public class Building {
 	}
 
 	public void growTree(final World world, final int i, final int j, final int k, final Random random) {
-		final int meta = world.getBlockMetadata(i, j, k) & 3;
+		final int meta = world.getBlockMetadata(i, j, k);
 		MillCommonUtilities.setBlockAndMetadata(worldObj, i, j, k, Blocks.air, 0, true, false);
 		WorldGenerator obj = null;
-		if (meta == 1) {
+		
+		if (meta == 1) {//oak
+			obj = new WorldGenTrees(true);
+		} else if (meta == 1) {//pine
 			obj = new WorldGenTaiga2(true);
-		} else if (meta == 2) {
-			obj = new WorldGenForest(true, true);// No idea what that second
-													// boolean does...
-		} else if (meta == 3) {
+		} else if (meta == 2) {//birch
+			obj = new WorldGenForest(true, true);
+		} else if (meta == 3) {//jungle
 			obj = new WorldGenTrees(true, 4, 3, 3, false);
+		} else if (meta == 4) {//acacia
+			obj = new WorldGenSavannaTree(true);
+		} else if (meta == 5) {//dark oak
+			
+			//Annoying special case, it's a large tree that requires four saplings
+//			if (worldObj.getBlock(i + 1 , j, k) == Blocks.sapling &&
+//					worldObj.getBlock(i , j, k + 1) == Blocks.sapling &&
+//							worldObj.getBlock(i +1 , j, k + 1) == Blocks.sapling) {
+				
+				MillCommonUtilities.setBlockAndMetadata(worldObj, i + 1, j, k, Blocks.air, 0, true, false);
+				MillCommonUtilities.setBlockAndMetadata(worldObj, i, j, k + 1, Blocks.air, 0, true, false);
+				MillCommonUtilities.setBlockAndMetadata(worldObj, i + 1, j, k + 1, Blocks.air, 0, true, false);
+				obj = new WorldGenCanopyTree(true);
+//			} else {
+//				MillCommonUtilities.setBlockAndMetadata(worldObj, i, j, k, Blocks.sapling, 5, true, false);
+//			}
 		} else {
 			obj = new WorldGenTrees(true);
 		}
-		obj.generate(world, random, i, j, k);
+		if (obj != null) {
+			obj.generate(world, random, i, j, k);
+		}
 	}
 
 	public void incrementBblockPos() {

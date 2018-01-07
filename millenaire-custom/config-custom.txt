@@ -7,7 +7,7 @@ bonus_code=7bbb
 //Apprentissage des langues; Les langues doivent être "apprises" (les traductions n'apparaissent qu'après assez d'interaction avec une culture).
 language_learning=false
 
-devmode=true
+devmode=false
 //Générer l'analyse des traductions; Générer pour chaque langue chargée un rapport sur le contenu manquant.
 generate_translation_gap=true
 

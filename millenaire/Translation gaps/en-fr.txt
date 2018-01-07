@@ -1,3 +1,7 @@
 Translation comparison between en and fr
 
+List of gaps found in culture building names for norman: 
+
+Building name missing for culture norman in both languages: playerlargefort_a0
+
 Traduction completness: 100%

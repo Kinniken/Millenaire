@@ -79,7 +79,7 @@ public class GoalLumbermanChopTrees extends Goal {
 	@Override
 	public boolean isPossibleSpecific(final MillVillager villager) {
 
-		if (villager.countInv(Blocks.log, -1) > 64) {
+		if (villager.countInv(Blocks.log, -1) + villager.countInv(Blocks.log2, -1) > 64) {
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public class GoalLumbermanChopTrees extends Goal {
 
 						final Block block = villager.getBlock(p);
 
-						if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves) {
+						if (block == Blocks.log || block == Blocks.log2 || block == Blocks.leaves || block == Blocks.leaves2) {
 							if (!woodFound) {
 								if (block == Blocks.log || block == Blocks.log2) {
 									final int meta = villager.getBlockMeta(p) & 3;
@@ -133,10 +133,25 @@ public class GoalLumbermanChopTrees extends Goal {
 										MLN.debug(this, "Gathered wood at: " + villager.getGoalDestPoint());
 									}
 								} else {
+									
+									final int meta = MillCommonUtilities.getBlockMeta(villager.worldObj, p);
 
-									if (MillCommonUtilities.randomInt(4) == 0) {
-										villager.addToInv(Blocks.sapling, MillCommonUtilities.getBlockMeta(villager.worldObj, p) & 3, 1);
+									if (block == Blocks.leaves) {//oak, pine, birch or jungle
+										if (MillCommonUtilities.randomInt(4) == 0) {
+											villager.addToInv(Blocks.sapling, meta & 3, 1);
+										}
+									} else {
+										if ((meta & 3) == 0) {//Acacia
+											if (MillCommonUtilities.randomInt(4) == 0) {
+												villager.addToInv(Blocks.sapling, 4, 1);
+											}
+										} else {//Dark oak
+											if (MillCommonUtilities.randomInt(2) == 0) {
+												villager.addToInv(Blocks.sapling, 5, 1);
+											}
+										}
 									}
+									
 									villager.setBlock(p, Blocks.air);
 
 									villager.swingItem();
@@ -166,7 +181,7 @@ public class GoalLumbermanChopTrees extends Goal {
 
 	@Override
 	public int priority(final MillVillager villager) {
-		return Math.max(10, 125 - villager.countInv(Blocks.log, -1));
+		return Math.max(10, 125 - villager.countInv(Blocks.log, -1) - villager.countInv(Blocks.log2, -1));
 	}
 
 	@Override

@@ -432,6 +432,8 @@
 |-
 ! Manoir
 |-
+! Forteresse~playerlargefort
+|-
 ! Mine Abandonnée
 |-
 ! Anomalie Une
@@ -472,7 +474,7 @@
 |-
 ! Relais
 |-
-! Forteresse
+! Forteresse~largefort
 |-
 ! Tour d�truite
 |-

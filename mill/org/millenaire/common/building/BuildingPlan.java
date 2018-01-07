@@ -2044,6 +2044,8 @@ public class BuildingPlan implements IBuildingPlan {
 																				// from
 																				// stone
 						addToCost(Blocks.stone, 1);
+						
+						
 					} else if (p.block == Blocks.stone_slab && (p.meta & 7) == 0) {
 						addToCost(Blocks.stone, 1);
 					} else if (p.block == Blocks.stone_slab && (p.meta & 7) == 1) {

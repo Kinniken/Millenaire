@@ -104,10 +104,10 @@ public class GoalLumbermanPlantSaplings extends Goal {
 		final Block block = MillCommonUtilities.getBlock(villager.worldObj, villager.getGoalDestPoint());
 		if (block == Blocks.air || block == Blocks.snow) {
 
-			final int metaStart = MillCommonUtilities.randomInt(4);
+			final int metaStart = MillCommonUtilities.randomInt(6);
 			int chosenMeta = -1;
 
-			for (int i = metaStart; i < 4 && chosenMeta == -1; i++) {
+			for (int i = metaStart; i < 6 && chosenMeta == -1; i++) {
 				if (villager.takeFromInv(Blocks.sapling, i, 1) == 1) {
 					chosenMeta = i;
 				}
@@ -119,16 +119,15 @@ public class GoalLumbermanPlantSaplings extends Goal {
 				}
 			}
 
-			if (chosenMeta == -1) {
-				chosenMeta = 0;
-			}
+			if (chosenMeta != -1) {
 
-			villager.setBlockAndMetadata(villager.getGoalDestPoint(), Blocks.sapling, chosenMeta);
+				villager.setBlockAndMetadata(villager.getGoalDestPoint(), Blocks.sapling, chosenMeta);
 
-			villager.swingItem();
+				villager.swingItem();
 
-			if (MLN.LogLumberman >= MLN.DEBUG && villager.extraLog) {
-				MLN.debug(this, "Planted at: " + villager.getGoalDestPoint());
+				if (MLN.LogLumberman >= MLN.DEBUG && villager.extraLog) {
+					MLN.debug(this, "Planted at: " + villager.getGoalDestPoint());
+				}
 			}
 		} else if (MLN.LogLumberman >= MLN.DEBUG && villager.extraLog) {
 			MLN.debug(this, "Failed to plant at: " + villager.getGoalDestPoint());
