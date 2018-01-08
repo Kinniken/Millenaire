@@ -512,7 +512,7 @@ public class MillWorldInfo implements Cloneable {
 					water[mx][mz] = true;
 				}
 
-				if (soilBlock == Blocks.log) {
+				if (soilBlock == Blocks.log || soilBlock == Blocks.log2) {
 					tree[mx][mz] = true;
 				} else {
 					tree[mx][mz] = false;

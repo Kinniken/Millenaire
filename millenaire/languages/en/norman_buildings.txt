@@ -45,6 +45,7 @@ townhallagricole_A0=
 largefort_A_armoury_A0=
 largefort_A_barrack_A0=Guard Room
 largefort_A0=
+playerlargefort_a0=
 
 playerfort_A0=
 anomalyone_A0=
